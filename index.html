@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hub ED2 - Simuladores</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+  h1 { color: #89b4fa; font-size: 36px; margin-bottom: 10px; }
+  p.subtitle { color: #a6adc8; font-size: 18px; margin-bottom: 40px; }
+  .grid { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; max-width: 1000px; }
+  .card { background: #313244; border: 2px solid #45475a; border-radius: 16px; padding: 30px; width: 300px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .card:hover { transform: translateY(-5px); }
+  .card h2 { margin: 0 0 15px 0; font-size: 24px; }
+  .card p { color: #bac2de; margin-bottom: 25px; flex-grow: 1; }
+  .btn { width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; color: #11111b; }
+  .btn-blue { background: #89b4fa; } .btn-blue:hover { background: #b4befe; }
+  .btn-red { background: #f38ba8; } .btn-red:hover { background: #fab387; }
+  .btn-green { background: #a6e3a1; } .btn-green:hover { background: #94e2d5; }
+  .btn-yellow { background: #f9e2af; } .btn-yellow:hover { background: #fae3b0; }
+  .btn-orange { background: #fab387; } .btn-orange:hover { background: #f9e2af; }
+</style>
+</head>
+<body>
+<h1>🕹️ Arcade de ED2</h1>
+<p class="subtitle">Selecione o módulo para treinar para a prova</p>
+<div class="grid">
+  <div class="card" style="border-color: #a6e3a1;">
+    <h2 style="color: #a6e3a1;">🌳 Árvore Binária</h2>
+    <p>Treine a ordem de visitação dos nós batendo o olho na árvore.</p>
+    <button class="btn btn-green" onclick="window.location.href='arv_binaria.html'">Percursos Visuais</button>
+  </div>
+  <div class="card" style="border-color: #89b4fa;">
+    <h2 style="color: #89b4fa;">⚖️ Árvore AVL</h2>
+    <p>Calcule FBs e rotacione passo a passo.</p>
+    <button class="btn btn-yellow" onclick="window.location.href='avl_calc.html'">1. Calcular FB</button>
+    <button class="btn btn-blue" onclick="window.location.href='avl_rot.html'">2. Fazer Rotações</button>
+    <button class="btn btn-red" onclick="window.location.href='avl_remocao.html'">3. Remoção Final</button>
+  </div>
+  <div class="card" style="border-color: #fab387;">
+    <h2 style="color: #fab387;">📦 Árvore B</h2>
+    <p>Simulador de splits, merges e redistribuição.</p>
+    <button class="btn btn-orange" onclick="window.location.href='arvore_b.html'">Modo Split & Merge</button>
+  </div>
+</div>
+</body>
+</html>
