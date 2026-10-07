@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVL - Passo a Passo das Rotações</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+  h1 { text-align: center; color: #89b4fa; margin-bottom: 5px; }
+  .level-info { text-align: center; margin-bottom: 20px; max-width: 600px; }
+  .level-info h2 { color: #f38ba8; margin: 0 0 10px 0; }
+  .game-container { display: flex; gap: 30px; justify-content: center; align-items: stretch; margin-top: 10px; flex-wrap: wrap; }
+  .panel { background: #313244; padding: 20px; border-radius: 12px; width: 400px; height: 350px; position: relative; border: 2px solid #45475a; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
+  .panel-title { text-align: center; font-weight: bold; margin-bottom: 10px; color: #a6e3a1; font-size: 18px; }
+  
+  .mirror-panel { background: #181825; border: 2px dashed #585b70; border-radius: 12px; padding: 20px; width: 280px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
+  .mirror-panel h3 { color: #f38ba8; margin-top: 0; border-bottom: 1px solid #45475a; padding-bottom: 10px; text-align: center; }
+  .mirror-panel ul { padding-left: 20px; margin: 0; color: #bac2de; line-height: 1.6; }
+  .mirror-panel li { margin-bottom: 10px; }
+  .mirror-panel strong { color: #89b4fa; }
+  .highlight-rule { background: rgba(243, 139, 168, 0.1); padding: 5px; border-radius: 4px; border-left: 3px solid #f38ba8; display: block; margin-top: 5px; color: #f38ba8; font-weight: bold;}
+  
+  .node { width: 50px; height: 50px; background: #f9e2af; color: #11111b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; position: absolute; z-index: 10; border: 3px solid #fab387; box-shadow: 0 4px 6px rgba(0,0,0,0.4); user-select: none; transition: transform 0.1s; cursor: grab; }
+  .node:active { cursor: grabbing; transform: scale(1.1); }
+  .slot { width: 50px; height: 50px; border: 3px dashed #6c7086; border-radius: 50%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: 5; background: rgba(255,255,255,0.05); transition: 0.2s; font-size: 12px; color: #6c7086; }
+  .slot.drag-over { background: rgba(166, 227, 161, 0.3); border-color: #a6e3a1; transform: scale(1.1); }
+  svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  line { stroke: #6c7086; stroke-width: 4; stroke-linecap: round; }
+  .controls { text-align: center; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+  button { background: #89b4fa; color: #11111b; border: none; padding: 12px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+  button:hover { background: #b4befe; transform: translateY(-2px); }
+  .feedback { margin-top: 15px; font-size: 18px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; transition: 0.3s; opacity: 0; }
+  .feedback.show { opacity: 1; }
+  .success { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; border: 1px solid #a6e3a1; }
+  .error { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
+  .voltar { position: absolute; top: 20px; left: 20px; background: #45475a; color: #cdd6f4; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; }
+  
+  .phase-badge { background: #f38ba8; color: #11111b; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 14px; margin-bottom: 10px; display: inline-block; }
+</style>
+</head>
+<body>
+<a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
+<button class="voltar" style="left: auto; right: 20px; cursor: pointer; border: none; font-size: 14px; font-family: inherit;" onclick="loadPhase(currentLevel, 0)">🔄 Refazer Nível</button>
+<h1>⚖️ AVL: O Cirurgião das Rotações</h1>
+<div class="level-info">
+  <div id="phase-badge" class="phase-badge" style="display:none;">Passo 1/2</div>
+  <h2 id="level-name">Carregando...</h2>
+  <p id="level-desc"></p>
+</div>
+<div class="game-container">
+  <div class="mirror-panel">
+    <h3>🪞 Espelho (Regras)</h3>
+    <ul>
+      <li><strong>FB Negativo (-):</strong> <br>Perna esquerda maior. Gira pra <span style="color:#a6e3a1;font-weight:bold;">DIREITA</span>.</li>
+      <li><strong>FB Positivo (+):</strong> <br>Perna direita maior. Gira pra <span style="color:#f38ba8;font-weight:bold;">ESQUERDA</span>.</li>
+      <hr style="border-color:#45475a;">
+      <li><strong>Sinais Iguais:</strong><br> A árvore pendeu toda pra um lado. Basta 1 Rotação Simples.</li>
+      <li><strong>Sinais Diferentes:</strong><br> Formou um joelho! Requer Rotação Dupla. <span class="highlight-rule">Sempre gire o FILHO primeiro para alinhar os sinais!</span></li>
+    </ul>
+  </div>
+  <div class="panel" id="panel-left">
+    <div class="panel-title">Árvore Quebrada</div>
+    <svg id="svg-left"></svg>
+    <div id="nodes-left"></div>
+  </div>
+  <div class="panel" id="panel-right">
+    <div class="panel-title" id="title-right">Arraste para Consertar</div>
+    <svg id="svg-right"></svg>
+    <div id="slots-right"></div>
+  </div>
+</div>
+<div class="controls">
+  <button id="btn-action">Verificar Rotação</button>
+  <div id="feedback" class="feedback"></div>
+</div>
+<script>
+const levels = [
+  {
+    name: "Nível 1: Rotação Simples Direita (Revisão)",
+    phases: [
+      {
+        desc: "W (FB=-2) e H (FB=-1). Sinais iguais! Negativo = Gira pra Direita.",
+        nodes: [ { id: "W", val: "W", x: 175, y: 50 }, { id: "H", val: "H", x: 100, y: 140 }, { id: "F", val: "F", x: 25, y: 230 } ],
+        linksLeft: [ ["W","H"], ["H","F"] ],
+        slots: [ { id: "S1", x: 175, y: 50, expected: "H" }, { id: "S2", x: 100, y: 140, expected: "F" }, { id: "S3", x: 250, y: 140, expected: "W" } ],
+        linksRight: [ ["S1","S2"], ["S1","S3"] ]
+      }
+    ]
+  },
+  {
+    name: "Nível 2: Rotação Dupla Esq-Dir (Revisão)",
+    phases: [
+      {
+        desc: "W (FB=-2) e P (FB=+1). Sinais diferentes! Formou joelho. PASSO 1: Gire o FILHO (P) para a esquerda.",
+        nodes: [ { id: "W", val: "W", x: 175, y: 50 }, { id: "P", val: "P", x: 100, y: 140 }, { id: "R", val: "R", x: 175, y: 230 } ],
+        linksLeft: [ ["W","P"], ["P","R"] ],
+        slots: [ { id: "S1", x: 175, y: 50, expected: "W" }, { id: "S2", x: 100, y: 140, expected: "R" }, { id: "S3", x: 25, y: 230, expected: "P" } ],
+        linksRight: [ ["S1","S2"], ["S2","S3"] ]
+      },
+      {
+        desc: "PASSO 2: Agora W e R têm FB negativos (Sinais Iguais). A perna esticou! Aplique a Rotação Simples à Direita no W.",
+        nodes: [ { id: "W", val: "W", x: 175, y: 50 }, { id: "R", val: "R", x: 100, y: 140 }, { id: "P", val: "P", x: 25, y: 230 } ],
+        linksLeft: [ ["W","R"], ["R","P"] ],
+        slots: [ { id: "S1", x: 175, y: 50, expected: "R" }, { id: "S2", x: 100, y: 140, expected: "P" }, { id: "S3", x: 250, y: 140, expected: "W" } ],
+        linksRight: [ ["S1","S2"], ["S1","S3"] ]
+      }
+    ]
+  },
+  {
+    name: "Nível 3: Rotação Dupla Dir-Esq (Lista 3)",
+    phases: [
+      {
+        desc: "Q (FB=+2) e T (FB=-1). Sinais diferentes! PASSO 1: Gire o FILHO (T) para a direita.",
+        nodes: [ { id: "Q", val: "Q", x: 175, y: 50 }, { id: "T", val: "T", x: 250, y: 140 }, { id: "M", val: "M", x: 175, y: 230 } ],
+        linksLeft: [ ["Q","T"], ["T","M"] ],
+        slots: [ { id: "S1", x: 175, y: 50, expected: "Q" }, { id: "S2", x: 250, y: 140, expected: "M" }, { id: "S3", x: 325, y: 230, expected: "T" } ],
+        linksRight: [ ["S1","S2"], ["S2","S3"] ]
+      },
+      {
+        desc: "PASSO 2: Agora Q e M têm FB positivos. A perna esticou! Aplique a Rotação Simples à Esquerda no Q.",
+        nodes: [ { id: "Q", val: "Q", x: 175, y: 50 }, { id: "M", val: "M", x: 250, y: 140 }, { id: "T", val: "T", x: 325, y: 230 } ],
+        linksLeft: [ ["Q","M"], ["M","T"] ],
+        slots: [ { id: "S1", x: 175, y: 50, expected: "M" }, { id: "S2", x: 100, y: 140, expected: "Q" }, { id: "S3", x: 250, y: 140, expected: "T" } ],
+        linksRight: [ ["S1","S2"], ["S1","S3"] ]
+      }
+    ]
+  }
+];
+
+let currentLevel = 0; let currentPhase = 0;
+const ui = {
+  levelName: document.getElementById('level-name'), levelDesc: document.getElementById('level-desc'),
+  svgLeft: document.getElementById('svg-left'), nodesLeft: document.getElementById('nodes-left'),
+  svgRight: document.getElementById('svg-right'), slotsRight: document.getElementById('slots-right'),
+  btn: document.getElementById('btn-action'), fbk: document.getElementById('feedback'),
+  badge: document.getElementById('phase-badge')
+};
+
+function showMsg(msg, type) { ui.fbk.innerHTML = msg; ui.fbk.className = `feedback show ${type}`; }
+function drawLine(svg, x1, y1, x2, y2) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", x1 + 25); line.setAttribute("y1", y1 + 25);
+  line.setAttribute("x2", x2 + 25); line.setAttribute("y2", y2 + 25);
+  svg.appendChild(line);
+}
+
+function loadPhase(lvlIdx, phIdx) {
+  const lvl = levels[lvlIdx]; const phase = lvl.phases[phIdx];
+  ui.levelName.textContent = lvl.name; ui.levelDesc.textContent = phase.desc;
+  ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = '';
+  ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+  ui.fbk.className = 'feedback'; ui.btn.textContent = "Verificar Rotação";
+  
+  if (lvl.phases.length > 1) {
+    ui.badge.style.display = 'inline-block'; ui.badge.textContent = `Passo ${phIdx+1} de ${lvl.phases.length}`;
+  } else ui.badge.style.display = 'none';
+
+  phase.linksLeft.forEach(l => {
+    const n1 = phase.nodes.find(n => n.id === l[0]); const n2 = phase.nodes.find(n => n.id === l[1]);
+    drawLine(ui.svgLeft, n1.x, n1.y, n2.x, n2.y);
+  });
+  phase.linksRight.forEach(l => {
+    const s1 = phase.slots.find(s => s.id === l[0]); const s2 = phase.slots.find(s => s.id === l[1]);
+    drawLine(ui.svgRight, s1.x, s1.y, s2.x, s2.y);
+  });
+
+  phase.slots.forEach(s => {
+    const el = document.createElement('div'); el.className = 'slot';
+    el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; el.dataset.expected = s.expected;
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', e => {
+      e.preventDefault(); el.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain'); if(!id) return;
+      const nodeEl = document.getElementById(id);
+      if(el.children.length > 0) ui.nodesLeft.appendChild(el.children[0]);
+      el.appendChild(nodeEl); nodeEl.style.left = '0px'; nodeEl.style.top = '0px';
+    });
+    ui.slotsRight.appendChild(el);
+  });
+
+  phase.nodes.forEach(n => {
+    const el = document.createElement('div'); el.className = 'node';
+    el.id = n.id; el.textContent = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+    el.draggable = true;
+    el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(() => el.style.opacity = '0.4', 0); });
+    el.addEventListener('dragend', () => el.style.opacity = '1');
+    ui.nodesLeft.appendChild(el);
+  });
+}
+
+ui.btn.addEventListener('click', () => {
+  if (ui.btn.textContent.includes("Próximo")) {
+    const lvl = levels[currentLevel];
+    if (currentPhase + 1 < lvl.phases.length) {
+      currentPhase++; loadPhase(currentLevel, currentPhase);
+    } else {
+      currentLevel++; currentPhase = 0;
+      if (currentLevel < levels.length) loadPhase(currentLevel, currentPhase);
+      else {
+        ui.levelName.textContent = "Cirurgia Concluída! 🎉"; ui.levelDesc.textContent = "Você dominou as rotações passo a passo.";
+        ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = ''; ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+        ui.btn.style.display = 'none'; ui.fbk.style.display = 'none'; ui.badge.style.display = 'none';
+      }
+    }
+    return;
+  }
+
+  let allPlaced = true; let allCorrect = true;
+  document.querySelectorAll('.slot').forEach(slot => {
+    if (slot.children.length === 0) allPlaced = false;
+    else if (slot.children[0].textContent !== slot.dataset.expected) allCorrect = false;
+  });
+
+  if (!allPlaced) showMsg("Arraste todas as letras para os espaços!", "error");
+  else if (!allCorrect) showMsg("Rotação incorreta! Consulte as dicas do Espelho ao lado.", "error");
+  else {
+    const lvl = levels[currentLevel];
+    if (currentPhase + 1 < lvl.phases.length) {
+      showMsg("Passo 1 Perfeito! Agora a perna esticou. Clique para o Passo 2.", "success");
+      ui.btn.textContent = "Ir para Passo 2";
+    } else {
+      showMsg("Perfeito! Rotação finalizada com maestria!", "success");
+      ui.btn.textContent = "Próximo Nível";
+    }
+  }
+});
+
+ui.nodesLeft.addEventListener('dragover', e => e.preventDefault());
+ui.nodesLeft.addEventListener('drop', e => {
+  e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
+  const nodeEl = document.getElementById(id); ui.nodesLeft.appendChild(nodeEl);
+  const nData = levels[currentLevel].phases[currentPhase].nodes.find(n => n.id === id);
+  nodeEl.style.left = nData.x + 'px'; nodeEl.style.top = nData.y + 'px';
+});
+
+loadPhase(0, 0);
+</script>
+</body>
+</html>
