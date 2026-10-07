@@ -51,6 +51,13 @@
   
   .voltar { position: absolute; top: 20px; left: 20px; background: #45475a; color: #cdd6f4; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; }
   .voltar:hover { background: #585b70; }
+
+  .mirror-panel { background: #181825; border: 2px dashed #585b70; border-radius: 12px; padding: 15px; width: 230px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); align-self: flex-start; }
+  .mirror-panel h3 { color: #fab387; margin-top: 0; border-bottom: 1px solid #45475a; padding-bottom: 10px; text-align: center; }
+  .mirror-panel ul { padding-left: 20px; margin: 0; color: #bac2de; line-height: 1.6; font-size: 14px;}
+  .mirror-panel li { margin-bottom: 8px; }
+  .mirror-panel strong { color: #cdd6f4; }
+
 </style>
 </head>
 <body>
@@ -65,6 +72,20 @@
 </div>
 
 <div class="game-container">
+  
+  <div class="mirror-panel">
+    <h3>🪞 Cola (Árvore B)</h3>
+    <ul>
+      <li><strong>Grau Mínimo (t):</strong> 3</li>
+      <li><strong>Máx. Chaves:</strong> 2t - 1 = <span style="color:#f38ba8;font-weight:bold;">5</span><br><span style="font-size:12px;">(Se ficar com 6, Split!)</span></li>
+      <li><strong>Mín. Chaves:</strong> t - 1 = <span style="color:#a6e3a1;font-weight:bold;">2</span><br><span style="font-size:12px;">(Se cair pra 1, Underflow!)</span></li>
+      <hr style="border-color:#45475a;">
+      <li><strong>Split:</strong> Nó estoura → Mediana SOBE pro pai.</li>
+      <li><strong>Redistr.:</strong> Olhe SEMPRE pra <b>esquerda</b> primeiro!</li>
+      <li><strong>Merge:</strong> Funde os irmãos com o separador do Pai.</li>
+    </ul>
+  </div>
+
   <!-- Painel de Peças Disponíveis -->
   <div class="panel" style="width: 250px;">
     <div class="panel-title">Chaves Soltas</div>
