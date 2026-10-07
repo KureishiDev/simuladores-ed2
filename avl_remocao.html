@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>AVL Master - Modo Remoção</title>
+<style>
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+  h1 { text-align: center; color: #f38ba8; margin-bottom: 5px; }
+  .level-info { text-align: center; margin-bottom: 20px; max-width: 600px; }
+  .level-info h2 { color: #fab387; margin: 0 0 10px 0; }
+  .board { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+  .panel { background: #313244; padding: 20px; border-radius: 12px; width: 420px; height: 380px; position: relative; border: 2px solid #45475a; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
+  .panel-title { text-align: center; font-weight: bold; margin-bottom: 10px; color: #89b4fa; font-size: 18px; }
+  .node { width: 46px; height: 46px; background: #f9e2af; color: #11111b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; position: absolute; z-index: 10; border: 3px solid #f38ba8; box-shadow: 0 4px 6px rgba(0,0,0,0.4); user-select: none; transition: transform 0.1s; cursor: grab; }
+  .node:active { cursor: grabbing; transform: scale(1.1); }
+  .slot { width: 46px; height: 46px; border: 3px dashed #6c7086; border-radius: 50%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: 5; background: rgba(255,255,255,0.05); transition: 0.2s; font-size: 10px; color: #6c7086; text-align: center; }
+  .slot.drag-over { background: rgba(137, 180, 250, 0.3); border-color: #89b4fa; transform: scale(1.1); }
+  .trash { border-color: #f38ba8; background: rgba(243, 139, 168, 0.1); font-size: 24px; color: transparent; border-radius: 12px; width: 60px; height: 60px; }
+  .trash.drag-over { background: rgba(243, 139, 168, 0.4); }
+  .trash::after { content: '🗑️'; position: absolute; font-size: 24px; color: white; }
+  svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  line { stroke: #6c7086; stroke-width: 4; stroke-linecap: round; }
+  .controls { text-align: center; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+  button { background: #f38ba8; color: #11111b; border: none; padding: 12px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+  button:hover { background: #fab387; transform: translateY(-2px); }
+  .feedback { margin-top: 15px; font-size: 18px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; transition: 0.3s; opacity: 0; }
+  .feedback.show { opacity: 1; }
+  .success { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; border: 1px solid #a6e3a1; }
+  .error { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
+</style>
+</head>
+<body>
+<h1>🪓 AVL Master: Remoção</h1>
+<div class="level-info">
+  <h2 id="level-name">Carregando...</h2>
+  <p id="level-desc"></p>
+</div>
+<div class="board">
+  <div class="panel" id="panel-left">
+    <div class="panel-title">Árvore Original</div>
+    <svg id="svg-left"></svg>
+    <div id="nodes-left"></div>
+  </div>
+  <div class="panel" id="panel-right">
+    <div class="panel-title">Arraste para a Configuração Final</div>
+    <svg id="svg-right"></svg>
+    <div id="slots-right"></div>
+  </div>
+</div>
+<div class="controls">
+  <button id="btn-action">Verificar Árvore Final</button>
+  <div id="feedback" class="feedback"></div>
+</div>
+<script>
+const levels = [
+  {
+    name: "Nível 1: Remoção Simples (Da Lista 3)",
+    desc: "A lista pede pra remover 'O' e 'P'. Remova 'O'! (Basta jogar na lixeira, a árvore continua balanceada).",
+    nodes: [
+      { id: "NP", val: "P", x: 175, y: 50 },
+      { id: "NO", val: "O", x: 100, y: 150 },
+      { id: "NR", val: "R", x: 250, y: 150 }
+    ],
+    linksLeft: [ ["NP","NO"], ["NP","NR"] ],
+    slots: [
+      { id: "S1", x: 175, y: 50, expected: "P", isTrash: false },
+      { id: "S3", x: 250, y: 150, expected: "R", isTrash: false },
+      { id: "TRASH", x: 330, y: 300, expected: "O", isTrash: true }
+    ],
+    linksRight: [ ["S1","S3"] ]
+  },
+  {
+    name: "Nível 2: O Predecessor (Da Revisão)",
+    desc: "A revisão pede pra remover 'W'. O W tem filhos (P e X). Quem assume a raiz é o maior da esquerda (predecessor). Arraste ele pra cima!",
+    nodes: [
+      { id: "NW", val: "W", x: 175, y: 50 },
+      { id: "NP", val: "P", x: 100, y: 140 },
+      { id: "NX", val: "X", x: 250, y: 140 },
+      { id: "NR", val: "R", x: 150, y: 230 }
+    ],
+    linksLeft: [ ["NW","NP"], ["NW","NX"], ["NP","NR"] ],
+    slots: [
+      { id: "S1", x: 175, y: 50, expected: "R", isTrash: false },
+      { id: "S2", x: 100, y: 140, expected: "P", isTrash: false },
+      { id: "S3", x: 250, y: 140, expected: "X", isTrash: false },
+      { id: "TRASH", x: 330, y: 300, expected: "W", isTrash: true }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"] ]
+  },
+  {
+    name: "Nível 3: O Efeito Dominó do '1' (Lista 3)",
+    desc: "A lista 3 manda remover a folha '1'. Isso faz o nó '2' ficar pesando pra direita (onde está o '3' e '4'). Jogue o 1 na lixeira E JÁ FAZ A ROTAÇÃO do nó 2 pra arrumar o lado direito!",
+    nodes: [
+      { id: "N2", val: "2", x: 175, y: 50 },
+      { id: "N1", val: "1", x: 100, y: 140 },
+      { id: "N3", val: "3", x: 250, y: 140 },
+      { id: "N4", val: "4", x: 325, y: 230 }
+    ],
+    linksLeft: [ ["N2","N1"], ["N2","N3"], ["N3","N4"] ],
+    slots: [
+      { id: "S1", x: 175, y: 50, expected: "3", isTrash: false },
+      { id: "S2", x: 100, y: 140, expected: "2", isTrash: false },
+      { id: "S3", x: 250, y: 140, expected: "4", isTrash: false },
+      { id: "TRASH", x: 330, y: 300, expected: "1", isTrash: true }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"] ]
+  }
+];
+
+let currentLevel = 0;
+const ui = {
+  levelName: document.getElementById('level-name'), levelDesc: document.getElementById('level-desc'),
+  svgLeft: document.getElementById('svg-left'), nodesLeft: document.getElementById('nodes-left'),
+  svgRight: document.getElementById('svg-right'), slotsRight: document.getElementById('slots-right'),
+  btn: document.getElementById('btn-action'), fbk: document.getElementById('feedback')
+};
+
+function showMsg(msg, type) { ui.fbk.textContent = msg; ui.fbk.className = `feedback show ${type}`; }
+function drawLine(svg, x1, y1, x2, y2) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", x1 + 23); line.setAttribute("y1", y1 + 23);
+  line.setAttribute("x2", x2 + 23); line.setAttribute("y2", y2 + 23);
+  svg.appendChild(line);
+}
+
+function loadLevel(idx) {
+  const lvl = levels[idx];
+  ui.levelName.textContent = lvl.name; ui.levelDesc.textContent = lvl.desc;
+  ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = '';
+  ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+  ui.fbk.className = 'feedback'; ui.btn.textContent = "Verificar Árvore Final";
+  
+  lvl.linksLeft.forEach(l => {
+    const n1 = lvl.nodes.find(n => n.id === l[0]); const n2 = lvl.nodes.find(n => n.id === l[1]);
+    drawLine(ui.svgLeft, n1.x, n1.y, n2.x, n2.y);
+  });
+  lvl.linksRight.forEach(l => {
+    const s1 = lvl.slots.find(s => s.id === l[0]); const s2 = lvl.slots.find(s => s.id === l[1]);
+    drawLine(ui.svgRight, s1.x, s1.y, s2.x, s2.y);
+  });
+  
+  lvl.slots.forEach(s => {
+    const el = document.createElement('div'); el.className = s.isTrash ? 'slot trash' : 'slot';
+    el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; el.dataset.expected = s.expected;
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', e => {
+      e.preventDefault(); el.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain'); if(!id) return;
+      const nodeEl = document.getElementById(id);
+      if(el.children.length > 0) ui.nodesLeft.appendChild(el.children[0]);
+      el.appendChild(nodeEl);
+      nodeEl.style.left = s.isTrash ? '7px' : '0px'; nodeEl.style.top = s.isTrash ? '7px' : '0px';
+    });
+    ui.slotsRight.appendChild(el);
+  });
+  
+  lvl.nodes.forEach(n => {
+    const el = document.createElement('div'); el.className = 'node';
+    el.id = n.id; el.textContent = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+    el.draggable = true;
+    el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(() => el.style.opacity = '0.4', 0); });
+    el.addEventListener('dragend', () => el.style.opacity = '1');
+    ui.nodesLeft.appendChild(el);
+  });
+}
+
+ui.btn.addEventListener('click', () => {
+  if (ui.btn.textContent === "Próximo Nível") {
+    currentLevel++;
+    if (currentLevel < levels.length) loadLevel(currentLevel);
+    else {
+      ui.levelName.textContent = "Parabéns! 🎉"; ui.levelDesc.textContent = "Você gabaritou todas as quebras reais das listas da professora!";
+      ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = ''; ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+      ui.btn.style.display = 'none'; ui.fbk.style.display = 'none';
+    }
+    return;
+  }
+  let allPlaced = true; let allCorrect = true; let wrongTrash = false;
+  document.querySelectorAll('.slot').forEach(slot => {
+    if (slot.children.length === 0) allPlaced = false;
+    else {
+      if (slot.children[0].textContent !== slot.dataset.expected) {
+        allCorrect = false; if(slot.classList.contains('trash')) wrongTrash = true;
+      }
+    }
+  });
+  
+  if (!allPlaced) showMsg("Arraste todos os nós (e o alvo pra lixeira)!", "error");
+  else if (wrongTrash) showMsg("Você jogou o nó errado na lixeira!", "error");
+  else if (!allCorrect) showMsg("Estrutura final incorreta! Reveja as regras de AVL.", "error");
+  else { showMsg("Perfeito! Resolvido igualzinho ao gabarito da professora! 🪓", "success"); ui.btn.textContent = "Próximo Nível"; }
+});
+ui.nodesLeft.addEventListener('dragover', e => e.preventDefault());
+ui.nodesLeft.addEventListener('drop', e => {
+  e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
+  const nodeEl = document.getElementById(id); ui.nodesLeft.appendChild(nodeEl);
+  const nData = levels[currentLevel].nodes.find(n => n.id === id);
+  nodeEl.style.left = nData.x + 'px'; nodeEl.style.top = nData.y + 'px';
+});
+loadLevel(0);
+</script>
+</body>
+</html>
