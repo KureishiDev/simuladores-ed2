@@ -83,11 +83,14 @@
   <div class="mirror-panel">
     <h3>🪞 Cola (ABB)</h3>
     <ul>
-      <li><strong>Inserção:</strong> Menor que a Raiz vai pra ESQUERDA. Maior, DIREITA.</li>
-      <li><strong>Remoção (2 filhos):</strong> O nó não pode simplesmente sumir! Ele deve ser substituído pelo <strong>Predecessor</strong>.</li>
-      <li><strong>Predecessor:</strong> É o <i>maior</i> elemento da sub-árvore <i>esquerda</i>.</li>
+      <li><strong>Inserção:</strong> Menor que o nó vai pra <strong>ESQUERDA</strong>. Maior vai pra <strong>DIREITA</strong>.</li>
+      <li><strong>Remoção (Folha):</strong> Apenas libera memória (free) e pai aponta pra NULL.</li>
+      <li><strong>Remoção (1 Filho):</strong> O filho único sobe e assume a posição do pai.</li>
+      <li><strong>Remoção (2 Filhos - UTFPR):</strong> Substitui pelo <strong>PREDECESSOR</strong> (maior da sub-árvore esquerda).</li>
+      <li><strong>Achar Predecessor:</strong> 1 passo à <i>esquerda</i>, depois tudo à <i>direita</i> até NULL.</li>
+      <li><strong>E se pedir Sucessor?</strong> 1 passo à <i>direita</i>, depois tudo à <i>esquerda</i>.</li>
       <hr style="border-color:#45475a;">
-      <li><i>Dica:</i> Para achar o predecessor, dê um passo à esquerda, e depois desça tudo à direita até não dar mais!</li>
+      <li><i>⚠️ Pior Caso O(n):</i> Dados ordenados (crescentes ou decrescentes) viram árvores degeneradas (listas ligadas).</li>
     </ul>
   </div>
   
@@ -126,8 +129,8 @@ const levels = [
     overridePool: false
   },
   {
-    name: "Nível 2: A Pior Inserção (Degenerada)",
-    desc: "Insira os valores na ordem: 10, 20, 30, 40. O que acontece com a árvore se os dados já vierem ordenados?",
+    name: "Nível 2: A Pior Inserção (Degenerada Crescente)",
+    desc: "Insira os valores na ordem: 10, 20, 30, 40. O que acontece com a árvore se os dados já vierem ordenados? Degenera para a direita!",
     pool: [ {id:"10", val:"10"}, {id:"20", val:"20"}, {id:"30", val:"30"}, {id:"40", val:"40"} ],
     staticNodes: [],
     slots: [
@@ -141,7 +144,7 @@ const levels = [
   },
   {
     name: "Nível 3: Remoção (Nó com 1 Filho)",
-    desc: "Queremos remover o nó 30, que estava à direita do 20. O nó 30 tinha apenas UM filho (o 25). Quem assume o lugar do 30?",
+    desc: "Queremos remover o nó 30 (à direita do 20). O 30 tinha apenas UM filho (o 25). Quem assume o lugar do 30?",
     pool: [ {id:"25", val:"25"} ],
     staticNodes: [
       {id:"40", val:"40", x:250, y:40},
@@ -155,7 +158,7 @@ const levels = [
     overridePool: false
   },
   {
-    name: "Nível 4: Remoção (Nó com 2 filhos)",
+    name: "Nível 4: Remoção (Nó com 2 Filhos)",
     desc: "A professora mandou remover o 50 (a Raiz). O algoritmo diz: Substitua pelo PREDECESSOR! Arraste da árvore a bolinha correta.",
     pool: [ {id:"X", val:"?"} ],
     staticNodes: [
@@ -175,7 +178,7 @@ const levels = [
   },
   {
     name: "Nível 5: O Predecessor Profundo",
-    desc: "Vamos remover o 100 (Raiz). Lembra da regra? Um passo à esquerda, e depois TUDO para a direita. Encontre o predecessor e arraste-o!",
+    desc: "Vamos remover o 100 (Raiz). Regra: Um passo à esquerda, e depois TUDO para a direita. Encontre o predecessor e arraste-o!",
     pool: [ {id:"X", val:"?"} ],
     staticNodes: [
       {id:"50", val:"50", x:100, y:100},
@@ -189,6 +192,91 @@ const levels = [
       { id:"S_Root", x:250, y:40, expected:"95" }
     ],
     links: [ ["S_Root","50"], ["S_Root","150"], ["50","80"], ["80","90"], ["90","95"], ["95","92"] ],
+    overridePool: true
+  },
+  {
+    name: "Nível 6: Degenerada à Esquerda (Ordem Decrescente)",
+    desc: "Insira os dados na ordem: 90, 70, 50, 30. Se os dados chegam decrescentes, a árvore degenera 100% para a ESQUERDA!",
+    pool: [ {id:"90", val:"90"}, {id:"70", val:"70"}, {id:"50", val:"50"}, {id:"30", val:"30"} ],
+    staticNodes: [],
+    slots: [
+      { id:"S1", x:380, y:40, expected:"90" },
+      { id:"S2", x:280, y:120, expected:"70" },
+      { id:"S3", x:180, y:200, expected:"50" },
+      { id:"S4", x:80, y:280, expected:"30" }
+    ],
+    links: [ ["S1","S2"], ["S2","S3"], ["S3","S4"] ],
+    overridePool: false
+  },
+  {
+    name: "Nível 7: Pegadinha: Predecessor sem Filho Direito",
+    desc: "Remova a Raiz 50. Regra: 1 passo à esquerda (nó 30), e desça tudo à direita... Mas o 30 NÃO tem filho direito! Quem é o predecessor? O próprio 30! Arraste-o.",
+    pool: [ {id:"X", val:"?"} ],
+    staticNodes: [
+      {id:"30", val:"30", x:140, y:120},
+      {id:"20", val:"20", x:90, y:200},
+      {id:"10", val:"10", x:50, y:270},
+      {id:"70", val:"70", x:350, y:120},
+      {id:"60", val:"60", x:290, y:200},
+      {id:"85", val:"85", x:410, y:200}
+    ],
+    slots: [
+      { id:"S_Root", x:245, y:40, expected:"30" }
+    ],
+    links: [ ["S_Root","30"], ["S_Root","70"], ["30","20"], ["20","10"], ["70","60"], ["70","85"] ],
+    overridePool: true
+  },
+  {
+    name: "Nível 8: Inserção Balanceada Completa",
+    desc: "A raiz é 50, com filhos 25 e 75. Encaixe as 4 novas chaves (15, 35, 65, 85) nos seus respectivos lugares na árvore.",
+    pool: [ {id:"15", val:"15"}, {id:"35", val:"35"}, {id:"65", val:"65"}, {id:"85", val:"85"} ],
+    staticNodes: [
+      {id:"50", val:"50", x:245, y:40},
+      {id:"25", val:"25", x:130, y:120},
+      {id:"75", val:"75", x:360, y:120}
+    ],
+    slots: [
+      { id:"S1", x:70, y:200, expected:"15" },
+      { id:"S2", x:190, y:200, expected:"35" },
+      { id:"S3", x:300, y:200, expected:"65" },
+      { id:"S4", x:420, y:200, expected:"85" }
+    ],
+    links: [ ["50","25"], ["50","75"], ["25","S1"], ["25","S2"], ["75","S3"], ["75","S4"] ],
+    overridePool: false
+  },
+  {
+    name: "Nível 9: Remoção em Sub-Árvore Interna",
+    desc: "Remoção do nó interno 25 (filho esquerdo do 50). O nó 25 tem 2 filhos (15 e 35). Quem é o predecessor do 25? Arraste para o lugar do 25!",
+    pool: [ {id:"X", val:"?"} ],
+    staticNodes: [
+      {id:"50", val:"50", x:245, y:40},
+      {id:"75", val:"75", x:370, y:120},
+      {id:"15", val:"15", x:70, y:200},
+      {id:"18", val:"18", x:100, y:270},
+      {id:"35", val:"35", x:190, y:200}
+    ],
+    slots: [
+      { id:"S_Sub", x:130, y:120, expected:"18" }
+    ],
+    links: [ ["50","S_Sub"], ["50","75"], ["S_Sub","15"], ["S_Sub","35"], ["15","18"] ],
+    overridePool: true
+  },
+  {
+    name: "Nível 10: E se a questão pedir o SUCESSOR?",
+    desc: "Cuidado: se a questão pedir SUCESSOR (menor da direita)! Regra: 1 passo à DIREITA, e tudo à ESQUERDA até o fim. Remova o 50 e arraste o Sucessor!",
+    pool: [ {id:"X", val:"?"} ],
+    staticNodes: [
+      {id:"25", val:"25", x:130, y:120},
+      {id:"75", val:"75", x:360, y:120},
+      {id:"60", val:"60", x:290, y:190},
+      {id:"55", val:"55", x:240, y:260},
+      {id:"58", val:"58", x:270, y:320},
+      {id:"85", val:"85", x:420, y:190}
+    ],
+    slots: [
+      { id:"S_Root", x:245, y:40, expected:"55" }
+    ],
+    links: [ ["S_Root","25"], ["S_Root","75"], ["75","60"], ["75","85"], ["60","55"], ["55","58"] ],
     overridePool: true
   }
 ];
@@ -307,8 +395,14 @@ ui.btn.addEventListener('click', () => {
   if (document.querySelectorAll('.slot:empty').length > 0) {
     showMsg("Preencha todos os espaços tracejados!", "error");
   } else if (!allCorrect) {
-    if(currentLevel === 1) showMsg("Ops! Esse não é o Predecessor. Dica: O predecessor é o maior número de todos que estão do lado esquerdo.", "error");
-    else showMsg("Ops! Ordem incorreta. Lembre-se: Menores à esquerda, Maiores à direita.", "error");
+    const lvl = levels[currentLevel];
+    if(lvl.name.includes("Sucessor")) {
+      showMsg("Ops! Esse não é o Sucessor. Dica: 1 passo à direita, e depois tudo à esquerda!", "error");
+    } else if(lvl.overridePool) {
+      showMsg("Ops! Esse não é o Predecessor correto. Dica: 1 passo à esquerda, e depois desça tudo à direita!", "error");
+    } else {
+      showMsg("Ops! Ordem incorreta. Lembre-se: Menores à esquerda, Maiores à direita.", "error");
+    }
   } else {
     showMsg("Perfeito! Algoritmo executado com sucesso.", "success");
     ui.btn.textContent = "Próximo Nível";
