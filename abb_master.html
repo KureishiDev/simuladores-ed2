@@ -4,15 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Árvore Binária de Busca (ABB)</title>
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour-polyfill.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    MobileDragDrop.polyfill({dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride});
-    window.addEventListener('touchmove', function() {}, {passive: false});
-  });
-</script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+
+
+
+
 <style>
   body { font-family: 'Segoe UI', sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
   h1 { text-align: center; color: #a6e3a1; margin-bottom: 5px; }
@@ -25,6 +20,139 @@
   .mirror-panel ul { padding-left: 20px; margin: 0; color: #bac2de; line-height: 1.6; font-size: 14px;}
   .mirror-panel li { margin-bottom: 8px; }
   
+  
+  /* Estilos Modernos de Seleção e Física Unificada */
+  .node {
+    width: 50px;
+    height: 50px;
+    background: #f9e2af;
+    color: #11111b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    z-index: 10;
+    border: 3px solid #fab387;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    cursor: grab;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+  }
+  .node * { pointer-events: none; }
+  .node:hover { transform: scale(1.08); }
+  .node:active, .node.dragging {
+    cursor: grabbing;
+    transform: scale(1.2) !important;
+    z-index: 1000 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7) !important;
+  }
+  .node.selected {
+    border-color: #cba6f7 !important;
+    box-shadow: 0 0 16px #cba6f7 !important;
+    transform: scale(1.15) !important;
+    animation: pulse-sel 1.5s infinite;
+  }
+  @keyframes pulse-sel {
+    0% { transform: scale(1.12); }
+    50% { transform: scale(1.18); }
+    100% { transform: scale(1.12); }
+  }
+  .node.static {
+    background: #45475a;
+    color: white;
+    border-color: #f9e2af;
+    cursor: default;
+  }
+  .node.in-slot {
+    position: absolute !important;
+    left: 0px !important;
+    top: 0px !important;
+    margin: 0 !important;
+  }
+
+  .slot {
+    width: 50px;
+    height: 50px;
+    border: 3px dashed #6c7086;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    background: rgba(255,255,255,0.05);
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    font-size: 12px;
+    color: #6c7086;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .slot:hover, .slot.highlight {
+    border-color: #f9e2af;
+    background: rgba(249, 226, 175, 0.15);
+    transform: scale(1.06);
+  }
+  .slot.drag-over {
+    background: rgba(166, 227, 161, 0.35);
+    border-color: #a6e3a1;
+    transform: scale(1.18);
+    box-shadow: 0 0 14px rgba(166, 227, 161, 0.5);
+  }
+
+  /* Level Pills */
+  .level-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+    margin-bottom: 20px;
+  }
+  .pill-btn {
+    background: #313244;
+    color: #cdd6f4;
+    border: 1.5px solid #45475a;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .pill-btn:hover {
+    border-color: #a6e3a1;
+    color: #a6e3a1;
+    transform: translateY(-1px);
+  }
+  .pill-btn.active {
+    background: #a6e3a1;
+    color: #11111b;
+    border-color: #a6e3a1;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(166, 227, 161, 0.4);
+  }
+
+  /* Dica de usabilidade */
+  .interaction-tip {
+    background: rgba(166, 227, 161, 0.1);
+    border: 1px solid rgba(166, 227, 161, 0.3);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: #a6e3a1;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 800px;
+  }
+
   .panel { background: #313244; padding: 20px; border-radius: 12px; position: relative; border: 2px solid #45475a; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
   .panel-title { text-align: center; font-weight: bold; margin-bottom: 10px; color: #89b4fa; font-size: 18px; }
   
@@ -78,6 +206,16 @@
   <h2 id="level-name">Carregando...</h2>
   <p id="level-desc"></p>
 </div>
+
+
+<!-- Dica de Usabilidade -->
+<div class="interaction-tip">
+  <span>💡</span>
+  <span><strong>Como jogar:</strong> Você pode <strong>arrastar e soltar</strong> OU simplesmente <strong>clicar no nó</strong> e depois <strong>clicar no círculo pontilhado</strong>! Clicar em um nó já encaixado o devolve para o lugar de origem.</span>
+</div>
+
+<!-- Navegação Rápida entre Níveis -->
+<div class="level-pills" id="level-pills"></div>
 
 <div class="game-container">
   <div class="mirror-panel">
@@ -282,133 +420,324 @@ const levels = [
 ];
 
 let currentLevel = 0;
+let selectedNode = null;
+
 const ui = {
-  name: document.getElementById('level-name'), desc: document.getElementById('level-desc'),
-  pool: document.getElementById('pool'), slots: document.getElementById('slots'),
-  static: document.getElementById('static-nodes'), svg: document.getElementById('svg'),
-  btn: document.getElementById('btn-action'), fbk: document.getElementById('feedback')
+  name: document.getElementById('level-name'),
+  desc: document.getElementById('level-desc'),
+  pool: document.getElementById('pool'),
+  slots: document.getElementById('slots'),
+  static: document.getElementById('static-nodes'),
+  svg: document.getElementById('svg'),
+  btn: document.getElementById('btn-action'),
+  fbk: document.getElementById('feedback'),
+  pills: document.getElementById('level-pills')
 };
 
-function showMsg(msg, type) { ui.fbk.innerHTML = msg; ui.fbk.className = `feedback show ${type}`; }
+function showMsg(msg, type) {
+  ui.fbk.innerHTML = msg;
+  ui.fbk.className = `feedback show ${type}`;
+}
+
 function drawLine(svg, x1, y1, x2, y2) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  line.setAttribute("x1", x1 + 25); line.setAttribute("y1", y1 + 25);
-  line.setAttribute("x2", x2 + 25); line.setAttribute("y2", y2 + 25);
+  line.setAttribute("x1", x1 + 25);
+  line.setAttribute("y1", y1 + 25);
+  line.setAttribute("x2", x2 + 25);
+  line.setAttribute("y2", y2 + 25);
   svg.appendChild(line);
 }
 
-function loadLevel(idx) {
-  const lvl = levels[idx];
-  ui.name.textContent = lvl.name; ui.desc.textContent = lvl.desc;
-  ui.pool.innerHTML = ''; ui.slots.innerHTML = ''; ui.static.innerHTML = ''; ui.svg.innerHTML = '';
-  ui.btn.textContent = "Verificar"; ui.fbk.className = 'feedback';
-
-  // Static nodes
-  const allNodesPos = {};
-  lvl.staticNodes.forEach(n => {
-    const el = document.createElement('div'); el.className = 'node static'; el.id = "s_" + n.id;
-    el.textContent = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
-    ui.static.appendChild(el);
-    allNodesPos[n.id] = {x: n.x, y: n.y};
-  });
-
-  // Slots
-  lvl.slots.forEach(s => {
-    const el = document.createElement('div'); el.className = 'slot';
-    el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; el.dataset.expected = s.expected;
-    
-    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
-    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-    el.addEventListener('drop', e => {
-      e.preventDefault(); el.classList.remove('drag-over');
-      const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-      const nodeEl = document.getElementById(id);
-      if(el.children.length > 0) {
-         if(levels[currentLevel].overridePool) {
-             // In level 2, put the swapped node back to its original absolute position inside ui.static
-             ui.static.appendChild(el.children[0]);
-         } else {
-             ui.pool.appendChild(el.children[0]); 
-         }
-      }
-      el.appendChild(nodeEl);
-      // Redraw lines logic: if level 2, the line should disappear when node is in slot. 
-      // It's too complex to erase just one line dynamically here. We'll leave the lines.
-    });
-    ui.slots.appendChild(el);
-    allNodesPos[s.id] = {x: s.x, y: s.y};
-  });
-
-  // Links
-  lvl.links.forEach(l => {
-    const p1 = allNodesPos[l[0]]; const p2 = allNodesPos[l[1]];
-    if(p1 && p2) drawLine(ui.svg, p1.x, p1.y, p2.x, p2.y);
-  });
-
-  // Pool
-  if(lvl.overridePool) {
-    lvl.staticNodes.forEach(n => {
-      const el = document.getElementById("s_" + n.id);
-      el.classList.remove('static'); el.draggable = true;
-      el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(()=>el.style.opacity='0.4',0); });
-      el.addEventListener('dragend', () => el.style.opacity='1');
-    });
-  } else {
-    lvl.pool.forEach(n => {
-      const el = document.createElement('div'); el.className = 'node'; el.id = "p_" + n.id; el.textContent = n.val;
-      el.draggable = true;
-      el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(()=>el.style.opacity='0.4',0); });
-      el.addEventListener('dragend', () => el.style.opacity='1');
-      ui.pool.appendChild(el);
-    });
+function clearSelection() {
+  if (selectedNode) {
+    selectedNode.classList.remove('selected');
+    selectedNode = null;
   }
+  document.querySelectorAll('.slot').forEach(el => el.classList.remove('highlight'));
+}
 
-  ui.pool.addEventListener('dragover', e => e.preventDefault());
-  ui.pool.addEventListener('drop', e => {
-    if(levels[currentLevel].overridePool) return; // PROIBIDO DESMONTAR A ÁRVORE E JOGAR NA FILA!
-    e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-    const nodeEl = document.getElementById(id); ui.pool.appendChild(nodeEl);
+function renderPills() {
+  if (!ui.pills) return;
+  ui.pills.innerHTML = '';
+  levels.forEach((lvl, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'pill-btn' + (idx === currentLevel ? ' active' : '');
+    btn.textContent = lvl.name.split(':')[0];
+    btn.onclick = () => loadLevel(idx);
+    ui.pills.appendChild(btn);
   });
 }
 
+// Retornar nó para sua casa (pool ou posição original na árvore)
+function returnNodeToOrigin(nodeEl) {
+  nodeEl.classList.remove('in-slot');
+  if (nodeEl.dataset.originType === 'tree') {
+    // Retorna para a posição original na árvore
+    ui.static.appendChild(nodeEl);
+    nodeEl.style.left = nodeEl.dataset.origX + 'px';
+    nodeEl.style.top = nodeEl.dataset.origY + 'px';
+  } else {
+    // Retorna para o pool
+    ui.pool.appendChild(nodeEl);
+    nodeEl.style.left = 'auto';
+    nodeEl.style.top = 'auto';
+  }
+}
+
+// Tornar um nó interativo com suporte unificado (Pointer Drag + Click-to-Move)
+function makeNodeInteractive(nodeEl, originType, origX = 0, origY = 0) {
+  nodeEl.dataset.originType = originType;
+  nodeEl.dataset.origX = origX;
+  nodeEl.dataset.origY = origY;
+
+  let isPointerDown = false;
+  let isDragging = false;
+  let startX = 0, startY = 0;
+
+  nodeEl.addEventListener('pointerdown', e => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    isPointerDown = true;
+    isDragging = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    nodeEl.setPointerCapture(e.pointerId);
+  });
+
+  nodeEl.addEventListener('pointermove', e => {
+    if (!isPointerDown) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    if (!isDragging && Math.hypot(dx, dy) > 5) {
+      isDragging = true;
+      nodeEl.classList.add('dragging');
+      clearSelection();
+    }
+
+    if (isDragging) {
+      nodeEl.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+
+      // Destacar slot sob o ponteiro
+      const curX = e.clientX;
+      const curY = e.clientY;
+      document.querySelectorAll('.slot').forEach(target => {
+        const rect = target.getBoundingClientRect();
+        const dist = Math.hypot(curX - (rect.left + rect.width / 2), curY - (rect.top + rect.height / 2));
+        if (dist < 40) target.classList.add('drag-over');
+        else target.classList.remove('drag-over');
+      });
+    }
+  });
+
+  function finishDrag(e) {
+    if (!isPointerDown) return;
+    isPointerDown = false;
+
+    if (isDragging) {
+      isDragging = false;
+      nodeEl.classList.remove('dragging');
+      nodeEl.style.transform = '';
+
+      const curX = e.clientX;
+      const curY = e.clientY;
+
+      let bestSlot = null;
+      let minDistance = 50; // raio de atração magnética
+
+      document.querySelectorAll('.slot').forEach(slot => {
+        slot.classList.remove('drag-over');
+        const rect = slot.getBoundingClientRect();
+        const dist = Math.hypot(curX - (rect.left + rect.width / 2), curY - (rect.top + rect.height / 2));
+        if (dist < minDistance) {
+          minDistance = dist;
+          bestSlot = slot;
+        }
+      });
+
+      if (bestSlot) {
+        if (bestSlot.children.length > 0 && bestSlot.children[0] !== nodeEl) {
+          returnNodeToOrigin(bestSlot.children[0]);
+        }
+        bestSlot.appendChild(nodeEl);
+        nodeEl.classList.add('in-slot');
+        nodeEl.style.left = '0px';
+        nodeEl.style.top = '0px';
+      } else {
+        // Soltou fora: devolve para a origem
+        returnNodeToOrigin(nodeEl);
+      }
+    } else {
+      // CLIQUE / TOQUE RÁPIDO
+      nodeEl.style.transform = '';
+      if (nodeEl.parentElement && nodeEl.parentElement.classList.contains('slot')) {
+        // Clicar em nó no slot o devolve para casa
+        returnNodeToOrigin(nodeEl);
+        clearSelection();
+      } else {
+        // Clicar em nó solto / na árvore seleciona para Click-to-Move
+        if (selectedNode === nodeEl) {
+          clearSelection();
+        } else {
+          clearSelection();
+          selectedNode = nodeEl;
+          nodeEl.classList.add('selected');
+          document.querySelectorAll('.slot').forEach(el => el.classList.add('highlight'));
+        }
+      }
+    }
+  }
+
+  nodeEl.addEventListener('pointerup', finishDrag);
+  nodeEl.addEventListener('pointercancel', finishDrag);
+}
+
+// Desselecionar ao clicar no fundo
+document.addEventListener('click', e => {
+  if (!e.target.closest('.node') && !e.target.closest('.slot')) {
+    clearSelection();
+  }
+});
+
+function loadLevel(idx) {
+  currentLevel = idx;
+  const lvl = levels[idx];
+  clearSelection();
+
+  ui.name.textContent = lvl.name;
+  ui.desc.textContent = lvl.desc;
+  ui.pool.innerHTML = '';
+  ui.slots.innerHTML = '';
+  ui.static.innerHTML = '';
+  ui.svg.innerHTML = '';
+  ui.btn.textContent = "Verificar";
+  ui.fbk.className = 'feedback';
+  renderPills();
+
+  const allNodesPos = {};
+
+  // 1. Static / Tree Nodes
+  lvl.staticNodes.forEach(n => {
+    const el = document.createElement('div');
+    el.id = "s_" + n.id;
+    el.textContent = n.val;
+    el.style.left = n.x + 'px';
+    el.style.top = n.y + 'px';
+
+    if (lvl.overridePool) {
+      // Neste nível, os nós da árvore são os nós arrastáveis (ex: predecessor / sucessor)!
+      el.className = 'node';
+      makeNodeInteractive(el, 'tree', n.x, n.y);
+    } else {
+      el.className = 'node static';
+    }
+
+    ui.static.appendChild(el);
+    allNodesPos[n.id] = { x: n.x, y: n.y };
+  });
+
+  // 2. Slots
+  lvl.slots.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'slot';
+    el.style.left = s.x + 'px';
+    el.style.top = s.y + 'px';
+    el.dataset.expected = s.expected;
+
+    // Clique no slot para receber o nó selecionado
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!selectedNode) return;
+
+      if (el.children.length > 0) {
+        returnNodeToOrigin(el.children[0]);
+      }
+      el.appendChild(selectedNode);
+      selectedNode.classList.add('in-slot');
+      selectedNode.style.left = '0px';
+      selectedNode.style.top = '0px';
+      clearSelection();
+    });
+
+    ui.slots.appendChild(el);
+    allNodesPos[s.id] = { x: s.x, y: s.y };
+  });
+
+  // 3. Links
+  lvl.links.forEach(l => {
+    const p1 = allNodesPos[l[0]];
+    const p2 = allNodesPos[l[1]];
+    if (p1 && p2) drawLine(ui.svg, p1.x, p1.y, p2.x, p2.y);
+  });
+
+  // 4. Pool (Chaves a serem inseridas)
+  if (!lvl.overridePool) {
+    lvl.pool.forEach(n => {
+      const el = document.createElement('div');
+      el.className = 'node';
+      el.id = "p_" + n.id;
+      el.textContent = n.val;
+      makeNodeInteractive(el, 'pool');
+      ui.pool.appendChild(el);
+    });
+  } else {
+    // Dica para níveis onde o nó vem da própria árvore
+    const tip = document.createElement('div');
+    tip.style.fontSize = '12px';
+    tip.style.color = '#a6adc8';
+    tip.style.textAlign = 'center';
+    tip.innerHTML = '🎯 <i>O nó correto está na própria árvore! Clique ou arraste-o para a raiz.</i>';
+    ui.pool.appendChild(tip);
+  }
+}
+
+// Botão Verificar
 ui.btn.addEventListener('click', () => {
   if (ui.btn.textContent === "Próximo Nível") {
     currentLevel++;
     if (currentLevel < levels.length) loadLevel(currentLevel);
     else {
-      ui.name.textContent = "Árvore Dominada! 🎉"; ui.desc.textContent = "Você está pronto para a prova!";
-      ui.pool.innerHTML = ''; ui.slots.innerHTML = ''; ui.svg.innerHTML = ''; ui.static.innerHTML = '';
-      ui.btn.style.display = 'none'; ui.fbk.style.display = 'none';
+      ui.name.textContent = "Árvore Dominada! 🎉";
+      ui.desc.textContent = "Você dominou a ABB e está 100% pronto para a prova!";
+      ui.pool.innerHTML = '';
+      ui.slots.innerHTML = '';
+      ui.svg.innerHTML = '';
+      ui.static.innerHTML = '';
+      ui.btn.style.display = 'none';
+      ui.fbk.style.display = 'none';
     }
     return;
   }
 
+  let allPlaced = true;
   let allCorrect = true;
+
   document.querySelectorAll('.slot').forEach(slot => {
-    if (slot.children.length === 0) { allCorrect = false; }
-    else {
+    if (slot.children.length === 0) {
+      allPlaced = false;
+    } else {
       const val = slot.children[0].textContent;
-      if(val !== slot.dataset.expected) allCorrect = false;
+      if (val !== slot.dataset.expected) allCorrect = false;
     }
   });
 
-  if (document.querySelectorAll('.slot:empty').length > 0) {
+  if (!allPlaced) {
     showMsg("Preencha todos os espaços tracejados!", "error");
   } else if (!allCorrect) {
     const lvl = levels[currentLevel];
-    if(lvl.name.includes("Sucessor")) {
+    if (lvl.name.includes("Sucessor")) {
       showMsg("Ops! Esse não é o Sucessor. Dica: 1 passo à direita, e depois tudo à esquerda!", "error");
-    } else if(lvl.overridePool) {
-      showMsg("Ops! Esse não é o Predecessor correto. Dica: 1 passo à esquerda, e depois desça tudo à direita!", "error");
+    } else if (lvl.name.includes("Predecessor")) {
+      showMsg("Ops! Esse não é o Predecessor. Dica: 1 passo à esquerda, e depois tudo à direita até o fim!", "error");
     } else {
-      showMsg("Ops! Ordem incorreta. Lembre-se: Menores à esquerda, Maiores à direita.", "error");
+      showMsg("Posicionamento incorreto! Lembre-se: Menores à Esquerda, Maiores à Direita.", "error");
     }
   } else {
-    showMsg("Perfeito! Algoritmo executado com sucesso.", "success");
+    showMsg("Excelente! Árvore Binária de Busca perfeitamente válida! 🌳", "success");
     ui.btn.textContent = "Próximo Nível";
   }
 });
 
+// Inicialização
 loadLevel(0);
 </script>
 
