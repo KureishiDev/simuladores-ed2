@@ -58,6 +58,26 @@
 .clear-btn { background: #89b4fa; display: none; }
 #scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
 
+
+  /* FB Badge idêntico ao da resolução de exercícios */
+  .fb-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    border: 2px solid #11111b;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 12;
+  }
+  .fb-badge.neg { background: #f38ba8; color: #11111b; }
+  .fb-badge.pos { background: #89b4fa; color: #11111b; }
+  .fb-badge.zero { background: #a6e3a1; color: #11111b; }
 </style>
 
 <!-- Polyfill para iPad Touch Drag & Drop -->
@@ -87,11 +107,13 @@
   <div class="mirror-panel">
     <h3>🪞 Espelho (Regras)</h3>
     <ul>
-      <li><strong>FB Negativo (-):</strong> <br>Perna esquerda maior. Gira pra <span style="color:#a6e3a1;font-weight:bold;">DIREITA</span>.</li>
-      <li><strong>FB Positivo (+):</strong> <br>Perna direita maior. Gira pra <span style="color:#f38ba8;font-weight:bold;">ESQUERDA</span>.</li>
+      <li><strong>Fórmula UTFPR:</strong><br><span style="color:#a6e3a1;font-weight:bold;">fb(x) = h<sub>d</sub>(x) - h<sub>e</sub>(x)</span></li>
       <hr style="border-color:#45475a;">
-      <li><strong>Sinais Iguais:</strong><br> A árvore pendeu toda pra um lado. Basta 1 Rotação Simples.</li>
-      <li><strong>Sinais Diferentes:</strong><br> Formou um joelho! Requer Rotação Dupla. <span class="highlight-rule">Sempre gire o FILHO primeiro para alinhar os sinais!</span></li>
+      <li><strong>FB Negativo (-):</strong> <br>Perna esquerda maior. Gira pra <span style="color:#a6e3a1;font-weight:bold;">DIREITA</span>.</li>
+      <li><strong>FB Positivo (+):</strong> <br>Perna direita maior. Gira pra <span style="color:#89b4fa;font-weight:bold;">ESQUERDA</span>.</li>
+      <hr style="border-color:#45475a;">
+      <li><strong>Sinais Iguais (- com -, ou + com +):</strong><br> A árvore pendeu toda pra um lado. Basta 1 <strong>Rotação Simples</strong>.</li>
+      <li><strong>Sinais Diferentes (- com +, ou + com -):</strong><br> Formou joelho! Requer <strong>Rotação Dupla</strong>. <span class="highlight-rule">Gire o FILHO primeiro para alinhar os sinais!</span></li>
     </ul>
   </div>
   <div class="panel" id="panel-left">
@@ -112,11 +134,11 @@
 <script>
 const levels = [
   {
-    name: "Nível 1: Rotação Simples Direita (Revisão)",
+    name: "Nível 1: Rotação Simples Direita",
     phases: [
       {
-        desc: "W (FB=-2) e H (FB=-1). Sinais iguais! Negativo = Gira pra Direita.",
-        nodes: [ { id: "W", val: "W", x: 175, y: 50 }, { id: "H", val: "H", x: 100, y: 140 }, { id: "F", val: "F", x: 25, y: 230 } ],
+        desc: "W (fb = -2) e H (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Gire para a DIREITA no W.",
+        nodes: [ { id: "W", val: "W", fb: -2, x: 175, y: 50 }, { id: "H", val: "H", fb: -1, x: 100, y: 140 }, { id: "F", val: "F", fb: 0, x: 25, y: 230 } ],
         linksLeft: [ ["W","H"], ["H","F"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "H" }, { id: "S2", x: 100, y: 140, expected: "F" }, { id: "S3", x: 250, y: 140, expected: "W" } ],
         linksRight: [ ["S1","S2"], ["S1","S3"] ]
@@ -124,18 +146,18 @@ const levels = [
     ]
   },
   {
-    name: "Nível 2: Rotação Dupla Esq-Dir (Revisão)",
+    name: "Nível 2: Rotação Dupla Esq-Dir",
     phases: [
       {
-        desc: "W (FB=-2) e P (FB=+1). Sinais diferentes! Formou joelho. PASSO 1: Gire o FILHO (P) para a esquerda.",
-        nodes: [ { id: "W", val: "W", x: 175, y: 50 }, { id: "P", val: "P", x: 100, y: 140 }, { id: "R", val: "R", x: 175, y: 230 } ],
+        desc: "W (fb = -2) e P (fb = +1). Sinais diferentes! Formou joelho. PASSO 1: Gire o FILHO (P) para a esquerda para alinhar os sinais.",
+        nodes: [ { id: "W", val: "W", fb: -2, x: 175, y: 50 }, { id: "P", val: "P", fb: 1, x: 100, y: 140 }, { id: "R", val: "R", fb: 0, x: 175, y: 230 } ],
         linksLeft: [ ["W","P"], ["P","R"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "W" }, { id: "S2", x: 100, y: 140, expected: "R" }, { id: "S3", x: 25, y: 230, expected: "P" } ],
         linksRight: [ ["S1","S2"], ["S2","S3"] ]
       },
       {
-        desc: "PASSO 2: Agora W e R têm FB negativos (Sinais Iguais). A perna esticou! Aplique a Rotação Simples à Direita no W.",
-        nodes: [ { id: "W", val: "W", x: 175, y: 50 }, { id: "R", val: "R", x: 100, y: 140 }, { id: "P", val: "P", x: 25, y: 230 } ],
+        desc: "PASSO 2: Agora W (fb = -2) e R (fb = -1) têm sinais iguais! A perna esticou. Aplique a Rotação Simples à DIREITA no W.",
+        nodes: [ { id: "W", val: "W", fb: -2, x: 175, y: 50 }, { id: "R", val: "R", fb: -1, x: 100, y: 140 }, { id: "P", val: "P", fb: 0, x: 25, y: 230 } ],
         linksLeft: [ ["W","R"], ["R","P"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "R" }, { id: "S2", x: 100, y: 140, expected: "P" }, { id: "S3", x: 250, y: 140, expected: "W" } ],
         linksRight: [ ["S1","S2"], ["S1","S3"] ]
@@ -143,21 +165,57 @@ const levels = [
     ]
   },
   {
-    name: "Nível 3: Rotação Dupla Dir-Esq (Lista 3)",
+    name: "Nível 3: Rotação Dupla Dir-Esq",
     phases: [
       {
-        desc: "Q (FB=+2) e T (FB=-1). Sinais diferentes! PASSO 1: Gire o FILHO (T) para a direita.",
-        nodes: [ { id: "Q", val: "Q", x: 175, y: 50 }, { id: "T", val: "T", x: 250, y: 140 }, { id: "M", val: "M", x: 175, y: 230 } ],
+        desc: "Q (fb = +2) e T (fb = -1). Sinais diferentes (+ com -)! Formou joelho. PASSO 1: Gire o FILHO (T) para a direita.",
+        nodes: [ { id: "Q", val: "Q", fb: 2, x: 175, y: 50 }, { id: "T", val: "T", fb: -1, x: 250, y: 140 }, { id: "M", val: "M", fb: 0, x: 175, y: 230 } ],
         linksLeft: [ ["Q","T"], ["T","M"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "Q" }, { id: "S2", x: 250, y: 140, expected: "M" }, { id: "S3", x: 325, y: 230, expected: "T" } ],
         linksRight: [ ["S1","S2"], ["S2","S3"] ]
       },
       {
-        desc: "PASSO 2: Agora Q e M têm FB positivos. A perna esticou! Aplique a Rotação Simples à Esquerda no Q.",
-        nodes: [ { id: "Q", val: "Q", x: 175, y: 50 }, { id: "M", val: "M", x: 250, y: 140 }, { id: "T", val: "T", x: 325, y: 230 } ],
+        desc: "PASSO 2: Agora Q (fb = +2) e M (fb = +1) têm sinais iguais positivos! Aplique a Rotação Simples à ESQUERDA no Q.",
+        nodes: [ { id: "Q", val: "Q", fb: 2, x: 175, y: 50 }, { id: "M", val: "M", fb: 1, x: 250, y: 140 }, { id: "T", val: "T", fb: 0, x: 325, y: 230 } ],
         linksLeft: [ ["Q","M"], ["M","T"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "M" }, { id: "S2", x: 100, y: 140, expected: "Q" }, { id: "S3", x: 250, y: 140, expected: "T" } ],
         linksRight: [ ["S1","S2"], ["S1","S3"] ]
+      }
+    ]
+  },
+  {
+    name: "Nível 4: Rotação Simples Esquerda",
+    phases: [
+      {
+        desc: "Q (fb = +2) e Z (fb = +1). Sinais iguais positivos! A perna direita está pesada. Gire para a ESQUERDA no Q.",
+        nodes: [ { id: "Q", val: "Q", fb: 2, x: 100, y: 50 }, { id: "Z", val: "Z", fb: 1, x: 175, y: 140 }, { id: "Y", val: "Y", fb: 0, x: 250, y: 230 } ],
+        linksLeft: [ ["Q","Z"], ["Z","Y"] ],
+        slots: [ { id: "S1", x: 175, y: 50, expected: "Z" }, { id: "S2", x: 100, y: 140, expected: "Q" }, { id: "S3", x: 250, y: 140, expected: "Y" } ],
+        linksRight: [ ["S1","S2"], ["S1","S3"] ]
+      }
+    ]
+  },
+  {
+    name: "Nível 5: Rotação com Transferência de Subárvore (Filho Adotivo)",
+    phases: [
+      {
+        desc: "PEGADINHA DE PROVA! Nó 50 tem fb = -2 e nó 30 tem fb = -1. Gire para a DIREITA. Onde vai parar o nó 40? O 40 vira filho esquerdo do 50!",
+        nodes: [
+          { id: "50", val: "50", fb: -2, x: 220, y: 40 },
+          { id: "30", val: "30", fb: -1, x: 130, y: 110 },
+          { id: "20", val: "20", fb: 0, x: 70, y: 190 },
+          { id: "40", val: "40", fb: 0, x: 170, y: 190 },
+          { id: "60", val: "60", fb: 0, x: 310, y: 110 }
+        ],
+        linksLeft: [ ["50","30"], ["50","60"], ["30","20"], ["30","40"] ],
+        slots: [
+          { id: "S1", x: 220, y: 40, expected: "30" },
+          { id: "S2", x: 130, y: 110, expected: "20" },
+          { id: "S3", x: 310, y: 110, expected: "50" },
+          { id: "S4", x: 260, y: 190, expected: "40" },
+          { id: "S5", x: 360, y: 190, expected: "60" }
+        ],
+        linksRight: [ ["S1","S2"], ["S1","S3"], ["S3","S4"], ["S3","S5"] ]
       }
     ]
   }
@@ -217,7 +275,13 @@ function loadPhase(lvlIdx, phIdx) {
 
   phase.nodes.forEach(n => {
     const el = document.createElement('div'); el.className = 'node';
-    el.id = n.id; el.textContent = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+    el.id = n.id; el.dataset.val = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+    
+    // Rótulo da letra + Badge de FB
+    const sign = n.fb > 0 ? `+${n.fb}` : `${n.fb}`;
+    const fbClass = n.fb < 0 ? 'neg' : (n.fb > 0 ? 'pos' : 'zero');
+    el.innerHTML = `<span>${n.val}</span><span class="fb-badge ${fbClass}">fb: ${sign}</span>`;
+    
     el.draggable = true;
     el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(() => el.style.opacity = '0.4', 0); });
     el.addEventListener('dragend', () => el.style.opacity = '1');
@@ -245,7 +309,11 @@ ui.btn.addEventListener('click', () => {
   let allPlaced = true; let allCorrect = true;
   document.querySelectorAll('.slot').forEach(slot => {
     if (slot.children.length === 0) allPlaced = false;
-    else if (slot.children[0].textContent !== slot.dataset.expected) allCorrect = false;
+    else {
+      const child = slot.children[0];
+      const val = child.dataset.val || child.querySelector('span')?.textContent || child.textContent.trim();
+      if (val !== slot.dataset.expected) allCorrect = false;
+    }
   });
 
   if (!allPlaced) showMsg("Arraste todas as letras para os espaços!", "error");
