@@ -112,7 +112,7 @@
 <script>
 const levels = [
   {
-    name: "Lista 2: Inserção na ABB",
+    name: "Nível 1: Inserção na ABB",
     desc: "Arraste os nós para as posições corretas formando uma ABB válida. (Menor esq, Maior dir).",
     pool: [ {id:"15", val:"15"}, {id:"60", val:"60"}, {id:"40", val:"40"}, {id:"80", val:"80"} ],
     staticNodes: [ {id:"30", val:"30", x:225, y:40} ],
@@ -122,12 +122,42 @@ const levels = [
       { id:"S3", x:275, y:200, expected:"40" },
       { id:"S4", x:425, y:200, expected:"80" }
     ],
-    links: [ ["30","S1"], ["30","S2"], ["S2","S3"], ["S2","S4"] ]
+    links: [ ["30","S1"], ["30","S2"], ["S2","S3"], ["S2","S4"] ],
+    overridePool: false
   },
   {
-    name: "Lista 2: Remoção (Nó com 2 filhos)",
-    desc: "A professora mandou remover o 50 (a Raiz). O algoritmo diz: Substitua pelo PREDECESSOR! Arraste a bolinha que deve subir para o lugar da raiz.",
-    pool: [ {id:"X", val:"?"} ], // We will dynamically populate this from the tree
+    name: "Nível 2: A Pior Inserção (Degenerada)",
+    desc: "Insira os valores na ordem: 10, 20, 30, 40. O que acontece com a árvore se os dados já vierem ordenados?",
+    pool: [ {id:"10", val:"10"}, {id:"20", val:"20"}, {id:"30", val:"30"}, {id:"40", val:"40"} ],
+    staticNodes: [],
+    slots: [
+      { id:"S1", x:100, y:40, expected:"10" },
+      { id:"S2", x:200, y:120, expected:"20" },
+      { id:"S3", x:300, y:200, expected:"30" },
+      { id:"S4", x:400, y:280, expected:"40" }
+    ],
+    links: [ ["S1","S2"], ["S2","S3"], ["S3","S4"] ],
+    overridePool: false
+  },
+  {
+    name: "Nível 3: Remoção (Nó com 1 Filho)",
+    desc: "Queremos remover o nó 30, que estava à direita do 20. O nó 30 tinha apenas UM filho (o 25). Quem assume o lugar do 30?",
+    pool: [ {id:"25", val:"25"} ],
+    staticNodes: [
+      {id:"40", val:"40", x:250, y:40},
+      {id:"20", val:"20", x:150, y:120},
+      {id:"10", val:"10", x:50, y:200}
+    ],
+    slots: [
+      { id:"S1", x:250, y:200, expected:"25" }
+    ],
+    links: [ ["40","20"], ["20","10"], ["20","S1"] ],
+    overridePool: false
+  },
+  {
+    name: "Nível 4: Remoção (Nó com 2 filhos)",
+    desc: "A professora mandou remover o 50 (a Raiz). O algoritmo diz: Substitua pelo PREDECESSOR! Arraste da árvore a bolinha correta.",
+    pool: [ {id:"X", val:"?"} ],
     staticNodes: [
       {id:"20", val:"20", x:100, y:120},
       {id:"35", val:"35", x:150, y:200},
@@ -138,9 +168,27 @@ const levels = [
       {id:"80", val:"80", x:425, y:200}
     ],
     slots: [
-      { id:"S_Root", x:225, y:40, expected:"40" } // 40 is the predecessor of 50
+      { id:"S_Root", x:225, y:40, expected:"40" }
     ],
     links: [ ["S_Root","20"], ["S_Root","70"], ["20","35"], ["35","30"], ["35","40"], ["70","60"], ["70","80"] ],
+    overridePool: true
+  },
+  {
+    name: "Nível 5: O Predecessor Profundo",
+    desc: "Vamos remover o 100 (Raiz). Lembra da regra? Um passo à esquerda, e depois TUDO para a direita. Encontre o predecessor e arraste-o!",
+    pool: [ {id:"X", val:"?"} ],
+    staticNodes: [
+      {id:"50", val:"50", x:100, y:100},
+      {id:"150", val:"150", x:400, y:100},
+      {id:"80", val:"80", x:150, y:160},
+      {id:"90", val:"90", x:200, y:220},
+      {id:"95", val:"95", x:250, y:280},
+      {id:"92", val:"92", x:200, y:340}
+    ],
+    slots: [
+      { id:"S_Root", x:250, y:40, expected:"95" }
+    ],
+    links: [ ["S_Root","50"], ["S_Root","150"], ["50","80"], ["80","90"], ["90","95"], ["95","92"] ],
     overridePool: true
   }
 ];
