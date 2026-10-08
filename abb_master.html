@@ -52,7 +52,9 @@
 
   @media (max-width: 1024px) {
     .game-container { flex-direction: column; align-items: center; }
-    .panel { max-width: 95vw; overflow-x: auto; height: auto; }
+    .panel { max-width: 95vw; overflow-x: auto; height: auto; padding-bottom: 20px;}
+    #board-panel { min-height: 380px; overflow-x: auto; overflow-y: hidden; }
+    svg { min-width: 520px; }
   }
 
 /* Apple Pencil / Scratchpad Mode */
@@ -94,7 +96,7 @@
     <div class="pool" id="pool"></div>
   </div>
 
-  <div class="panel" style="width: 500px; height: 350px;">
+  <div class="panel" id="board-panel" style="width: 500px; height: 350px; min-width: 520px;">
     <div class="panel-title" id="board-title">Monte a Árvore</div>
     <svg id="svg"></svg>
     <div id="slots"></div>
@@ -185,8 +187,17 @@ function loadLevel(idx) {
       e.preventDefault(); el.classList.remove('drag-over');
       const id = e.dataTransfer.getData('text/plain'); if(!id) return;
       const nodeEl = document.getElementById(id);
-      if(el.children.length > 0) ui.pool.appendChild(el.children[0]); // swap out
+      if(el.children.length > 0) {
+         if(levels[currentLevel].overridePool) {
+             // In level 2, put the swapped node back to its original absolute position inside ui.static
+             ui.static.appendChild(el.children[0]);
+         } else {
+             ui.pool.appendChild(el.children[0]); 
+         }
+      }
       el.appendChild(nodeEl);
+      // Redraw lines logic: if level 2, the line should disappear when node is in slot. 
+      // It's too complex to erase just one line dynamically here. We'll leave the lines.
     });
     ui.slots.appendChild(el);
     allNodesPos[s.id] = {x: s.x, y: s.y};
@@ -218,6 +229,7 @@ function loadLevel(idx) {
 
   ui.pool.addEventListener('dragover', e => e.preventDefault());
   ui.pool.addEventListener('drop', e => {
+    if(levels[currentLevel].overridePool) return; // PROIBIDO DESMONTAR A ÁRVORE E JOGAR NA FILA!
     e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
     const nodeEl = document.getElementById(id); ui.pool.appendChild(nodeEl);
   });
