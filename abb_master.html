@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Árvore Binária de Busca (ABB)</title>
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour-polyfill.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    MobileDragDrop.polyfill({dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride});
+    window.addEventListener('touchmove', function() {}, {passive: false});
+  });
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+  h1 { text-align: center; color: #a6e3a1; margin-bottom: 5px; }
+  .level-info { text-align: center; margin-bottom: 20px; max-width: 600px; }
+  .level-info h2 { color: #f9e2af; margin: 0 0 10px 0; }
+  .game-container { display: flex; gap: 30px; justify-content: center; align-items: stretch; margin-top: 10px; flex-wrap: wrap; }
+  
+  .mirror-panel { background: #181825; border: 2px dashed #585b70; border-radius: 12px; padding: 15px; width: 230px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); align-self: flex-start; }
+  .mirror-panel h3 { color: #a6e3a1; margin-top: 0; border-bottom: 1px solid #45475a; padding-bottom: 10px; text-align: center; }
+  .mirror-panel ul { padding-left: 20px; margin: 0; color: #bac2de; line-height: 1.6; font-size: 14px;}
+  .mirror-panel li { margin-bottom: 8px; }
+  
+  .panel { background: #313244; padding: 20px; border-radius: 12px; position: relative; border: 2px solid #45475a; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
+  .panel-title { text-align: center; font-weight: bold; margin-bottom: 10px; color: #89b4fa; font-size: 18px; }
+  
+  .node { width: 50px; height: 50px; background: #f9e2af; color: #11111b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; position: absolute; z-index: 10; border: 3px solid #fab387; box-shadow: 0 4px 6px rgba(0,0,0,0.4); user-select: none; transition: transform 0.1s; cursor: grab; }
+  .node.static { background: #45475a; color: white; border-color: #f9e2af; cursor: default; }
+  .slot { width: 50px; height: 50px; border: 3px dashed #6c7086; border-radius: 50%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: 5; background: rgba(255,255,255,0.05); transition: 0.2s; font-size: 12px; color: #6c7086; }
+  .slot.drag-over { background: rgba(166, 227, 161, 0.3); border-color: #a6e3a1; transform: scale(1.1); }
+  
+  .pool { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center; min-height: 80px; position: relative;}
+  .pool .node { position: relative; left: auto !important; top: auto !important; }
+  
+  svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  line { stroke: #6c7086; stroke-width: 4; stroke-linecap: round; }
+  
+  .controls { text-align: center; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+  button.action-btn { background: #89b4fa; color: #11111b; border: none; padding: 12px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+  button.action-btn:hover { background: #b4befe; transform: translateY(-2px); }
+  .feedback { margin-top: 15px; font-size: 16px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; transition: 0.3s; opacity: 0; }
+  .feedback.show { opacity: 1; }
+  .success { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; border: 1px solid #a6e3a1; }
+  .error { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
+  
+  .voltar { position: absolute; top: 20px; left: 20px; background: #45475a; color: #cdd6f4; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; font-family: inherit;}
+  .voltar:hover { background: #585b70; }
+
+  @media (max-width: 1024px) {
+    .game-container { flex-direction: column; align-items: center; }
+    .panel { max-width: 95vw; overflow-x: auto; height: auto; }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
+<button class="voltar" style="left: auto; right: 20px;" onclick="loadLevel(currentLevel)">🔄 Refazer</button>
+
+<h1>🌳 Árvore Binária de Busca</h1>
+<div class="level-info">
+  <h2 id="level-name">Carregando...</h2>
+  <p id="level-desc"></p>
+</div>
+
+<div class="game-container">
+  <div class="mirror-panel">
+    <h3>🪞 Cola (ABB)</h3>
+    <ul>
+      <li><strong>Inserção:</strong> Menor que a Raiz vai pra ESQUERDA. Maior, DIREITA.</li>
+      <li><strong>Remoção (2 filhos):</strong> O nó não pode simplesmente sumir! Ele deve ser substituído pelo <strong>Predecessor</strong>.</li>
+      <li><strong>Predecessor:</strong> É o <i>maior</i> elemento da sub-árvore <i>esquerda</i>.</li>
+      <hr style="border-color:#45475a;">
+      <li><i>Dica:</i> Para achar o predecessor, dê um passo à esquerda, e depois desça tudo à direita até não dar mais!</li>
+    </ul>
+  </div>
+  
+  <div class="panel" style="width: 250px;">
+    <div class="panel-title">Fila de Chaves</div>
+    <div class="pool" id="pool"></div>
+  </div>
+
+  <div class="panel" style="width: 500px; height: 350px;">
+    <div class="panel-title" id="board-title">Monte a Árvore</div>
+    <svg id="svg"></svg>
+    <div id="slots"></div>
+    <div id="static-nodes"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <button id="btn-action" class="action-btn">Verificar</button>
+  <div id="feedback" class="feedback"></div>
+</div>
+
+<script>
+const levels = [
+  {
+    name: "Lista 2: Inserção na ABB",
+    desc: "Arraste os nós para as posições corretas formando uma ABB válida. (Menor esq, Maior dir).",
+    pool: [ {id:"15", val:"15"}, {id:"60", val:"60"}, {id:"40", val:"40"}, {id:"80", val:"80"} ],
+    staticNodes: [ {id:"30", val:"30", x:225, y:40} ],
+    slots: [
+      { id:"S1", x:100, y:120, expected:"15" },
+      { id:"S2", x:350, y:120, expected:"60" },
+      { id:"S3", x:275, y:200, expected:"40" },
+      { id:"S4", x:425, y:200, expected:"80" }
+    ],
+    links: [ ["30","S1"], ["30","S2"], ["S2","S3"], ["S2","S4"] ]
+  },
+  {
+    name: "Lista 2: Remoção (Nó com 2 filhos)",
+    desc: "A professora mandou remover o 50 (a Raiz). O algoritmo diz: Substitua pelo PREDECESSOR! Arraste a bolinha que deve subir para o lugar da raiz.",
+    pool: [ {id:"X", val:"?"} ], // We will dynamically populate this from the tree
+    staticNodes: [
+      {id:"20", val:"20", x:100, y:120},
+      {id:"35", val:"35", x:150, y:200},
+      {id:"40", val:"40", x:180, y:280},
+      {id:"30", val:"30", x:120, y:280},
+      {id:"70", val:"70", x:350, y:120},
+      {id:"60", val:"60", x:275, y:200},
+      {id:"80", val:"80", x:425, y:200}
+    ],
+    slots: [
+      { id:"S_Root", x:225, y:40, expected:"40" } // 40 is the predecessor of 50
+    ],
+    links: [ ["S_Root","20"], ["S_Root","70"], ["20","35"], ["35","30"], ["35","40"], ["70","60"], ["70","80"] ],
+    overridePool: true
+  }
+];
+
+let currentLevel = 0;
+const ui = {
+  name: document.getElementById('level-name'), desc: document.getElementById('level-desc'),
+  pool: document.getElementById('pool'), slots: document.getElementById('slots'),
+  static: document.getElementById('static-nodes'), svg: document.getElementById('svg'),
+  btn: document.getElementById('btn-action'), fbk: document.getElementById('feedback')
+};
+
+function showMsg(msg, type) { ui.fbk.innerHTML = msg; ui.fbk.className = `feedback show ${type}`; }
+function drawLine(svg, x1, y1, x2, y2) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", x1 + 25); line.setAttribute("y1", y1 + 25);
+  line.setAttribute("x2", x2 + 25); line.setAttribute("y2", y2 + 25);
+  svg.appendChild(line);
+}
+
+function loadLevel(idx) {
+  const lvl = levels[idx];
+  ui.name.textContent = lvl.name; ui.desc.textContent = lvl.desc;
+  ui.pool.innerHTML = ''; ui.slots.innerHTML = ''; ui.static.innerHTML = ''; ui.svg.innerHTML = '';
+  ui.btn.textContent = "Verificar"; ui.fbk.className = 'feedback';
+
+  // Static nodes
+  const allNodesPos = {};
+  lvl.staticNodes.forEach(n => {
+    const el = document.createElement('div'); el.className = 'node static'; el.id = "s_" + n.id;
+    el.textContent = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+    ui.static.appendChild(el);
+    allNodesPos[n.id] = {x: n.x, y: n.y};
+  });
+
+  // Slots
+  lvl.slots.forEach(s => {
+    const el = document.createElement('div'); el.className = 'slot';
+    el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; el.dataset.expected = s.expected;
+    
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', e => {
+      e.preventDefault(); el.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain'); if(!id) return;
+      const nodeEl = document.getElementById(id);
+      if(el.children.length > 0) ui.pool.appendChild(el.children[0]); // swap out
+      el.appendChild(nodeEl);
+    });
+    ui.slots.appendChild(el);
+    allNodesPos[s.id] = {x: s.x, y: s.y};
+  });
+
+  // Links
+  lvl.links.forEach(l => {
+    const p1 = allNodesPos[l[0]]; const p2 = allNodesPos[l[1]];
+    if(p1 && p2) drawLine(ui.svg, p1.x, p1.y, p2.x, p2.y);
+  });
+
+  // Pool
+  if(lvl.overridePool) {
+    lvl.staticNodes.forEach(n => {
+      const el = document.getElementById("s_" + n.id);
+      el.classList.remove('static'); el.draggable = true;
+      el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(()=>el.style.opacity='0.4',0); });
+      el.addEventListener('dragend', () => el.style.opacity='1');
+    });
+  } else {
+    lvl.pool.forEach(n => {
+      const el = document.createElement('div'); el.className = 'node'; el.id = "p_" + n.id; el.textContent = n.val;
+      el.draggable = true;
+      el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(()=>el.style.opacity='0.4',0); });
+      el.addEventListener('dragend', () => el.style.opacity='1');
+      ui.pool.appendChild(el);
+    });
+  }
+
+  ui.pool.addEventListener('dragover', e => e.preventDefault());
+  ui.pool.addEventListener('drop', e => {
+    e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
+    const nodeEl = document.getElementById(id); ui.pool.appendChild(nodeEl);
+  });
+}
+
+ui.btn.addEventListener('click', () => {
+  if (ui.btn.textContent === "Próximo Nível") {
+    currentLevel++;
+    if (currentLevel < levels.length) loadLevel(currentLevel);
+    else {
+      ui.name.textContent = "Árvore Dominada! 🎉"; ui.desc.textContent = "Você está pronto para a prova!";
+      ui.pool.innerHTML = ''; ui.slots.innerHTML = ''; ui.svg.innerHTML = ''; ui.static.innerHTML = '';
+      ui.btn.style.display = 'none'; ui.fbk.style.display = 'none';
+    }
+    return;
+  }
+
+  let allCorrect = true;
+  document.querySelectorAll('.slot').forEach(slot => {
+    if (slot.children.length === 0) { allCorrect = false; }
+    else {
+      const val = slot.children[0].textContent;
+      if(val !== slot.dataset.expected) allCorrect = false;
+    }
+  });
+
+  if (document.querySelectorAll('.slot:empty').length > 0) {
+    showMsg("Preencha todos os espaços tracejados!", "error");
+  } else if (!allCorrect) {
+    if(currentLevel === 1) showMsg("Ops! Esse não é o Predecessor. Dica: O predecessor é o maior número de todos que estão do lado esquerdo.", "error");
+    else showMsg("Ops! Ordem incorreta. Lembre-se: Menores à esquerda, Maiores à direita.", "error");
+  } else {
+    showMsg("Perfeito! Algoritmo executado com sucesso.", "success");
+    ui.btn.textContent = "Próximo Nível";
+  }
+});
+
+loadLevel(0);
+</script>
+</body>
+</html>
