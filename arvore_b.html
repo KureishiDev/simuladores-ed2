@@ -242,7 +242,7 @@
   }
 
   /* Botão de Ordenar */
-  #btn-sort {
+  // btn-sort {
     margin-top: 14px;
     font-size: 13.5px;
     padding: 8px 18px;
@@ -258,12 +258,12 @@
     transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
   }
-  #btn-sort:hover {
+  // btn-sort:hover {
     background: #d9b8ff;
     transform: translateY(-2px);
     box-shadow: 0 5px 12px rgba(203, 166, 247, 0.4);
   }
-  #btn-sort:active {
+  // btn-sort:active {
     transform: scale(0.96);
   }
 
@@ -437,7 +437,7 @@
     align-items: center;
     gap: 12px;
   }
-  #btn-action {
+  // btn-action {
     background: var(--peach);
     color: #11111b;
     border: none;
@@ -449,7 +449,7 @@
     transition: 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   }
-  #btn-action:hover {
+  // btn-action:hover {
     background: var(--yellow);
     transform: translateY(-2px);
   }
@@ -475,8 +475,8 @@
   }
 
   /* Apple Pencil */
-  #scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
-  #scratchpad.active { pointer-events: auto; cursor: crosshair; }
+  // scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
+  // scratchpad.active { pointer-events: auto; cursor: crosshair; }
   .pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
   .pencil-btn {
     background: var(--peach);
@@ -496,7 +496,331 @@
   .pencil-btn:hover { transform: scale(1.1); }
   .pencil-btn.active { background: var(--red); }
   .clear-btn { background: var(--accent); display: none; }
-  #scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
+  // scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
+
+  /* Flashcards de Regras da Árvore B */
+  .flashcards-section {
+    width: 100%;
+    max-width: 960px;
+    background: #181825;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .flashcards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .flashcards-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--peach);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flip-all-btn {
+    background: #313244;
+    color: var(--subtext);
+    border: 1px solid #45475a;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .flip-all-btn:hover { background: #45475a; color: #fff; }
+
+  .flashcards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 860px) {
+    .flashcards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
+    .flashcards-grid { grid-template-columns: 1fr; }
+  }
+
+  .flashcard {
+    height: 112px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.4s ease;
+    transform-style: preserve-3d;
+    border-radius: 10px;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flashcard-front {
+    background: #1e1e2e;
+    border: 1.5px solid #313244;
+  }
+  .flashcard:hover .flashcard-front { border-color: #585b70; }
+  .flashcard-back {
+    transform: rotateY(180deg);
+    border: 1.5px solid transparent;
+  }
+
+  .card-peach .flashcard-back { background: #2a201c; border-color: var(--peach); }
+  .card-red .flashcard-back { background: #261b24; border-color: var(--red); }
+  .card-yellow .flashcard-back { background: #2b271d; border-color: var(--yellow); }
+  .card-purple .flashcard-back { background: #241d2e; border-color: var(--purple); }
+  .card-blue .flashcard-back { background: #192338; border-color: var(--accent); }
+  .card-green .flashcard-back { background: #1a2920; border-color: var(--green); }
+
+  .fc-badge {
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .fc-badge.peach { background: rgba(250, 179, 135, 0.2); color: var(--peach); border: 1px solid var(--peach); }
+  .fc-badge.red { background: rgba(243, 139, 168, 0.2); color: var(--red); border: 1px solid var(--red); }
+  .fc-badge.yellow { background: rgba(249, 226, 175, 0.2); color: var(--yellow); border: 1px solid var(--yellow); }
+  .fc-badge.purple { background: rgba(203, 166, 247, 0.2); color: var(--purple); border: 1px solid var(--purple); }
+  .fc-badge.blue { background: rgba(137, 180, 250, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+  .fc-badge.green { background: rgba(166, 227, 161, 0.2); color: var(--green); border: 1px solid var(--green); }
+  .fc-badge.action { background: var(--green); color: #11111b; }
+
+  /* Seção da Árvore Antiga (Espelho de Referência Antes da Operação) */
+  .initial-tree-section {
+    width: 100%;
+    max-width: 960px;
+    background: #181825;
+    border: 2px solid #89dceb;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  }
+  .initial-tree-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #313244;
+    padding-bottom: 10px;
+  }
+  .initial-tree-title {
+    font-size: 15.5px;
+    font-weight: 800;
+    color: #89dceb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .initial-tree-badge {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+    background: rgba(243, 139, 168, 0.2);
+    color: var(--red);
+    border: 1px solid var(--red);
+  }
+  .initial-tree-badge.insert {
+    background: rgba(166, 227, 161, 0.2);
+    color: var(--green);
+    border-color: var(--green);
+  }
+  .initial-tree-desc {
+    font-size: 13px;
+    color: #bac2de;
+    width: 100%;
+    line-height: 1.4;
+  }
+  .initial-tree-canvas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 12px 0 8px;
+    width: 100%;
+  }
+  .initial-tree-children {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  .initial-tree-line {
+    position: absolute;
+    border-top: 3px solid #89dceb;
+    border-left: 3px solid #89dceb;
+    border-right: 3px solid #89dceb;
+    height: 14px;
+    top: -18px;
+    left: 20%;
+    right: 20%;
+    z-index: 1;
+  }
+  .static-node-box {
+    background: rgba(0,0,0,0.35);
+    border: 2px solid #89dceb;
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    gap: 6px;
+    position: relative;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  .static-node-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -11px;
+    left: 10px;
+    background: #1e1e2e;
+    padding: 0 6px;
+    font-size: 11px;
+    color: #89dceb;
+    font-weight: 700;
+    border-radius: 4px;
+  }
+  .static-key {
+    width: 44px;
+    height: 44px;
+    background: var(--peach);
+    color: #11111b;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    border: 2px solid var(--peach);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .static-key.target-remove {
+    background: var(--red);
+    color: #11111b;
+    border-color: #ffccd5;
+    box-shadow: 0 0 12px rgba(243, 139, 168, 0.7);
+    animation: pulse-target 1.8s infinite;
+  }
+  .static-key.target-predecessor {
+    background: var(--accent);
+    color: #11111b;
+    border-color: #cdd6f4;
+    box-shadow: 0 0 12px rgba(137, 180, 250, 0.7);
+  }
+  .static-key.target-median {
+    background: var(--yellow);
+    color: #11111b;
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(249, 226, 175, 0.7);
+  }
+  .static-key.target-incoming {
+    background: var(--green);
+    color: #11111b;
+    border-color: #a6e3a1;
+    box-shadow: 0 0 12px rgba(166, 227, 161, 0.7);
+    animation: pulse-target 1.8s infinite;
+  }
+  .static-key.target-separator {
+    background: #313244;
+    color: var(--yellow);
+    border-color: var(--yellow);
+  }
+  .static-key-tag {
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-top: -2px;
+  }
+  @keyframes pulse-target {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  /* Botões de Ação do Pool */
+  .pool-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pool-actions button {
+    font-size: 12.5px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  }
+  // btn-sort {
+    background: var(--purple);
+    color: #11111b;
+  }
+  // btn-sort:hover {
+    background: #d9b8ff;
+    transform: translateY(-2px);
+  }
+  // btn-autofill {
+    background: var(--green);
+    color: #11111b;
+  }
+  // btn-autofill:hover {
+    background: #b8f2b3;
+    transform: translateY(-2px);
+  }
+  // btn-clear-slots {
+    background: #45475a;
+    color: var(--text);
+    border: 1px solid #585b70;
+  }
+  // btn-clear-slots:hover {
+    background: #585b70;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
 </style>
 </head>
 <body>
@@ -509,6 +833,114 @@
   <h2 id="level-name">Carregando...</h2>
   <p id="level-desc"></p>
 </div>
+
+<!-- Flashcards de Regras de Ouro da Árvore B -->
+<div class="flashcards-section">
+  <div class="flashcards-header">
+    <div class="flashcards-title">
+      <span>🎴</span> Regras de Ouro da Árvore B (Toque em qualquer card para virar)
+    </div>
+    <button class="flip-all-btn" id="btn-flip-all" onclick="toggleAllCards()">🔄 Virar Todos</button>
+  </div>
+  
+  <div class="flashcards-grid">
+    <div class="flashcard card-peach" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-badge peach">GRAU MÍNIMO (t = 3)</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Limites de Chaves e Filhos</div>
+          <div style="font-size: 11px; color: #a6adc8;">Quantas cabem no nó? 👆</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-badge action">MÁX 2t-1 | MÍN t-1 📐</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #fab387; margin: 2px 0;">Mín: 2 chaves | Máx: 5 chaves</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Filhos: de 3 a 6 (exceto raiz que tem mín 1 chave e 2 filhos).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard card-red" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-badge red">OVERFLOW (6 CHAVES)</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Estouro na Inserção (2t)</div>
+          <div style="font-size: 11px; color: #a6adc8;">O que acontece agora? 👆</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-badge red">SPLIT DE NÓ 💥</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #f38ba8; margin: 2px 0;">Mediana (3ª chave) SOBE!</div>
+          <div style="font-size: 10.5px; color: #bac2de;">O nó reparte em 2 (chaves menores e maiores). Se a raiz estourar, altura +1!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard card-yellow" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-badge yellow">UNDERFLOW (&lt; t-1)</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Ficou com só 1 chave?</div>
+          <div style="font-size: 11px; color: #a6adc8;">Pra onde olhar primeiro? 👆</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-badge yellow">OLHE À ESQUERDA! ⬅️</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #f9e2af; margin: 2px 0;">Irmão Esq tem &ge; 3 chaves?</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Pegue a maior dele através do separador do pai! Se não puder, olhe a direita.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard card-purple" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-badge purple">MERGE / FUSÃO 🤝</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Ambos têm só 2 chaves?</div>
+          <div style="font-size: 11px; color: #a6adc8;">Ninguém pode emprestar! 👆</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-badge purple">FUSÃO TRIPLA 🔗</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #cba6f7; margin: 2px 0;">Irmão + Pai + Você</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Junta tudo num só nó (2+1+1=4 chaves). Se a raiz esvaziar, altura -1!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard card-blue" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-badge blue">NÓ INTERNO 🏛️</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Chave não está na folha</div>
+          <div style="font-size: 11px; color: #a6adc8;">Quem substitui o elemento? 👆</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-badge blue">PREDECESSOR UTFPR 👑</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #89b4fa; margin: 2px 0;">Maior da Subárvore Esq!</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Copia o predecessor pro nó interno e remove recursivamente a chave na folha!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard card-green" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="fc-badge green">ALTURA DA ÁRVORE 🌲</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Como a árvore varia?</div>
+          <div style="font-size: 11px; color: #a6adc8;">Onde a altura muda? 👆</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="fc-badge action">APENAS PELA RAIZ 🎯</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #a6e3a1; margin: 2px 0;">Split Raiz (+1) | Merge (-1)</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Folhas NUNCA mudam de nível isoladamente! Todas ficam na MESMA profundidade.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div style="font-size: 12px; color: #a6adc8; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+    <span>📐 Regra da UTFPR: <strong style="color: #fab387;">Grau Mínimo t = 3</strong> | Chaves no Nó: <strong style="color: #a6e3a1;">[t-1, 2t-1] = [2, 5]</strong></span>
+    <span>💡 Dica de Ouro: Na redistribuição/empréstimo, <strong style="color: #f9e2af;">SEMPRE tente o irmão da ESQUERDA primeiro!</strong></span>
+  </div>
+</div>
+
 
 <!-- Dica de Usabilidade -->
 <div class="interaction-tip">
@@ -525,6 +957,21 @@
   
   <div class="level-pills" id="level-pills"></div>
 </div>
+
+<!-- Árvore Antiga (Espelho de Referência Antes da Operação) -->
+<div class="initial-tree-section" id="initial-tree-section">
+  <div class="initial-tree-header">
+    <div class="initial-tree-title">
+      <span>🌳</span> Árvore Original (Antes da Operação)
+      <span class="initial-tree-badge" id="initial-tree-op-badge">Carregando...</span>
+    </div>
+    <div class="initial-tree-desc" id="initial-tree-step-desc">
+      Observe o estado inicial da árvore. As chaves afetadas estão destacadas!
+    </div>
+  </div>
+  <div class="initial-tree-canvas" id="initial-tree-canvas"></div>
+</div>
+
 
 <div class="game-container">
   <!-- Cola Teórica -->
@@ -554,7 +1001,11 @@
     <div class="panel-title">Chaves Soltas</div>
     
     <div class="pool" id="pool"></div>
-    <button id="btn-sort">🔢 Ordenar Chaves</button>
+        <div class="pool-actions">
+      <button id="btn-sort" title="Ordena as chaves soltas numericamente">🔢 Ordenar</button>
+      <button id="btn-autofill" title="Posiciona automaticamente as chaves que não mudam de lugar nesta operação">🪄 Preencher Fixas</button>
+      <button id="btn-clear-slots" title="Devolve todas as chaves posicionadas para o conjunto solto">🔄 Limpar Slots</button>
+    </div>
 
     <div class="trash-container" id="trash-container">
       <div style="font-size: 12px; color: #a6adc8; font-weight: bold;">Lixeira (Descarte na Remoção)</div>
@@ -580,131 +1031,250 @@
 
 <script>
 const levels = [
-  // CATEGORIA 1: BUSCA E INSERÇÃO
+  // 1. Inserção sem Split
   {
-    category: "insercao",
-    shortName: "1. Inserção sem Split",
-    name: "Nível 1: Inserção Direta em Folha (Sem Split)",
-    desc: "Temos o Pai [30] e folhas [10, 20] e [40, 50]. Insira o valor 15. A folha esquerda tem espaço livre (máximo são 5 chaves). Basta inserir ordenado sem estourar o nó!",
-    blocks: [10, 15, 20, 30, 40, 50],
-    targetTrash: null,
-    layout: [
-      { id: "pai", label: "Raiz [Pai]", slots: [30] },
+    "category": "insercao",
+    "shortName": "1. Inserção sem Split",
+    "name": "Nível 1: Inserção Direta em Folha (Sem Split)",
+    "desc": "Temos o Pai [30] e folhas [10, 20] e [40, 50]. Insira o valor 15. A folha esquerda tem espaço livre (máximo são 5 chaves). Basta inserir ordenado sem estourar o nó!",
+    "blocks": [10, 15, 20, 30, 40, 50],
+    "targetTrash": null,
+    "fixedKeys": [10, 20, 30, 40, 50],
+    "initialTree": {
+      "opText": "➕ Inserir a chave 15",
+      "opType": "insert",
+      "stepNote": "A folha esquerda [10, 20] tem 2 chaves (limite é 5). A chave 15 entra diretamente mantendo a ordem [10, 15, 20]. Sem overflow!",
+      "layout": [
+        { "label": "Raiz [Pai]", "keys": [30] },
+        {
+          "children": [
+            { "label": "Folha Esquerda (Entra aqui)", "keys": [10, 20], "incoming": 15 },
+            { "label": "Folha Direita", "keys": [40, 50] }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Raiz [Pai]", "slots": [30] },
       {
-        children: [
-          { id: "esq", label: "Folha Esquerda (Com espaço)", slots: [10, 15, 20] },
-          { id: "dir", label: "Folha Direita", slots: [40, 50] }
+        "children": [
+          { "id": "esq", "label": "Folha Esquerda (Com espaço)", "slots": [10, 15, 20] },
+          { "id": "dir", "label": "Folha Direita", "slots": [40, 50] }
         ]
       }
     ]
   },
+  // 2. Split de Folha
   {
-    category: "insercao",
-    shortName: "2. Split de Folha",
-    name: "Nível 2: Inserção com Split de Folha (Mediana Sobe)",
-    desc: "A folha esquerda [10, 20, 25, 30, 40] já estava cheia (5 chaves). Ao tentar inserir o 50, ela estourou com 6! A MEDIANA (30) sobe para o pai [60] e a folha se divide em duas.",
-    blocks: [10, 20, 25, 30, 40, 50, 60],
-    targetTrash: null,
-    layout: [
-      { id: "pai", label: "Pai (Recebe a Mediana 30)", slots: [30, 60] },
+    "category": "insercao",
+    "shortName": "2. Split de Folha",
+    "name": "Nível 2: Inserção com Split de Folha (Mediana Sobe)",
+    "desc": "A folha esquerda [10, 20, 25, 30, 40] já estava cheia (5 chaves). Ao tentar inserir o 50, ela estourou com 6! A MEDIANA (30) sobe para o pai [60] e a folha se divide em duas.",
+    "blocks": [10, 20, 25, 30, 40, 50, 60],
+    "targetTrash": null,
+    "fixedKeys": [10, 20, 25, 60],
+    "initialTree": {
+      "opText": "➕ Inserir 50 ➔ Overflow na Folha Esq (6 chaves)",
+      "opType": "insert",
+      "stepNote": "Folha Esq estava cheia com 5 chaves. Com o 50, estoura com 6! A Mediana (30) SOBE para o pai [60], e o nó racha em [10, 20, 25] e [40, 50].",
+      "layout": [
+        { "label": "Raiz [Pai]", "keys": [60] },
+        {
+          "children": [
+            { "label": "Folha Esq Cheia (Estouro com 50!)", "keys": [10, 20, 25, 30, 40], "median": 30, "incoming": 50 },
+            { "label": "Folha Direita (Normal)", "keys": [70, 80] }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Pai (Recebe a Mediana 30)", "slots": [30, 60] },
       {
-        children: [
-          { id: "esq1", label: "Filho Menor", slots: [10, 20, 25] },
-          { id: "esq2", label: "Filho Maior", slots: [40, 50] }
+        "children": [
+          { "id": "esq1", "label": "Filho Menor", "slots": [10, 20, 25] },
+          { "id": "esq2", "label": "Filho Maior", "slots": [40, 50] }
         ]
       }
     ]
   },
+  // 3. Split da Raiz
   {
-    category: "insercao",
-    shortName: "3. Split da Raiz (Altura +1)",
-    name: "Nível 3: Split da Raiz (Aumenta a Altura da Árvore)",
-    desc: "A Raiz [10, 20, 30, 40, 50] era o único nó da árvore e estourou ao receber o 25! Quando a RAIZ sofre split, nasce um novo andar: a mediana (30) vira a NOVA RAIZ e a árvore cresce para cima!",
-    blocks: [10, 20, 25, 30, 40, 50],
-    targetTrash: null,
-    layout: [
-      { id: "pai", label: "Nova Raiz (Mediana 30)", slots: [30] },
+    "category": "insercao",
+    "shortName": "3. Split da Raiz (Altura +1)",
+    "name": "Nível 3: Split da Raiz (Aumenta a Altura da Árvore)",
+    "desc": "A Raiz [10, 20, 30, 40, 50] era o único nó da árvore e estourou ao receber o 25! Quando a RAIZ sofre split, nasce um novo andar: a mediana (30) vira a NOVA RAIZ e a árvore cresce para cima!",
+    "blocks": [10, 20, 25, 30, 40, 50],
+    "targetTrash": null,
+    "fixedKeys": [],
+    "initialTree": {
+      "opText": "➕ Inserir 25 na Raiz Única ➔ Split da Raiz!",
+      "opType": "insert",
+      "stepNote": "A Raiz tinha 5 chaves. Ao receber 25, atinge 6 chaves (2t). A Mediana (30) sobe criando um NOVO andar (nova raiz)! Altura cresce +1.",
+      "layout": [
+        { "label": "Raiz Única Cheia (Estoura ao receber 25)", "keys": [10, 20, 30, 40, 50], "median": 30, "incoming": 25 }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Nova Raiz (Mediana 30)", "slots": [30] },
       {
-        children: [
-          { id: "esq", label: "Filho Esquerdo", slots: [10, 20, 25] },
-          { id: "dir", label: "Filho Direito", slots: [40, 50] }
+        "children": [
+          { "id": "esq", "label": "Filho Esquerdo", "slots": [10, 20, 25] },
+          { "id": "dir", "label": "Filho Direito", "slots": [40, 50] }
         ]
       }
     ]
   },
-
-  // CATEGORIA 2: REMOÇÃO
+  // 4. Caso 1: Folha Simples
   {
-    category: "remocao",
-    shortName: "4. Caso 1: Folha Simples",
-    name: "Nível 4: Caso 1 - Remoção em Folha com Sobra",
-    desc: "Caso 1: A chave a remover está em folha com chaves de sobra (>= t). Remova o 30 jogando na lixeira! A folha continua com 2 chaves (o mínimo permitido para t=3), então não requer rebalanceamento.",
-    blocks: [10, 20, 30, 50, 70, 80],
-    targetTrash: 30,
-    layout: [
-      { id: "pai", label: "Nó Pai", slots: [50] },
+    "category": "remocao",
+    "shortName": "4. Caso 1: Folha Simples",
+    "name": "Nível 4: Caso 1 - Remoção em Folha com Sobra",
+    "desc": "Caso 1: A chave a remover está em folha com chaves de sobra (>= t). Remova o 30 jogando na lixeira! A folha continua com 2 chaves (o mínimo permitido para t=3), então não requer rebalanceamento.",
+    "blocks": [10, 20, 30, 50, 70, 80],
+    "targetTrash": 30,
+    "fixedKeys": [10, 20, 50, 70, 80],
+    "initialTree": {
+      "opText": "🗑️ Remover a chave 30 da Folha Esquerda",
+      "opType": "remove",
+      "stepNote": "A folha esquerda tem 3 chaves [10, 20, 30]. Ao retirar o 30, sobram [10, 20] (mínimo t-1 = 2). Remoção direta para a lixeira sem rebalancear!",
+      "layout": [
+        { "label": "Raiz [Pai]", "keys": [50] },
+        {
+          "children": [
+            { "label": "Folha Esquerda (3 chaves)", "keys": [10, 20, 30], "removeKey": 30 },
+            { "label": "Folha Direita", "keys": [70, 80] }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Nó Pai", "slots": [50] },
       {
-        children: [
-          { id: "esq", label: "Filho Esquerdo (Continua >= 2)", slots: [10, 20] },
-          { id: "dir", label: "Filho Direito", slots: [70, 80] }
+        "children": [
+          { "id": "esq", "label": "Filho Esquerdo (Continua >= 2)", "slots": [10, 20] },
+          { "id": "dir", "label": "Filho Direito", "slots": [70, 80] }
         ]
       }
     ]
   },
+  // 5. Caso 2: Nó Interno
   {
-    category: "remocao",
-    shortName: "5. Caso 2: Nó Interno (Predecessor)",
-    name: "Nível 5: Caso 2 - Remoção em Nó Interno",
-    desc: "Caso 2: A chave a remover está em um NÓ INTERNO (a Raiz [50]). O nó não pode ficar com buraco! O algoritmo busca o PREDECESSOR (o maior elemento da sub-árvore esquerda: 40). O 40 sobe para a raiz e o 50 vai para a lixeira!",
-    blocks: [20, 30, 40, 50, 70, 80],
-    targetTrash: 50,
-    layout: [
-      { id: "pai", label: "Raiz (Predecessor 40 assumiu)", slots: [40] },
+    "category": "remocao",
+    "shortName": "5. Caso 2: Nó Interno (Predecessor)",
+    "name": "Nível 5: Caso 2 - Remoção em Nó Interno",
+    "desc": "Caso 2: A chave a remover está em um NÓ INTERNO (a Raiz [50]). O nó não pode ficar com buraco! O algoritmo busca o PREDECESSOR (o maior elemento da sub-árvore esquerda: 40). O 40 sobe para a raiz e o 50 vai para a lixeira!",
+    "blocks": [20, 30, 40, 50, 70, 80],
+    "targetTrash": 50,
+    "fixedKeys": [20, 30, 70, 80],
+    "initialTree": {
+      "opText": "🗑️ Remover a chave 50 da Raiz (Nó Interno)",
+      "opType": "remove",
+      "stepNote": "50 é nó interno! Regra da UTFPR: Substitua pelo PREDECESSOR (maior da sub-árvore esquerda = 40). O 40 sobe para a raiz e o 50 é descartado.",
+      "layout": [
+        { "label": "Raiz [Nó Interno]", "keys": [50], "removeKey": 50 },
+        {
+          "children": [
+            { "label": "Sub-árvore Esq (Predecessor 40)", "keys": [20, 30, 40], "predecessorKey": 40 },
+            { "label": "Sub-árvore Direita", "keys": [70, 80] }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Raiz (Predecessor 40 assumiu)", "slots": [40] },
       {
-        children: [
-          { id: "esq", label: "Filho Esquerdo", slots: [20, 30] },
-          { id: "dir", label: "Filho Direito", slots: [70, 80] }
+        "children": [
+          { "id": "esq", "label": "Filho Esquerdo", "slots": [20, 30] },
+          { "id": "dir", "label": "Filho Direito", "slots": [70, 80] }
         ]
       }
     ]
   },
+  // 6. Caso 3a: Redistribuição (Esquerda)
   {
-    category: "remocao",
-    shortName: "6. Caso 3a: Redistribuição (Esq)",
-    name: "Nível 6: Caso 3a - Redistribuição (Empréstimo da Esquerda)",
-    desc: "Caso 3a: Remoção com Underflow. Remova o 80 (lixeira). A folha direita passa fome (só 1 chave!). Regra da UTFPR: Olhe SEMPRE para a ESQUERDA primeiro! O irmão esquerdo é rico (tem 3 chaves), então o 40 sobe pro pai e o 50 desce!",
-    blocks: [20, 30, 40, 50, 80, 90],
-    targetTrash: 80,
-    layout: [
-      { id: "pai", label: "Nó Pai (Recebeu 40)", slots: [40] },
+    "category": "remocao",
+    "shortName": "6. Caso 3a: Redistribuição (Esq)",
+    "name": "Nível 6: Caso 3a - Redistribuição (Empréstimo da Esquerda)",
+    "desc": "Caso 3a: Remoção com Underflow. Remova o 80 (lixeira). A folha direita passa fome (só 1 chave!). Regra da UTFPR: Olhe SEMPRE para a ESQUERDA primeiro! O irmão esquerdo é rico (tem 3 chaves), então o 40 sobe pro pai e o 50 desce!",
+    "blocks": [20, 30, 40, 50, 80, 90],
+    "targetTrash": 80,
+    "fixedKeys": [20, 30, 90],
+    "initialTree": {
+      "opText": "🗑️ Remover a chave 80 ➔ Underflow no Filho Dir!",
+      "opType": "remove",
+      "stepNote": "Ao retirar o 80, o filho direito fica com apenas [90] (< 2 chaves). Olhe para a ESQUERDA primeiro: Irmão esquerdo é rico (tem 3 chaves)! O 40 sobe pro Pai e o 50 desce pra equilibrar.",
+      "layout": [
+        { "label": "Raiz [Pai - Separador 50]", "keys": [50], "separator": 50 },
+        {
+          "children": [
+            { "label": "Irmão Esquerdo (Rico: 3 chaves)", "keys": [20, 30, 40], "borrowKey": 40 },
+            { "label": "Folha Direita (Remover 80)", "keys": [80, 90], "removeKey": 80 }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Nó Pai (Recebeu 40)", "slots": [40] },
       {
-        children: [
-          { id: "esq", label: "Irmão Esquerdo (Emprestou)", slots: [20, 30] },
-          { id: "dir", label: "Filho Direito (Recebeu 50)", slots: [50, 90] }
+        "children": [
+          { "id": "esq", "label": "Irmão Esquerdo (Emprestou)", "slots": [20, 30] },
+          { "id": "dir", "label": "Filho Direito (Recebeu 50)", "slots": [50, 90] }
         ]
       }
     ]
   },
+  // 7. Caso 3b: Fusão / Merge
   {
-    category: "remocao",
-    shortName: "7. Caso 3b: Fusão / Merge",
-    name: "Nível 7: Caso 3b - Fusão / Merge com Irmão e Pai",
-    desc: "Caso 3b: O irmão da esquerda também é pobre (só tem 2 chaves) e não pode emprestar! Remova o 90 (lixeira). A direita tem underflow. Solução: MERGE! Junte o irmão esquerdo [20, 30], a chave do Pai [50] e a chave restante [80] em uma única folha!",
-    blocks: [20, 30, 50, 80, 90],
-    targetTrash: 90,
-    layout: [
-      { id: "pai", label: "Nova Folha Fundida (Merge)", slots: [20, 30, 50, 80] }
+    "category": "remocao",
+    "shortName": "7. Caso 3b: Fusão / Merge",
+    "name": "Nível 7: Caso 3b - Fusão / Merge com Irmão e Pai",
+    "desc": "Caso 3b: O irmão da esquerda também é pobre (só tem 2 chaves) e não pode emprestar! Remova o 90 (lixeira). A direita tem underflow. Solução: MERGE! Junte o irmão esquerdo [20, 30], a chave do Pai [50] e a chave restante [80] em uma única folha!",
+    "blocks": [20, 30, 50, 80, 90],
+    "targetTrash": 90,
+    "fixedKeys": [20, 30],
+    "initialTree": {
+      "opText": "🗑️ Remover a chave 90 ➔ Underflow e Irmão Pobre ➔ Merge!",
+      "opType": "remove",
+      "stepNote": "Remover 90 deixa a folha com só [80]. Irmão esquerdo tem apenas 2 chaves (não pode emprestar!). Fusão: junta irmão esquerdo [20, 30] + separador do pai [50] + chave [80] em um só nó!",
+      "layout": [
+        { "label": "Raiz [Pai - Separador 50]", "keys": [50], "separator": 50 },
+        {
+          "children": [
+            { "label": "Irmão Esquerdo (Pobre: só 2 chaves)", "keys": [20, 30] },
+            { "label": "Folha Direita (Remover 90)", "keys": [80, 90], "removeKey": 90 }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Nova Folha Fundida (Merge)", "slots": [20, 30, 50, 80] }
     ]
   },
+  // 8. Caso 3c: Fusão Encolhe Raiz
   {
-    category: "remocao",
-    shortName: "8. Caso 3c: Fusão Encolhe Raiz (Altura -1)",
-    name: "Nível 8: Caso 3c - Fusão que Diminui a Altura da Árvore",
-    desc: "Caso 3c: A Raiz tinha apenas 1 chave [50] e seus filhos eram [10, 20] e [80, 90]. Ao remover o 90 (lixeira), rola merge com a raiz. A raiz fica vazia e desaparece! A árvore encolhe de altura e o nó fundido vira a nova raiz única!",
-    blocks: [10, 20, 50, 80, 90],
-    targetTrash: 90,
-    layout: [
-      { id: "pai", label: "Nova Raiz Única (Altura Encolheu -1)", slots: [10, 20, 50, 80] }
+    "category": "remocao",
+    "shortName": "8. Caso 3c: Fusão Encolhe Raiz (Altura -1)",
+    "name": "Nível 8: Caso 3c - Fusão que Diminui a Altura da Árvore",
+    "desc": "Caso 3c: A Raiz tinha apenas 1 chave [50] e seus filhos eram [10, 20] e [80, 90]. Ao remover o 90 (lixeira), rola merge com a raiz. A raiz fica vazia e desaparece! A árvore encolhe de altura e o nó fundido vira a nova raiz única!",
+    "blocks": [10, 20, 50, 80, 90],
+    "targetTrash": 90,
+    "fixedKeys": [10, 20],
+    "initialTree": {
+      "opText": "🗑️ Remover a chave 90 ➔ Merge Consome a Raiz ➔ Altura -1!",
+      "opType": "remove",
+      "stepNote": "A Raiz tinha apenas 1 chave [50]. Ao fundir com os filhos, o 50 desce e a Raiz esvazia completamente! A raiz é descartada e o nó fundido vira a nova raiz única. Altura encolhe de 2 para 1!",
+      "layout": [
+        { "label": "Raiz (Apenas 1 chave: [50])", "keys": [50], "separator": 50 },
+        {
+          "children": [
+            { "label": "Filho Esquerdo (2 chaves)", "keys": [10, 20] },
+            { "label": "Filho Direito (Remover 90)", "keys": [80, 90], "removeKey": 90 }
+          ]
+        }
+      ]
+    },
+    "layout": [
+      { "id": "pai", "label": "Nova Raiz Única (Altura Encolheu -1)", "slots": [10, 20, 50, 80] }
     ]
   }
 ];
@@ -904,6 +1474,120 @@ document.addEventListener('click', e => {
 });
 
 // Carregar Nível
+
+// Renderizar Árvore Inicial (Antes da Operação)
+function renderInitialTree(lvl) {
+  const container = document.getElementById('initial-tree-canvas');
+  const badge = document.getElementById('initial-tree-op-badge');
+  const desc = document.getElementById('initial-tree-step-desc');
+  if (!container || !lvl || !lvl.initialTree) return;
+
+  badge.textContent = lvl.initialTree.opText || '';
+  badge.className = 'initial-tree-badge' + (lvl.initialTree.opType === 'insert' ? ' insert' : '');
+  desc.textContent = lvl.initialTree.stepNote || '';
+  container.innerHTML = '';
+
+  const initial = lvl.initialTree;
+  initial.layout.forEach(row => {
+    if (row.children) {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'initial-tree-children';
+      const line = document.createElement('div');
+      line.className = 'initial-tree-line';
+      rowEl.appendChild(line);
+
+      row.children.forEach(childNode => {
+        const nodeBox = document.createElement('div');
+        nodeBox.className = 'static-node-box';
+        nodeBox.dataset.label = childNode.label;
+        
+        childNode.keys.forEach(k => {
+          const keyEl = document.createElement('div');
+          keyEl.className = 'static-key';
+          keyEl.textContent = k;
+          
+          if (k === childNode.removeKey) {
+            keyEl.classList.add('target-remove');
+            keyEl.title = 'Alvo de Remoção (Vai para a Lixeira)';
+            keyEl.innerHTML = `${k}<span class="static-key-tag">🗑️</span>`;
+          } else if (k === childNode.predecessorKey) {
+            keyEl.classList.add('target-predecessor');
+            keyEl.title = 'Predecessor (Sobe para a Raiz)';
+            keyEl.innerHTML = `${k}<span class="static-key-tag">👑</span>`;
+          } else if (k === childNode.borrowKey) {
+            keyEl.classList.add('target-predecessor');
+            keyEl.title = 'Chave Emprestada (Sobe para o Pai)';
+            keyEl.innerHTML = `${k}<span class="static-key-tag">⬅️</span>`;
+          } else if (k === childNode.median) {
+            keyEl.classList.add('target-median');
+            keyEl.title = 'Mediana (Sobe para o Pai)';
+            keyEl.innerHTML = `${k}<span class="static-key-tag">⭐</span>`;
+          }
+          nodeBox.appendChild(keyEl);
+        });
+
+        if (childNode.incoming) {
+          const incEl = document.createElement('div');
+          incEl.className = 'static-key target-incoming';
+          incEl.title = 'Chave a ser inserida';
+          incEl.innerHTML = `${childNode.incoming}<span class="static-key-tag">➕</span>`;
+          nodeBox.appendChild(incEl);
+        }
+
+        rowEl.appendChild(nodeBox);
+      });
+      container.appendChild(rowEl);
+    } else {
+      const nodeBox = document.createElement('div');
+      nodeBox.className = 'static-node-box';
+      nodeBox.dataset.label = row.label;
+
+      row.keys.forEach(k => {
+        const keyEl = document.createElement('div');
+        keyEl.className = 'static-key';
+        keyEl.textContent = k;
+
+        if (k === row.removeKey) {
+          keyEl.classList.add('target-remove');
+          keyEl.title = 'Alvo de Remoção (Vai para a Lixeira)';
+          keyEl.innerHTML = `${k}<span class="static-key-tag">🗑️</span>`;
+        } else if (k === row.median) {
+          keyEl.classList.add('target-median');
+          keyEl.title = 'Mediana (Sobe para criar novo nó)';
+          keyEl.innerHTML = `${k}<span class="static-key-tag">⭐</span>`;
+        } else if (k === row.separator) {
+          keyEl.classList.add('target-separator');
+          keyEl.title = 'Chave Separadora do Pai';
+          keyEl.innerHTML = `${k}<span class="static-key-tag">⚖️</span>`;
+        }
+        nodeBox.appendChild(keyEl);
+      });
+
+      if (row.incoming) {
+        const incEl = document.createElement('div');
+        incEl.className = 'static-key target-incoming';
+        incEl.title = 'Chave a ser inserida';
+        incEl.innerHTML = `${row.incoming}<span class="static-key-tag">➕</span>`;
+        nodeBox.appendChild(incEl);
+      }
+
+      container.appendChild(nodeBox);
+    }
+  });
+}
+
+// Toggle Flashcards
+let allBTreeFlipped = false;
+function toggleAllCards() {
+  allBTreeFlipped = !allBTreeFlipped;
+  document.querySelectorAll('.flashcards-section .flashcard').forEach(c => {
+    if(allBTreeFlipped) c.classList.add('flipped');
+    else c.classList.remove('flipped');
+  });
+  const btn = document.getElementById('btn-flip-all');
+  if (btn) btn.textContent = allBTreeFlipped ? '🔄 Mostrar Perguntas' : '🔄 Mostrar Respostas';
+}
+
 function loadLevel(idx) {
   currentLevel = idx;
   const lvl = levels[idx];
@@ -915,6 +1599,7 @@ function loadLevel(idx) {
     document.getElementById('tab-remocao').classList.toggle('active', currentCategory === 'remocao');
   }
   renderLevelPills();
+  renderInitialTree(lvl);
   
   ui.levelName.textContent = lvl.name;
   ui.levelDesc.textContent = lvl.desc;
@@ -1038,6 +1723,57 @@ document.getElementById('btn-sort').addEventListener('click', () => {
 });
 
 // Carrega o primeiro nível
+
+// Preencher Chaves Fixas (as que não mudam de posição nesta operação)
+const btnAutofill = document.getElementById('btn-autofill');
+if (btnAutofill) {
+  btnAutofill.addEventListener('click', () => {
+    const lvl = levels[currentLevel];
+    if (!lvl || !lvl.fixedKeys || lvl.fixedKeys.length === 0) {
+      showMsg("Neste nível todas as chaves estão em movimento!", "info");
+      return;
+    }
+    
+    let filledCount = 0;
+    lvl.fixedKeys.forEach(val => {
+      const block = ui.pool.querySelector('#B' + val);
+      if (block) {
+        const slot = Array.from(ui.treeLayout.querySelectorAll('.slot')).find(s => parseInt(s.dataset.expected) === val && s.children.length === 0);
+        if (slot) {
+          slot.appendChild(block);
+          block.classList.add('in-slot');
+          block.style.transform = '';
+          filledCount++;
+        }
+      }
+    });
+    
+    if (filledCount > 0) {
+      showMsg(`🪄 ${filledCount} chaves fixas posicionadas! Resolva a operação com as chaves restantes.`, "success");
+    } else {
+      showMsg("As chaves fixas já estão todas nos slots!", "info");
+    }
+  });
+}
+
+// Limpar Todos os Slots (Devolve tudo para o Pool)
+const btnClearSlots = document.getElementById('btn-clear-slots');
+if (btnClearSlots) {
+  btnClearSlots.addEventListener('click', () => {
+    ui.treeLayout.querySelectorAll('.block').forEach(b => {
+      b.classList.remove('in-slot');
+      ui.pool.appendChild(b);
+    });
+    const trashBlock = ui.trash.querySelector('.block');
+    if (trashBlock) {
+      trashBlock.classList.remove('in-slot');
+      ui.pool.appendChild(trashBlock);
+    }
+    clearSelection();
+    showMsg("Todos os slots foram limpos! Chaves devolvidas para a caixa.", "info");
+  });
+}
+
 loadLevel(0);
 </script>
 
