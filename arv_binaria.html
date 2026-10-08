@@ -137,148 +137,1211 @@
 <script>
 const levels = [
   {
-    name: "Nível 1: Pré-Ordem (RED) - Árvore Clássica",
-    nodes: [
-      { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 120 }, { id: "D", x: 50,  y: 210 },
-      { id: "C", x: 300, y: 120 }, { id: "E", x: 250, y: 210 }, { id: "F", x: 350, y: 210 }
+    "name": "Nível 1: Pré-Ordem (RED)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 200,
+        "y": 30
+      },
+      {
+        "id": "B",
+        "x": 100,
+        "y": 120
+      },
+      {
+        "id": "D",
+        "x": 50,
+        "y": 210
+      },
+      {
+        "id": "C",
+        "x": 300,
+        "y": 120
+      },
+      {
+        "id": "E",
+        "x": 250,
+        "y": 210
+      },
+      {
+        "id": "F",
+        "x": 350,
+        "y": 210
+      }
     ],
-    links: [ ["A","B"], ["B","D"], ["A","C"], ["C","E"], ["C","F"] ],
-    expected: ["A", "B", "D", "C", "E", "F"],
-    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Chegou, Anotou!</strong><br>Pise na Raiz, desça TUDO pra Esquerda, e só depois olhe pra Direita." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "C",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ]
+    ],
+    "expected": [
+      "A",
+      "B",
+      "D",
+      "C",
+      "E",
+      "F"
+    ],
+    "mirror": {
+      "title": "RED (Pré-Ordem)",
+      "order": {
+        "R": "1º",
+        "E": "2º",
+        "D": "3º"
+      },
+      "desc": "Raiz primeiro!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Esquerda de B é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Sim. Fim do nó D.<br>Terminei toda a perna esquerda do B.<br>Direita de B é NULL? Sim. Fim do nó B.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Esquerda de C é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Esquerda de E é NULL? Sim.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a perna esquerda do C.<br>Direita de C é NULL? Não (F). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Esquerda de F é NULL? Sim.<br>Direita de F é NULL? Sim. Fim do nó F.<br>Terminei toda a direita do C. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+    ]
   },
   {
-    name: "Nível 2: In-Ordem (ERD) - Árvore Clássica",
-    nodes: [
-      { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 120 }, { id: "D", x: 50,  y: 210 },
-      { id: "C", x: 300, y: 120 }, { id: "E", x: 250, y: 210 }, { id: "F", x: 350, y: 210 }
+    "name": "Nível 2: In-Ordem (ERD)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 200,
+        "y": 30
+      },
+      {
+        "id": "B",
+        "x": 100,
+        "y": 120
+      },
+      {
+        "id": "D",
+        "x": 50,
+        "y": 210
+      },
+      {
+        "id": "C",
+        "x": 300,
+        "y": 120
+      },
+      {
+        "id": "E",
+        "x": 250,
+        "y": 210
+      },
+      {
+        "id": "F",
+        "x": 350,
+        "y": 210
+      }
     ],
-    links: [ ["A","B"], ["B","D"], ["A","C"], ["C","E"], ["C","F"] ],
-    expected: ["D", "B", "A", "E", "C", "F"],
-    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>A Esquerda é a Rainha!</strong><br>Desça até a última folha da esquerda, anote. Suba pro Pai, anote. Depois o filho da direita." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "C",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ]
+    ],
+    "expected": [
+      "D",
+      "B",
+      "A",
+      "E",
+      "C",
+      "F"
+    ],
+    "mirror": {
+      "title": "ERD (In-Ordem)",
+      "order": {
+        "E": "1º",
+        "R": "2º",
+        "D": "3º"
+      },
+      "desc": "Esquerda, Raiz, Direita."
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esq de B é NULL? Não (D). Adio o B e desço pra esq...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Direita de D é NULL. Fim do nó D.<br>Voltei pro B da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Direita de B é NULL. Fim do nó B.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Agora vou descer pra direita do A (C)...<br>Esq de C é NULL? Não (E). Adio o C e desço pra esq...<br>Esquerda de E é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Direita de E é NULL. Fim do nó E.<br>Voltei pro C da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Agora vou descer pra direita do C (F)...<br>Esquerda de F é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Direita de F é NULL. Fim do nó F.<br>Fim da direita do C. Subo.<br>Fim da direita do A. Subo.<br>"
+    ]
   },
   {
-    name: "Nível 3: Pós-Ordem (EDR) - Árvore Clássica",
-    nodes: [
-      { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 120 }, { id: "D", x: 50,  y: 210 },
-      { id: "C", x: 300, y: 120 }, { id: "E", x: 250, y: 210 }, { id: "F", x: 350, y: 210 }
+    "name": "Nível 3: Pós-Ordem (EDR)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 200,
+        "y": 30
+      },
+      {
+        "id": "B",
+        "x": 100,
+        "y": 120
+      },
+      {
+        "id": "D",
+        "x": 50,
+        "y": 210
+      },
+      {
+        "id": "C",
+        "x": 300,
+        "y": 120
+      },
+      {
+        "id": "E",
+        "x": 250,
+        "y": 210
+      },
+      {
+        "id": "F",
+        "x": 350,
+        "y": 210
+      }
     ],
-    links: [ ["A","B"], ["B","D"], ["A","C"], ["C","E"], ["C","F"] ],
-    expected: ["D", "B", "E", "F", "C", "A"],
-    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>Os Filhos Primeiro!</strong><br>O Pai (Raiz) é o ÚLTIMO. Limpe a esquerda, limpe a direita, e só então clique na raiz." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "C",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ]
+    ],
+    "expected": [
+      "D",
+      "B",
+      "E",
+      "F",
+      "C",
+      "A"
+    ],
+    "mirror": {
+      "title": "EDR (Pós-Ordem)",
+      "order": {
+        "E": "1º",
+        "D": "2º",
+        "R": "3º"
+      },
+      "desc": "Deixe o Pai por último!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL? Não (D). Adio o B e vou pra Esq...<br>Esq de D é NULL.<br>Dir de D é NULL.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Voltei pro B da esquerda.<br>Dir de B é NULL.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Voltei pro A da esquerda.<br>Dir de A é NULL? Não (C). Adio o A e vou pra Dir...<br>Esq de C é NULL? Não (E). Adio o C e vou pra Esq...<br>Esq de E é NULL.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Voltei pro C da esquerda.<br>Dir de C é NULL? Não (F). Adio o C e vou pra Dir...<br>Esq de F é NULL.<br>Dir de F é NULL.<br>Esq e Dir de F são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Voltei pro C da direita.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+    ]
   },
   {
-    name: "Nível 4: A Serpentina Zig-Zag (RED)",
-    nodes: [
-      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 250, y: 180 }, { id: "D", x: 150, y: 250 }, { id: "E", x: 250, y: 320 }
+    "name": "Nível 4: A Serpentina Zig-Zag (RED)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 250,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 150,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 250,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 150,
+        "y": 250
+      },
+      {
+        "id": "E",
+        "x": 250,
+        "y": 320
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["C","D"], ["D","E"] ],
-    expected: ["A", "B", "C", "D", "E"],
-    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Cobrinha!</strong><br>Atenção nos nós que não têm filho esquerdo (B e D)." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ],
+      [
+        "D",
+        "E"
+      ]
+    ],
+    "expected": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "mirror": {
+      "title": "RED (Pré-Ordem)",
+      "order": {
+        "R": "1º",
+        "E": "2º",
+        "D": "3º"
+      },
+      "desc": "Raiz primeiro!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Esquerda de B é NULL? Sim.<br>Direita de B é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Esquerda de C é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Esquerda de E é NULL? Sim.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a direita do D. Subo de volta.<br>Terminei toda a perna esquerda do C.<br>Direita de C é NULL? Sim. Fim do nó C.<br>Terminei toda a direita do B. Subo de volta.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Sim. Fim do nó A.<br>"
+    ]
   },
   {
-    name: "Nível 5: A Serpentina Zig-Zag (ERD)",
-    nodes: [
-      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 250, y: 180 }, { id: "D", x: 150, y: 250 }, { id: "E", x: 250, y: 320 }
+    "name": "Nível 5: A Serpentina Zig-Zag (ERD)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 250,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 150,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 250,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 150,
+        "y": 250
+      },
+      {
+        "id": "E",
+        "x": 250,
+        "y": 320
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["C","D"], ["D","E"] ],
-    expected: ["B", "D", "E", "C", "A"],
-    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Atenção redobrada!</strong><br>Se não há filho na esquerda, a Raiz toma a vez e depois tenta a direita. Use a Lousa se precisar!" }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ],
+      [
+        "D",
+        "E"
+      ]
+    ],
+    "expected": [
+      "B",
+      "D",
+      "E",
+      "C",
+      "A"
+    ],
+    "mirror": {
+      "title": "ERD (In-Ordem)",
+      "order": {
+        "E": "1º",
+        "R": "2º",
+        "D": "3º"
+      },
+      "desc": "Esquerda, Raiz, Direita."
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esquerda de B é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Agora vou descer pra direita do B (C)...<br>Esq de C é NULL? Não (D). Adio o C e desço pra esq...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Agora vou descer pra direita do D (E)...<br>Esquerda de E é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Direita de E é NULL. Fim do nó E.<br>Fim da direita do D. Subo.<br>Voltei pro C da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Direita de C é NULL. Fim do nó C.<br>Fim da direita do B. Subo.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Direita de A é NULL. Fim do nó A.<br>"
+    ]
   },
   {
-    name: "Nível 6: A Serpentina Zig-Zag (EDR)",
-    nodes: [
-      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 250, y: 180 }, { id: "D", x: 150, y: 250 }, { id: "E", x: 250, y: 320 }
+    "name": "Nível 6: A Serpentina Zig-Zag (EDR)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 250,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 150,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 250,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 150,
+        "y": 250
+      },
+      {
+        "id": "E",
+        "x": 250,
+        "y": 320
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["C","D"], ["D","E"] ],
-    expected: ["E", "D", "C", "B", "A"],
-    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>De trás pra frente?</strong><br>Como a cobrinha só tem uma linha de descendência contínua, parece que estamos subindo de ré!" }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ],
+      [
+        "D",
+        "E"
+      ]
+    ],
+    "expected": [
+      "E",
+      "D",
+      "C",
+      "B",
+      "A"
+    ],
+    "mirror": {
+      "title": "EDR (Pós-Ordem)",
+      "order": {
+        "E": "1º",
+        "D": "2º",
+        "R": "3º"
+      },
+      "desc": "Deixe o Pai por último!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL.<br>Dir de B é NULL? Não (C). Adio o B e vou pra Dir...<br>Esq de C é NULL? Não (D). Adio o C e vou pra Esq...<br>Esq de D é NULL.<br>Dir de D é NULL? Não (E). Adio o D e vou pra Dir...<br>Esq de E é NULL.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Voltei pro D da direita.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Voltei pro C da esquerda.<br>Dir de C é NULL.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Voltei pro B da direita.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Voltei pro A da esquerda.<br>Dir de A é NULL.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+    ]
   },
   {
-    name: "Nível 7: A Árvore 'V' (RED)",
-    nodes: [
-      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 50, y: 180 }, { id: "D", x: 350, y: 110 }, { id: "E", x: 450, y: 180 }
+    "name": "Nível 7: A Árvore 'V' (RED)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 250,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 150,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 50,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 350,
+        "y": 110
+      },
+      {
+        "id": "E",
+        "x": 450,
+        "y": 180
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["A","D"], ["D","E"] ],
-    expected: ["A", "B", "C", "D", "E"],
-    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Dividir e Conquistar!</strong><br>Termine tudo na esquerda do V, para depois fazer a direita do V." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "D",
+        "E"
+      ]
+    ],
+    "expected": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "mirror": {
+      "title": "RED (Pré-Ordem)",
+      "order": {
+        "R": "1º",
+        "E": "2º",
+        "D": "3º"
+      },
+      "desc": "Raiz primeiro!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Esquerda de B é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Esquerda de C é NULL? Sim.<br>Direita de C é NULL? Sim. Fim do nó C.<br>Terminei toda a perna esquerda do B.<br>Direita de B é NULL? Sim. Fim do nó B.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Esquerda de E é NULL? Sim.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a direita do D. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+    ]
   },
   {
-    name: "Nível 8: A Árvore 'V' (ERD)",
-    nodes: [
-      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 50, y: 180 }, { id: "D", x: 350, y: 110 }, { id: "E", x: 450, y: 180 }
+    "name": "Nível 8: A Árvore 'V' (ERD)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 250,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 150,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 50,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 350,
+        "y": 110
+      },
+      {
+        "id": "E",
+        "x": 450,
+        "y": 180
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["A","D"], ["D","E"] ],
-    expected: ["C", "B", "A", "D", "E"],
-    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Sem atalhos!</strong><br>Na perna esquerda ela inverte (C, B, A), mas na perna direita o D vem antes do E. Por que?" }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "D",
+        "E"
+      ]
+    ],
+    "expected": [
+      "C",
+      "B",
+      "A",
+      "D",
+      "E"
+    ],
+    "mirror": {
+      "title": "ERD (In-Ordem)",
+      "order": {
+        "E": "1º",
+        "R": "2º",
+        "D": "3º"
+      },
+      "desc": "Esquerda, Raiz, Direita."
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esq de B é NULL? Não (C). Adio o B e desço pra esq...<br>Esquerda de C é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Direita de C é NULL. Fim do nó C.<br>Voltei pro B da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Direita de B é NULL. Fim do nó B.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Agora vou descer pra direita do A (D)...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Agora vou descer pra direita do D (E)...<br>Esquerda de E é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Direita de E é NULL. Fim do nó E.<br>Fim da direita do D. Subo.<br>Fim da direita do A. Subo.<br>"
+    ]
   },
   {
-    name: "Nível 9: A Árvore 'V' (EDR)",
-    nodes: [
-      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 50, y: 180 }, { id: "D", x: 350, y: 110 }, { id: "E", x: 450, y: 180 }
+    "name": "Nível 9: A Árvore 'V' (EDR)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 250,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 150,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 50,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 350,
+        "y": 110
+      },
+      {
+        "id": "E",
+        "x": 450,
+        "y": 180
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["A","D"], ["D","E"] ],
-    expected: ["C", "B", "E", "D", "A"],
-    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>Limpe o terreno!</strong><br>As pontas do V primeiro, e as raízes depois." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "A",
+        "D"
+      ],
+      [
+        "D",
+        "E"
+      ]
+    ],
+    "expected": [
+      "C",
+      "B",
+      "E",
+      "D",
+      "A"
+    ],
+    "mirror": {
+      "title": "EDR (Pós-Ordem)",
+      "order": {
+        "E": "1º",
+        "D": "2º",
+        "R": "3º"
+      },
+      "desc": "Deixe o Pai por último!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL? Não (C). Adio o B e vou pra Esq...<br>Esq de C é NULL.<br>Dir de C é NULL.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Voltei pro B da esquerda.<br>Dir de B é NULL.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Voltei pro A da esquerda.<br>Dir de A é NULL? Não (D). Adio o A e vou pra Dir...<br>Esq de D é NULL.<br>Dir de D é NULL? Não (E). Adio o D e vou pra Dir...<br>Esq de E é NULL.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Voltei pro D da direita.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+    ]
   },
   {
-    name: "Nível 10: O Chefão (Pré-Ordem RED)",
-    nodes: [
-      { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 100 }, { id: "C", x: 300, y: 100 },
-      { id: "D", x: 50, y: 170 }, { id: "E", x: 150, y: 170 }, { id: "F", x: 250, y: 170 },
-      { id: "G", x: 350, y: 170 }, { id: "H", x: 120, y: 240 }, { id: "I", x: 380, y: 240 }
+    "name": "Nível 10: O Chefão (Pré-Ordem RED)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 200,
+        "y": 30
+      },
+      {
+        "id": "B",
+        "x": 100,
+        "y": 100
+      },
+      {
+        "id": "C",
+        "x": 300,
+        "y": 100
+      },
+      {
+        "id": "D",
+        "x": 50,
+        "y": 170
+      },
+      {
+        "id": "E",
+        "x": 150,
+        "y": 170
+      },
+      {
+        "id": "F",
+        "x": 250,
+        "y": 170
+      },
+      {
+        "id": "G",
+        "x": 350,
+        "y": 170
+      },
+      {
+        "id": "H",
+        "x": 120,
+        "y": 240
+      },
+      {
+        "id": "I",
+        "x": 380,
+        "y": 240
+      }
     ],
-    links: [ ["A","B"], ["A","C"], ["B","D"], ["B","E"], ["C","F"], ["C","G"], ["E","H"], ["G","I"] ],
-    expected: ["A", "B", "D", "E", "H", "C", "F", "G", "I"],
-    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>A Árvore Gigante!</strong><br>O princípio é o mesmo: não vá pra direita antes de limpar a esquerda!" }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "B",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "C",
+        "G"
+      ],
+      [
+        "E",
+        "H"
+      ],
+      [
+        "G",
+        "I"
+      ]
+    ],
+    "expected": [
+      "A",
+      "B",
+      "D",
+      "E",
+      "H",
+      "C",
+      "F",
+      "G",
+      "I"
+    ],
+    "mirror": {
+      "title": "RED (Pré-Ordem)",
+      "order": {
+        "R": "1º",
+        "E": "2º",
+        "D": "3º"
+      },
+      "desc": "Raiz primeiro!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Esquerda de B é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Sim. Fim do nó D.<br>Terminei toda a perna esquerda do B.<br>Direita de B é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Esquerda de E é NULL? Não (H). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
+      "Esquerda de H é NULL? Sim.<br>Direita de H é NULL? Sim. Fim do nó H.<br>Terminei toda a perna esquerda do E.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a direita do B. Subo de volta.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Esquerda de C é NULL? Não (F). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Esquerda de F é NULL? Sim.<br>Direita de F é NULL? Sim. Fim do nó F.<br>Terminei toda a perna esquerda do C.<br>Direita de C é NULL? Não (G). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
+      "Esquerda de G é NULL? Sim.<br>Direita de G é NULL? Não (I). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
+      "Esquerda de I é NULL? Sim.<br>Direita de I é NULL? Sim. Fim do nó I.<br>Terminei toda a direita do G. Subo de volta.<br>Terminei toda a direita do C. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+    ]
   },
   {
-    name: "Nível 11: O Chefão (In-Ordem ERD)",
-    nodes: [
-      { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 100 }, { id: "C", x: 300, y: 100 },
-      { id: "D", x: 50, y: 170 }, { id: "E", x: 150, y: 170 }, { id: "F", x: 250, y: 170 },
-      { id: "G", x: 350, y: 170 }, { id: "H", x: 120, y: 240 }, { id: "I", x: 380, y: 240 }
+    "name": "Nível 11: O Chefão (In-Ordem ERD)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 200,
+        "y": 30
+      },
+      {
+        "id": "B",
+        "x": 100,
+        "y": 100
+      },
+      {
+        "id": "C",
+        "x": 300,
+        "y": 100
+      },
+      {
+        "id": "D",
+        "x": 50,
+        "y": 170
+      },
+      {
+        "id": "E",
+        "x": 150,
+        "y": 170
+      },
+      {
+        "id": "F",
+        "x": 250,
+        "y": 170
+      },
+      {
+        "id": "G",
+        "x": 350,
+        "y": 170
+      },
+      {
+        "id": "H",
+        "x": 120,
+        "y": 240
+      },
+      {
+        "id": "I",
+        "x": 380,
+        "y": 240
+      }
     ],
-    links: [ ["A","B"], ["A","C"], ["B","D"], ["B","E"], ["C","F"], ["C","G"], ["E","H"], ["G","I"] ],
-    expected: ["D", "B", "H", "E", "A", "F", "C", "G", "I"],
-    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Cuidado!</strong><br>Perceba que H está na ESQUERDA do E. E o I está na DIREITA do G. Respeite a regra rigorosamente!" }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "B",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "C",
+        "G"
+      ],
+      [
+        "E",
+        "H"
+      ],
+      [
+        "G",
+        "I"
+      ]
+    ],
+    "expected": [
+      "D",
+      "B",
+      "H",
+      "E",
+      "A",
+      "F",
+      "C",
+      "G",
+      "I"
+    ],
+    "mirror": {
+      "title": "ERD (In-Ordem)",
+      "order": {
+        "E": "1º",
+        "R": "2º",
+        "D": "3º"
+      },
+      "desc": "Esquerda, Raiz, Direita."
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esq de B é NULL? Não (D). Adio o B e desço pra esq...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Direita de D é NULL. Fim do nó D.<br>Voltei pro B da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Agora vou descer pra direita do B (E)...<br>Esq de E é NULL? Não (H). Adio o E e desço pra esq...<br>Esquerda de H é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
+      "Direita de H é NULL. Fim do nó H.<br>Voltei pro E da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Direita de E é NULL. Fim do nó E.<br>Fim da direita do B. Subo.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Agora vou descer pra direita do A (C)...<br>Esq de C é NULL? Não (F). Adio o C e desço pra esq...<br>Esquerda de F é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Direita de F é NULL. Fim do nó F.<br>Voltei pro C da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Agora vou descer pra direita do C (G)...<br>Esquerda de G é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
+      "Agora vou descer pra direita do G (I)...<br>Esquerda de I é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
+      "Direita de I é NULL. Fim do nó I.<br>Fim da direita do G. Subo.<br>Fim da direita do C. Subo.<br>Fim da direita do A. Subo.<br>"
+    ]
   },
   {
-    name: "Nível 12: O Chefão (Pós-Ordem EDR)",
-    nodes: [
-      { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 100 }, { id: "C", x: 300, y: 100 },
-      { id: "D", x: 50, y: 170 }, { id: "E", x: 150, y: 170 }, { id: "F", x: 250, y: 170 },
-      { id: "G", x: 350, y: 170 }, { id: "H", x: 120, y: 240 }, { id: "I", x: 380, y: 240 }
+    "name": "Nível 12: O Chefão (Pós-Ordem EDR)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 200,
+        "y": 30
+      },
+      {
+        "id": "B",
+        "x": 100,
+        "y": 100
+      },
+      {
+        "id": "C",
+        "x": 300,
+        "y": 100
+      },
+      {
+        "id": "D",
+        "x": 50,
+        "y": 170
+      },
+      {
+        "id": "E",
+        "x": 150,
+        "y": 170
+      },
+      {
+        "id": "F",
+        "x": 250,
+        "y": 170
+      },
+      {
+        "id": "G",
+        "x": 350,
+        "y": 170
+      },
+      {
+        "id": "H",
+        "x": 120,
+        "y": 240
+      },
+      {
+        "id": "I",
+        "x": 380,
+        "y": 240
+      }
     ],
-    links: [ ["A","B"], ["A","C"], ["B","D"], ["B","E"], ["C","F"], ["C","G"], ["E","H"], ["G","I"] ],
-    expected: ["D", "H", "E", "B", "F", "I", "G", "C", "A"],
-    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>O último suspiro!</strong><br>Só clique em um nó se ele for uma folha, ou se você já tiver clicado em todos os filhos dele." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "A",
+        "C"
+      ],
+      [
+        "B",
+        "D"
+      ],
+      [
+        "B",
+        "E"
+      ],
+      [
+        "C",
+        "F"
+      ],
+      [
+        "C",
+        "G"
+      ],
+      [
+        "E",
+        "H"
+      ],
+      [
+        "G",
+        "I"
+      ]
+    ],
+    "expected": [
+      "D",
+      "H",
+      "E",
+      "B",
+      "F",
+      "I",
+      "G",
+      "C",
+      "A"
+    ],
+    "mirror": {
+      "title": "EDR (Pós-Ordem)",
+      "order": {
+        "E": "1º",
+        "D": "2º",
+        "R": "3º"
+      },
+      "desc": "Deixe o Pai por último!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL? Não (D). Adio o B e vou pra Esq...<br>Esq de D é NULL.<br>Dir de D é NULL.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Voltei pro B da esquerda.<br>Dir de B é NULL? Não (E). Adio o B e vou pra Dir...<br>Esq de E é NULL? Não (H). Adio o E e vou pra Esq...<br>Esq de H é NULL.<br>Dir de H é NULL.<br>Esq e Dir de H são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
+      "Voltei pro E da esquerda.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Voltei pro B da direita.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Voltei pro A da esquerda.<br>Dir de A é NULL? Não (C). Adio o A e vou pra Dir...<br>Esq de C é NULL? Não (F). Adio o C e vou pra Esq...<br>Esq de F é NULL.<br>Dir de F é NULL.<br>Esq e Dir de F são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Voltei pro C da esquerda.<br>Dir de C é NULL? Não (G). Adio o C e vou pra Dir...<br>Esq de G é NULL.<br>Dir de G é NULL? Não (I). Adio o G e vou pra Dir...<br>Esq de I é NULL.<br>Dir de I é NULL.<br>Esq e Dir de I são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
+      "Voltei pro G da direita.<br>Esq e Dir de G são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
+      "Voltei pro C da direita.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+    ]
   },
   {
-    name: "Nível 13: Pegadinha da Degenerada (RED)",
-    nodes: [
-      { id: "A", x: 100, y: 40 }, { id: "B", x: 170, y: 110 }, { id: "C", x: 240, y: 180 }, { id: "D", x: 310, y: 250 }
+    "name": "Nível 13: Pegadinha da Degenerada (RED)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 100,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 170,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 240,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 310,
+        "y": 250
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["C","D"] ],
-    expected: ["A", "B", "C", "D"],
-    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Lista Encadeada?</strong><br>Como a esquerda é nula, a Raiz pula pra Direita direto." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ]
+    ],
+    "expected": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "mirror": {
+      "title": "RED (Pré-Ordem)",
+      "order": {
+        "R": "1º",
+        "E": "2º",
+        "D": "3º"
+      },
+      "desc": "Raiz primeiro!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Esquerda de A é NULL? Sim.<br>Direita de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Esquerda de B é NULL? Sim.<br>Direita de B é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Esquerda de C é NULL? Sim.<br>Direita de C é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Sim. Fim do nó D.<br>Terminei toda a direita do C. Subo de volta.<br>Terminei toda a direita do B. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+    ]
   },
   {
-    name: "Nível 14: Pegadinha da Degenerada (ERD)",
-    nodes: [
-      { id: "A", x: 100, y: 40 }, { id: "B", x: 170, y: 110 }, { id: "C", x: 240, y: 180 }, { id: "D", x: 310, y: 250 }
+    "name": "Nível 14: Pegadinha da Degenerada (ERD)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 100,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 170,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 240,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 310,
+        "y": 250
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["C","D"] ],
-    expected: ["A", "B", "C", "D"],
-    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Pegadinha!</strong><br>Normalmente ERD inverte as coisas... mas se não existe ninguém na esquerda, a Raiz fala primeiro!" }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ]
+    ],
+    "expected": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "mirror": {
+      "title": "ERD (In-Ordem)",
+      "order": {
+        "E": "1º",
+        "R": "2º",
+        "D": "3º"
+      },
+      "desc": "Esquerda, Raiz, Direita."
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esquerda de A é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Agora vou descer pra direita do A (B)...<br>Esquerda de B é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Agora vou descer pra direita do B (C)...<br>Esquerda de C é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Agora vou descer pra direita do C (D)...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Direita de D é NULL. Fim do nó D.<br>Fim da direita do C. Subo.<br>Fim da direita do B. Subo.<br>Fim da direita do A. Subo.<br>"
+    ]
   },
   {
-    name: "Nível 15: Pegadinha da Degenerada (EDR)",
-    nodes: [
-      { id: "A", x: 100, y: 40 }, { id: "B", x: 170, y: 110 }, { id: "C", x: 240, y: 180 }, { id: "D", x: 310, y: 250 }
+    "name": "Nível 15: Pegadinha da Degenerada (EDR)",
+    "nodes": [
+      {
+        "id": "A",
+        "x": 100,
+        "y": 40
+      },
+      {
+        "id": "B",
+        "x": 170,
+        "y": 110
+      },
+      {
+        "id": "C",
+        "x": 240,
+        "y": 180
+      },
+      {
+        "id": "D",
+        "x": 310,
+        "y": 250
+      }
     ],
-    links: [ ["A","B"], ["B","C"], ["C","D"] ],
-    expected: ["D", "C", "B", "A"],
-    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>De trás pra frente!</strong><br>O D não tem filho, então vai ele. E assim sobe." }
+    "links": [
+      [
+        "A",
+        "B"
+      ],
+      [
+        "B",
+        "C"
+      ],
+      [
+        "C",
+        "D"
+      ]
+    ],
+    "expected": [
+      "D",
+      "C",
+      "B",
+      "A"
+    ],
+    "mirror": {
+      "title": "EDR (Pós-Ordem)",
+      "order": {
+        "E": "1º",
+        "D": "2º",
+        "R": "3º"
+      },
+      "desc": "Deixe o Pai por último!"
+    },
+    "explanations": [
+      "Começando na raiz A.<br>Esq de A é NULL.<br>Dir de A é NULL? Não (B). Adio o A e vou pra Dir...<br>Esq de B é NULL.<br>Dir de B é NULL? Não (C). Adio o B e vou pra Dir...<br>Esq de C é NULL.<br>Dir de C é NULL? Não (D). Adio o C e vou pra Dir...<br>Esq de D é NULL.<br>Dir de D é NULL.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Voltei pro C da direita.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Voltei pro B da direita.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+    ]
   }
 ];
 
@@ -321,7 +1384,9 @@ function loadLevel(idx) {
   updateMirror(lvl.mirror);
   
   ui.svg.innerHTML = ''; ui.nodes.innerHTML = ''; ui.seq.innerHTML = '';
-  ui.fbk.className = 'feedback'; ui.btn.style.display = 'none';
+  ui.fbk.className = 'feedback';
+  if(document.getElementById('console-text')) document.getElementById('console-text').innerHTML = lvl.explanations[0];
+ ui.btn.style.display = 'none';
   currentIndex = 0;
   
   lvl.links.forEach(l => {
