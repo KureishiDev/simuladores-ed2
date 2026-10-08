@@ -79,27 +79,27 @@
   .fb-badge.pos { background: #89b4fa; color: #11111b; }
   .fb-badge.zero { background: #a6e3a1; color: #11111b; }
 
-  /* Flashcards Interativos abaixo dos boxes */
+  /* Flashcards Interativos Horizontalizados */
   .flashcards-section {
     width: 100%;
-    max-width: 900px;
-    margin-top: 25px;
+    max-width: 940px;
+    margin-top: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
   .flashcards-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 10px;
+    padding: 0 4px;
     box-sizing: border-box;
   }
   .flashcards-title {
     color: #fab387;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -110,8 +110,8 @@
     color: #cdd6f4;
     border: 1px solid #585b70;
     border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 13px;
+    padding: 5px 12px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
@@ -121,18 +121,18 @@
     color: #fff;
   }
   .flashcards-grid {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
     width: 100%;
+    box-sizing: border-box;
   }
   .flashcard {
-    width: 205px;
-    height: 125px;
+    height: 105px;
     perspective: 1000px;
     cursor: pointer;
     user-select: none;
+    width: 100%;
   }
   .flashcard-inner {
     position: relative;
@@ -141,8 +141,8 @@
     text-align: center;
     transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
     transform-style: preserve-3d;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
   .flashcard.flipped .flashcard-inner {
     transform: rotateY(180deg);
@@ -153,8 +153,8 @@
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 12px;
-    padding: 10px 12px;
+    border-radius: 10px;
+    padding: 8px 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -179,19 +179,33 @@
   .card-diff .flashcard-back { border-color: #eba0ac; }
   
   .fc-badge {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
-    padding: 2px 8px;
-    border-radius: 10px;
+    padding: 2px 7px;
+    border-radius: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .fc-badge.neg { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
   .fc-badge.pos { background: rgba(137, 180, 250, 0.2); color: #89b4fa; border: 1px solid #89b4fa; }
   .fc-badge.eq { background: rgba(249, 226, 175, 0.2); color: #f9e2af; border: 1px solid #f9e2af; }
   .fc-badge.diff { background: rgba(235, 160, 172, 0.2); color: #eba0ac; border: 1px solid #eba0ac; }
   .fc-badge.action { background: #a6e3a1; color: #11111b; }
+
+  @media (max-width: 900px) {
+    .flashcards-grid {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .flashcard {
+      min-width: 200px;
+      flex-shrink: 0;
+    }
+  }
 </style>
 
 <!-- Polyfill para iPad Touch Drag & Drop -->
@@ -230,11 +244,11 @@
   </div>
 </div>
 
-<!-- Flashcards de Regras de Rotação AVL (Abaixo dos Boxes) -->
+<!-- Flashcards de Regras de Rotação AVL (Horizontalizados) -->
 <div class="flashcards-section">
   <div class="flashcards-header">
     <div class="flashcards-title">
-      <span>🎴</span> Regras de Ouro da Rotação (Toque no card para virar)
+      <span>🎴</span> Regras de Rotação AVL (Toque em qualquer card para virar)
     </div>
     <button class="flip-all-btn" id="btn-flip-all" onclick="toggleAllCards()">🔄 Virar Todos</button>
   </div>
@@ -245,16 +259,15 @@
       <div class="flashcard-inner">
         <div class="flashcard-front">
           <div class="fc-badge neg">FB NEGATIVO (-)</div>
-          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">Perna ESQUERDA pesada</div>
-          <div style="font-size: 11px; color: #a6adc8;">Toque para ver quem vira Pai 👆</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Perna ESQ mais pesada</div>
+          <div style="font-size: 11px; color: #a6adc8;">Quem vira Pai? 👆</div>
         </div>
         <div class="flashcard-back">
           <div class="fc-badge action">GIRA DIREITA ➡️</div>
-          <div style="font-weight: 800; font-size: 14px; color: #a6e3a1; margin: 3px 0;">Filho da ESQUERDA vira PAI!</div>
-          <div style="font-size: 11px; color: #bac2de; line-height: 1.3;">Ele sobe para a raiz, e a antiga raiz desce e vira filho da direita dele.</div>
+          <div style="font-weight: 800; font-size: 13px; color: #a6e3a1; margin: 2px 0;">Filho da ESQ vira PAI!</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Antiga raiz desce p/ direita.</div>
         </div>
       </div>
-    </div>
     </div>
 
     <!-- Card 2: FB Positivo -->
@@ -262,16 +275,15 @@
       <div class="flashcard-inner">
         <div class="flashcard-front">
           <div class="fc-badge pos">FB POSITIVO (+)</div>
-          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">Perna DIREITA pesada</div>
-          <div style="font-size: 11px; color: #a6adc8;">Toque para ver quem vira Pai 👆</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">Perna DIR mais pesada</div>
+          <div style="font-size: 11px; color: #a6adc8;">Quem vira Pai? 👆</div>
         </div>
         <div class="flashcard-back">
           <div class="fc-badge action">GIRA ESQUERDA ⬅️</div>
-          <div style="font-weight: 800; font-size: 14px; color: #89b4fa; margin: 3px 0;">Filho da DIREITA vira PAI!</div>
-          <div style="font-size: 11px; color: #bac2de; line-height: 1.3;">Ele sobe para a raiz, e a antiga raiz desce e vira filho da esquerda dele.</div>
+          <div style="font-weight: 800; font-size: 13px; color: #89b4fa; margin: 2px 0;">Filho da DIR vira PAI!</div>
+          <div style="font-size: 10.5px; color: #bac2de;">Antiga raiz desce p/ esquerda.</div>
         </div>
       </div>
-    </div>
     </div>
 
     <!-- Card 3: Sinais Iguais -->
@@ -279,13 +291,13 @@
       <div class="flashcard-inner">
         <div class="flashcard-front">
           <div class="fc-badge eq">SINAIS IGUAIS</div>
-          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">(- com -) ou (+ com +)</div>
-          <div style="font-size: 11px; color: #a6adc8;">Qual rotação usar? 👆</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">(- com -) ou (+ com +)</div>
+          <div style="font-size: 11px; color: #a6adc8;">Qual rotação? 👆</div>
         </div>
         <div class="flashcard-back">
-          <div class="fc-badge eq">RESULTADO</div>
-          <div style="font-weight: 800; font-size: 15px; color: #f9e2af; margin: 4px 0;">1 ROTAÇÃO SIMPLES! ⚖️</div>
-          <div style="font-size: 11px; color: #bac2de;">A perna já está reta. Basta 1 giro simples na raiz!</div>
+          <div class="fc-badge eq">ROTAÇÃO SIMPLES ⚖️</div>
+          <div style="font-weight: 800; font-size: 13px; color: #f9e2af; margin: 2px 0;">Apenas 1 Giro na Raiz!</div>
+          <div style="font-size: 10.5px; color: #bac2de;">A perna já está alinhada reta.</div>
         </div>
       </div>
     </div>
@@ -295,23 +307,22 @@
       <div class="flashcard-inner">
         <div class="flashcard-front">
           <div class="fc-badge diff">SINAIS DIFERENTES</div>
-          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">(- com +) ou (+ com -)</div>
+          <div style="font-weight: bold; font-size: 13px; margin: 2px 0;">(- com +) ou (+ com -)</div>
           <div style="font-size: 11px; color: #a6adc8;">Formou joelho! 👆</div>
         </div>
         <div class="flashcard-back">
-          <div class="fc-badge diff">2 PASSOS OBRIGATÓRIOS</div>
-          <div style="font-weight: 800; font-size: 14px; color: #f38ba8; margin: 2px 0;">ROTAÇÃO DUPLA! ⚡</div>
-          <div style="font-size: 11px; color: #fab387; line-height: 1.3;">1º Gire o FILHO (alinhando os sinais)<br>2º Gire a RAIZ!</div>
+          <div class="fc-badge diff">ROTAÇÃO DUPLA ⚡</div>
+          <div style="font-weight: 800; font-size: 12.5px; color: #f38ba8; margin: 2px 0;">1º Gira FILHO ➔ 2º RAIZ</div>
+          <div style="font-size: 10.5px; color: #fab387;">Alinhe o joelho antes do giro final!</div>
         </div>
       </div>
     </div>
   </div>
   
-  <div style="font-size: 13px; color: #a6adc8; margin-top: 4px;">
-    📐 Fórmula UTFPR: <strong style="color: #a6e3a1;">fb(x) = h<sub>d</sub>(x) - h<sub>e</sub>(x)</strong> (Altura Direita menos Altura Esquerda)
+  <div style="font-size: 12.5px; color: #a6adc8; margin-top: 2px;">
+    📐 Regra da UTFPR: <strong style="color: #a6e3a1;">fb(x) = h<sub>d</sub>(x) - h<sub>e</sub>(x)</strong>
   </div>
 </div>
-
 <div class="controls">
   <button id="btn-action">Verificar Rotação</button>
   <div id="feedback" class="feedback"></div>
