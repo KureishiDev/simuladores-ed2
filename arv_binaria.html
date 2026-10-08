@@ -144,10 +144,7 @@ const levels = [
     ],
     links: [ ["A","B"], ["B","D"], ["A","C"], ["C","E"], ["C","F"] ],
     expected: ["A", "B", "D", "C", "E", "F"],
-    mirror: {
-      title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" },
-      desc: "<strong>Chegou, Anotou!</strong><br>Pise na Raiz, desça TUDO pra Esquerda, e só depois olhe pra Direita."
-    }
+    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Chegou, Anotou!</strong><br>Pise na Raiz, desça TUDO pra Esquerda, e só depois olhe pra Direita." }
   },
   {
     name: "Nível 2: In-Ordem (ERD) - Árvore Clássica",
@@ -157,10 +154,7 @@ const levels = [
     ],
     links: [ ["A","B"], ["B","D"], ["A","C"], ["C","E"], ["C","F"] ],
     expected: ["D", "B", "A", "E", "C", "F"],
-    mirror: {
-      title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" },
-      desc: "<strong>A Esquerda é a Rainha!</strong><br>Desça até a última folha da esquerda, anote. Suba pro Pai, anote. Depois o filho da direita."
-    }
+    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>A Esquerda é a Rainha!</strong><br>Desça até a última folha da esquerda, anote. Suba pro Pai, anote. Depois o filho da direita." }
   },
   {
     name: "Nível 3: Pós-Ordem (EDR) - Árvore Clássica",
@@ -170,13 +164,64 @@ const levels = [
     ],
     links: [ ["A","B"], ["B","D"], ["A","C"], ["C","E"], ["C","F"] ],
     expected: ["D", "B", "E", "F", "C", "A"],
-    mirror: {
-      title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" },
-      desc: "<strong>Os Filhos Primeiro!</strong><br>O Pai (Raiz) é o ÚLTIMO. Limpe a esquerda, limpe a direita, e só então clique na raiz."
-    }
+    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>Os Filhos Primeiro!</strong><br>O Pai (Raiz) é o ÚLTIMO. Limpe a esquerda, limpe a direita, e só então clique na raiz." }
   },
   {
-    name: "Nível 4: O Chefão (Pré-Ordem RED)",
+    name: "Nível 4: A Serpentina Zig-Zag (RED)",
+    nodes: [
+      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 250, y: 180 }, { id: "D", x: 150, y: 250 }, { id: "E", x: 250, y: 320 }
+    ],
+    links: [ ["A","B"], ["B","C"], ["C","D"], ["D","E"] ],
+    expected: ["A", "B", "C", "D", "E"],
+    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Cobrinha!</strong><br>Atenção nos nós que não têm filho esquerdo (B e D)." }
+  },
+  {
+    name: "Nível 5: A Serpentina Zig-Zag (ERD)",
+    nodes: [
+      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 250, y: 180 }, { id: "D", x: 150, y: 250 }, { id: "E", x: 250, y: 320 }
+    ],
+    links: [ ["A","B"], ["B","C"], ["C","D"], ["D","E"] ],
+    expected: ["B", "D", "E", "C", "A"],
+    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Atenção redobrada!</strong><br>Se não há filho na esquerda, a Raiz toma a vez e depois tenta a direita. Use a Lousa se precisar!" }
+  },
+  {
+    name: "Nível 6: A Serpentina Zig-Zag (EDR)",
+    nodes: [
+      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 250, y: 180 }, { id: "D", x: 150, y: 250 }, { id: "E", x: 250, y: 320 }
+    ],
+    links: [ ["A","B"], ["B","C"], ["C","D"], ["D","E"] ],
+    expected: ["E", "D", "C", "B", "A"],
+    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>De trás pra frente?</strong><br>Como a cobrinha só tem uma linha de descendência contínua, parece que estamos subindo de ré!" }
+  },
+  {
+    name: "Nível 7: A Árvore 'V' (RED)",
+    nodes: [
+      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 50, y: 180 }, { id: "D", x: 350, y: 110 }, { id: "E", x: 450, y: 180 }
+    ],
+    links: [ ["A","B"], ["B","C"], ["A","D"], ["D","E"] ],
+    expected: ["A", "B", "C", "D", "E"],
+    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Dividir e Conquistar!</strong><br>Termine tudo na esquerda do V, para depois fazer a direita do V." }
+  },
+  {
+    name: "Nível 8: A Árvore 'V' (ERD)",
+    nodes: [
+      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 50, y: 180 }, { id: "D", x: 350, y: 110 }, { id: "E", x: 450, y: 180 }
+    ],
+    links: [ ["A","B"], ["B","C"], ["A","D"], ["D","E"] ],
+    expected: ["C", "B", "A", "D", "E"],
+    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Sem atalhos!</strong><br>Na perna esquerda ela inverte (C, B, A), mas na perna direita o D vem antes do E. Por que?" }
+  },
+  {
+    name: "Nível 9: A Árvore 'V' (EDR)",
+    nodes: [
+      { id: "A", x: 250, y: 40 }, { id: "B", x: 150, y: 110 }, { id: "C", x: 50, y: 180 }, { id: "D", x: 350, y: 110 }, { id: "E", x: 450, y: 180 }
+    ],
+    links: [ ["A","B"], ["B","C"], ["A","D"], ["D","E"] ],
+    expected: ["C", "B", "E", "D", "A"],
+    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>Limpe o terreno!</strong><br>As pontas do V primeiro, e as raízes depois." }
+  },
+  {
+    name: "Nível 10: O Chefão (Pré-Ordem RED)",
     nodes: [
       { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 100 }, { id: "C", x: 300, y: 100 },
       { id: "D", x: 50, y: 170 }, { id: "E", x: 150, y: 170 }, { id: "F", x: 250, y: 170 },
@@ -184,13 +229,10 @@ const levels = [
     ],
     links: [ ["A","B"], ["A","C"], ["B","D"], ["B","E"], ["C","F"], ["C","G"], ["E","H"], ["G","I"] ],
     expected: ["A", "B", "D", "E", "H", "C", "F", "G", "I"],
-    mirror: {
-      title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" },
-      desc: "<strong>Chegou, Anotou!</strong><br>Atenção nas sub-árvores maiores. O princípio é o mesmo: não vá pra direita antes de limpar a esquerda!"
-    }
+    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>A Árvore Gigante!</strong><br>O princípio é o mesmo: não vá pra direita antes de limpar a esquerda!" }
   },
   {
-    name: "Nível 5: O Chefão (In-Ordem ERD)",
+    name: "Nível 11: O Chefão (In-Ordem ERD)",
     nodes: [
       { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 100 }, { id: "C", x: 300, y: 100 },
       { id: "D", x: 50, y: 170 }, { id: "E", x: 150, y: 170 }, { id: "F", x: 250, y: 170 },
@@ -198,13 +240,10 @@ const levels = [
     ],
     links: [ ["A","B"], ["A","C"], ["B","D"], ["B","E"], ["C","F"], ["C","G"], ["E","H"], ["G","I"] ],
     expected: ["D", "B", "H", "E", "A", "F", "C", "G", "I"],
-    mirror: {
-      title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" },
-      desc: "<strong>Cuidado!</strong><br>Perceba que H está na ESQUERDA do E. E o I está na DIREITA do G. Respeite a regra rigorosamente!"
-    }
+    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Cuidado!</strong><br>Perceba que H está na ESQUERDA do E. E o I está na DIREITA do G. Respeite a regra rigorosamente!" }
   },
   {
-    name: "Nível 6: O Chefão (Pós-Ordem EDR)",
+    name: "Nível 12: O Chefão (Pós-Ordem EDR)",
     nodes: [
       { id: "A", x: 200, y: 30 }, { id: "B", x: 100, y: 100 }, { id: "C", x: 300, y: 100 },
       { id: "D", x: 50, y: 170 }, { id: "E", x: 150, y: 170 }, { id: "F", x: 250, y: 170 },
@@ -212,46 +251,34 @@ const levels = [
     ],
     links: [ ["A","B"], ["A","C"], ["B","D"], ["B","E"], ["C","F"], ["C","G"], ["E","H"], ["G","I"] ],
     expected: ["D", "H", "E", "B", "F", "I", "G", "C", "A"],
-    mirror: {
-      title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" },
-      desc: "<strong>O último suspiro!</strong><br>Só clique em um nó se ele for uma folha, ou se você já tiver clicado em todos os filhos dele."
-    }
+    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>O último suspiro!</strong><br>Só clique em um nó se ele for uma folha, ou se você já tiver clicado em todos os filhos dele." }
   },
   {
-    name: "Nível 7: A Degenerada (RED)",
+    name: "Nível 13: Pegadinha da Degenerada (RED)",
     nodes: [
       { id: "A", x: 100, y: 40 }, { id: "B", x: 170, y: 110 }, { id: "C", x: 240, y: 180 }, { id: "D", x: 310, y: 250 }
     ],
     links: [ ["A","B"], ["B","C"], ["C","D"] ],
     expected: ["A", "B", "C", "D"],
-    mirror: {
-      title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" },
-      desc: "<strong>Lista Encadeada?</strong><br>Isso é uma árvore degenerada (só tem filhos para a direita). Como a esquerda é nula, a Raiz pula pra Direita direto."
-    }
+    mirror: { title: "RED (Pré-Ordem)", order: { R: "1º", E: "2º", D: "3º" }, desc: "<strong>Lista Encadeada?</strong><br>Como a esquerda é nula, a Raiz pula pra Direita direto." }
   },
   {
-    name: "Nível 8: A Degenerada (ERD)",
+    name: "Nível 14: Pegadinha da Degenerada (ERD)",
     nodes: [
       { id: "A", x: 100, y: 40 }, { id: "B", x: 170, y: 110 }, { id: "C", x: 240, y: 180 }, { id: "D", x: 310, y: 250 }
     ],
     links: [ ["A","B"], ["B","C"], ["C","D"] ],
     expected: ["A", "B", "C", "D"],
-    mirror: {
-      title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" },
-      desc: "<strong>Pegadinha!</strong><br>Normalmente ERD inverte as coisas... mas se não existe ninguém na esquerda pra dar prioridade, a Raiz acaba falando primeiro!"
-    }
+    mirror: { title: "ERD (In-Ordem)", order: { E: "1º", R: "2º", D: "3º" }, desc: "<strong>Pegadinha!</strong><br>Normalmente ERD inverte as coisas... mas se não existe ninguém na esquerda, a Raiz fala primeiro!" }
   },
   {
-    name: "Nível 9: A Degenerada (EDR)",
+    name: "Nível 15: Pegadinha da Degenerada (EDR)",
     nodes: [
       { id: "A", x: 100, y: 40 }, { id: "B", x: 170, y: 110 }, { id: "C", x: 240, y: 180 }, { id: "D", x: 310, y: 250 }
     ],
     links: [ ["A","B"], ["B","C"], ["C","D"] ],
     expected: ["D", "C", "B", "A"],
-    mirror: {
-      title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" },
-      desc: "<strong>De trás pra frente!</strong><br>A regra é: os filhos primeiro! O D não tem filho, então vai ele. O C agora tem o filho impresso, então vai ele... e assim sobe."
-    }
+    mirror: { title: "EDR (Pós-Ordem)", order: { E: "1º", D: "2º", R: "3º" }, desc: "<strong>De trás pra frente!</strong><br>O D não tem filho, então vai ele. E assim sobe." }
   }
 ];
 
