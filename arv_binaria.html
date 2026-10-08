@@ -1415,9 +1415,15 @@ function loadLevel(idx) {
         currentIndex++;
         
         showMsg("Certo! Olhe o espelho para achar o próximo.", "success");
+        if(document.getElementById('console-text') && currentIndex < lvl.expected.length) {
+            document.getElementById('console-text').innerHTML = lvl.explanations[currentIndex];
+        }
         
         if(currentIndex === lvl.expected.length) {
           showMsg("🏆 Percurso perfeito! O espelho não mente.", "success");
+          if(document.getElementById('console-text')) {
+              document.getElementById('console-text').innerHTML += "<br><br><span style='color:#a6e3a1'>🏆 Travessia concluída com sucesso!</span>";
+          }
           ui.btn.style.display = 'inline-block';
         }
       } else {
