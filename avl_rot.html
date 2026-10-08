@@ -245,9 +245,27 @@ function loadPhase(lvlIdx, phIdx) {
   ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
   ui.fbk.className = 'feedback'; ui.btn.textContent = "Verificar Rotação";
   
+  isAwaitingAdvance = false;
   if (lvl.phases.length > 1) {
-    ui.badge.style.display = 'inline-block'; ui.badge.textContent = `Passo ${phIdx+1} de ${lvl.phases.length}`;
-  } else ui.badge.style.display = 'none';
+    ui.badge.style.display = 'inline-block';
+    if (phIdx === 0) {
+      ui.badge.style.background = '#fab387';
+      ui.badge.textContent = `⚡ PASSO 1 DE 2: Rotação no FILHO (Alinhar o Joelho)`;
+      document.getElementById('title-right').textContent = "Passo 1: Gire o Filho (Estique a perna)";
+      document.querySelector('#panel-left .panel-title').textContent = "Árvore com Joelho (Sinais Diferentes)";
+    } else {
+      ui.badge.style.background = '#a6e3a1';
+      ui.badge.textContent = `🎯 PASSO 2 DE 2: Rotação Simples na RAIZ (Resultado Final)`;
+      document.getElementById('title-right').textContent = "Passo 2: Gire a Raiz (Balanceamento Final)";
+      document.querySelector('#panel-left .panel-title').textContent = "Perna Esticada (Sinais Iguais - Faça Rotação Simples)";
+    }
+  } else {
+    ui.badge.style.display = 'inline-block';
+    ui.badge.style.background = '#89b4fa';
+    ui.badge.textContent = `⚖️ ROTAÇÃO SIMPLES (1 Passo Único)`;
+    document.getElementById('title-right').textContent = "Arraste para Consertar";
+    document.querySelector('#panel-left .panel-title').textContent = "Árvore Quebrada (Sinais Iguais)";
+  }
 
   phase.linksLeft.forEach(l => {
     const n1 = phase.nodes.find(n => n.id === l[0]); const n2 = phase.nodes.find(n => n.id === l[1]);
@@ -289,24 +307,34 @@ function loadPhase(lvlIdx, phIdx) {
   });
 }
 
+let isAwaitingAdvance = false;
+
 ui.btn.addEventListener('click', () => {
-  if (ui.btn.textContent.includes("Próximo")) {
+  if (isAwaitingAdvance) {
+    isAwaitingAdvance = false;
     const lvl = levels[currentLevel];
     if (currentPhase + 1 < lvl.phases.length) {
-      currentPhase++; loadPhase(currentLevel, currentPhase);
+      currentPhase++;
+      loadPhase(currentLevel, currentPhase);
     } else {
-      currentLevel++; currentPhase = 0;
-      if (currentLevel < levels.length) loadPhase(currentLevel, currentPhase);
-      else {
-        ui.levelName.textContent = "Cirurgia Concluída! 🎉"; ui.levelDesc.textContent = "Você dominou as rotações passo a passo.";
-        ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = ''; ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
-        ui.btn.style.display = 'none'; ui.fbk.style.display = 'none'; ui.badge.style.display = 'none';
+      currentLevel++;
+      currentPhase = 0;
+      if (currentLevel < levels.length) {
+        loadPhase(currentLevel, currentPhase);
+      } else {
+        ui.levelName.textContent = "Cirurgia Concluída! 🎉";
+        ui.levelDesc.textContent = "Você dominou todas as rotações simples e duplas passo a passo.";
+        ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = '';
+        ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+        ui.btn.style.display = 'none'; ui.fbk.style.display = 'none';
+        ui.badge.style.display = 'none';
       }
     }
     return;
   }
 
-  let allPlaced = true; let allCorrect = true;
+  let allPlaced = true;
+  let allCorrect = true;
   document.querySelectorAll('.slot').forEach(slot => {
     if (slot.children.length === 0) allPlaced = false;
     else {
@@ -316,16 +344,19 @@ ui.btn.addEventListener('click', () => {
     }
   });
 
-  if (!allPlaced) showMsg("Arraste todas as letras para os espaços!", "error");
-  else if (!allCorrect) showMsg("Rotação incorreta! Consulte as dicas do Espelho ao lado.", "error");
-  else {
+  if (!allPlaced) {
+    showMsg("Arraste todas as letras para os espaços tracejados!", "error");
+  } else if (!allCorrect) {
+    showMsg("Rotação incorreta! Consulte as regras e os sinais de FB ao lado.", "error");
+  } else {
+    isAwaitingAdvance = true;
     const lvl = levels[currentLevel];
     if (currentPhase + 1 < lvl.phases.length) {
-      showMsg("Passo 1 Perfeito! Agora a perna esticou. Clique para o Passo 2.", "success");
-      ui.btn.textContent = "Ir para Passo 2";
+      showMsg("✅ PASSO 1/2 PERFEITO! O filho girou, os sinais agora são IGUAIS e a perna esticou. Clique abaixo para fazer o Passo 2!", "success");
+      ui.btn.textContent = "Avançar para Passo 2 ➔";
     } else {
-      showMsg("Perfeito! Rotação finalizada com maestria!", "success");
-      ui.btn.textContent = "Próximo Nível";
+      showMsg("🏆 ROTAÇÃO FINALIZADA COM SUCESSO! A árvore agora está 100% balanceada (todos com fb = 0).", "success");
+      ui.btn.textContent = "Próximo Nível ➔";
     }
   }
 });
