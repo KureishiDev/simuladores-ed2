@@ -75,7 +75,16 @@
 .clear-btn { background: #89b4fa; display: none; }
 #scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
 
+
+  .pulse-1 { animation: pulse-seq 3s infinite; animation-delay: 0s; }
+  .pulse-2 { animation: pulse-seq 3s infinite; animation-delay: 1s; }
+  .pulse-3 { animation: pulse-seq 3s infinite; animation-delay: 2s; }
+  @keyframes pulse-seq {
+    0%, 15% { box-shadow: 0 0 0 6px rgba(255,255,255,0.8); transform: scale(1.15); filter: brightness(1.5); }
+    30%, 100% { box-shadow: 0 4px 6px rgba(0,0,0,0.4); transform: scale(1); filter: brightness(1); }
+  }
 </style>
+
 
 <!-- Polyfill para iPad Touch Drag & Drop -->
 <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
@@ -102,14 +111,17 @@
 </div>
 
 <div class="game-container">
-  <!-- Painel da Árvore Real -->
   <div class="panel">
     <svg id="svg"></svg>
     <div id="nodes"></div>
   </div>
+  <div class="console-panel" style="background: #1e1e2e; border: 2px solid #a6e3a1; border-radius: 12px; padding: 15px; width: 400px; margin-top: 0; align-self: stretch; max-height: 400px; overflow-y: auto; font-size: 14px; font-family: monospace; font-size: 16px; color: #bac2de; line-height: 1.5; box-shadow: 0 10px 15px rgba(0,0,0,0.3);">
+    <div style="color: #a6e3a1; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #45475a; padding-bottom: 5px;">🤖 Call Stack do Algoritmo:</div>
+    <div id="console-text">Aguardando início...</div>
+  </div>
+</div>
 
-  <!-- Painel do Espelho (Regra Visual) -->
-  <div class="mirror-panel">
+<div class="mirror-panel">
     <h3>🪞 O Espelho</h3>
     <div class="mirror-title" id="mirror-title">RED</div>
     
@@ -128,13 +140,7 @@
       Carregando mentalidade...
     </div>
   </div>
-</div>
 
-
-  <div class="console-panel" style="background: #1e1e2e; border: 2px solid #a6e3a1; border-radius: 12px; padding: 15px; width: 100%; max-width: 780px; margin-top: 20px; font-family: monospace; font-size: 16px; color: #bac2de; line-height: 1.5; box-shadow: 0 10px 15px rgba(0,0,0,0.3);">
-    <div style="color: #a6e3a1; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #45475a; padding-bottom: 5px;">🤖 Call Stack do Algoritmo:</div>
-    <div id="console-text">Aguardando início...</div>
-  </div>
 
 <div class="sequence-box" id="sequence"></div>
 <div id="feedback" class="feedback"></div>
