@@ -38,6 +38,17 @@
   #nodes, #nodes-left, #slots-right { min-width: 500px; position: relative; height: 350px;}
 }
 
+
+/* Apple Pencil / Scratchpad Mode */
+#scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
+#scratchpad.active { pointer-events: auto; cursor: crosshair; }
+.pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
+.pencil-btn { background: #fab387; color: #1e1e2e; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+.pencil-btn:hover { transform: scale(1.1); }
+.pencil-btn.active { background: #f38ba8; }
+.clear-btn { background: #89b4fa; display: none; }
+#scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
+
 </style>
 
 <!-- Polyfill para iPad Touch Drag & Drop -->
@@ -225,5 +236,87 @@ ui.nodesLeft.addEventListener('drop', e => {
 });
 loadLevel(0);
 </script>
+
+<!-- Apple Pencil Script -->
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  if(document.getElementById('scratchpad')) return; // already injected somehow
+  
+  const canvas = document.createElement('canvas');
+  canvas.id = 'scratchpad';
+  document.body.appendChild(canvas);
+  
+  const tools = document.createElement('div');
+  tools.className = 'pencil-tools';
+  tools.innerHTML = `<button class="pencil-btn clear-btn" id="clear-btn" title="Limpar Lousa">🗑️</button><button class="pencil-btn" id="pencil-btn" title="Modo Apple Pencil">✏️</button>`;
+  document.body.appendChild(tools);
+
+  const ctx = canvas.getContext('2d');
+  const pencilBtn = document.getElementById('pencil-btn');
+  const clearBtn = document.getElementById('clear-btn');
+  let isDrawing = false;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  pencilBtn.addEventListener('click', () => {
+    canvas.classList.toggle('active');
+    pencilBtn.classList.toggle('active');
+    if(canvas.classList.contains('active')) {
+      pencilBtn.textContent = '❌';
+      document.body.style.overflow = 'hidden'; // lock scrolling while drawing
+    } else {
+      pencilBtn.textContent = '✏️';
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+
+  function getPos(e) {
+    if(e.touches && e.touches.length > 0) {
+       return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  function startDraw(e) {
+    if(!canvas.classList.contains('active')) return;
+    isDrawing = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    if(e.cancelable) e.preventDefault();
+  }
+
+  function draw(e) {
+    if(!isDrawing || !canvas.classList.contains('active')) return;
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = '#f38ba8';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    if(e.cancelable) e.preventDefault();
+  }
+
+  function stopDraw() { isDrawing = false; }
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  window.addEventListener('mouseup', stopDraw);
+  
+  canvas.addEventListener('touchstart', startDraw, {passive: false});
+  canvas.addEventListener('touchmove', draw, {passive: false});
+  window.addEventListener('touchend', stopDraw);
+});
+</script>
+
 </body>
 </html>
