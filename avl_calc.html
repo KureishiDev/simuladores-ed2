@@ -24,13 +24,38 @@
   .controls { text-align: center; margin-top: 30px; }
   button.action-btn { background: #f9e2af; color: #11111b; border: none; padding: 12px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
   button.action-btn:hover { background: #fae3b0; transform: translateY(-2px); }
-  .feedback { margin-top: 15px; font-size: 18px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; opacity: 0; transition: 0.3s; }
+  .feedback { margin-top: 15px; font-size: 16px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; opacity: 0; transition: 0.3s; }
   .feedback.show { opacity: 1; }
   .success { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; border: 1px solid #a6e3a1; }
   .error { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
   .voltar { position: absolute; top: 20px; left: 20px; background: #45475a; color: #cdd6f4; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; font-size: 14px; font-family: inherit;}
   .voltar:hover { background: #585b70; }
+
+/* Ajustes para iPad e Telas Menores */
+@media (max-width: 1024px) {
+  .game-container { flex-direction: column; align-items: center; }
+  .panel { max-width: 95vw; overflow-x: auto; height: auto; padding-bottom: 20px;}
+  .board { flex-direction: column; align-items: center; max-width: 100vw; overflow-x: auto;}
+  .mirror-panel { width: 90vw; margin-bottom: 20px; }
+  svg { min-width: 500px; }
+  #nodes, #nodes-left, #slots-right { min-width: 500px; position: relative; height: 350px;}
+}
+
 </style>
+
+<!-- Polyfill para iPad Touch Drag & Drop -->
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour-polyfill.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    MobileDragDrop.polyfill({
+        dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+    });
+    window.addEventListener('touchmove', function() {}, {passive: false});
+  });
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+
 </head>
 <body>
 <a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
@@ -58,9 +83,9 @@ const levels = [
     name: "Treino 1: O Cotoco",
     desc: "Qual o FB de cada nó? Lembre-se: FB = Altura Direita - Altura Esquerda. Folhas têm filhos vazios (altura -1).",
     nodes: [
-      { id: "W", x: 275, y: 50, fb: 2 },
-      { id: "X", x: 350, y: 150, fb: 1 },
-      { id: "Y", x: 425, y: 250, fb: 0 }
+      { id: "W", x: 275, y: 50, fb: 2, he: -1, hd: 1 },
+      { id: "X", x: 350, y: 150, fb: 1, he: -1, hd: 0 },
+      { id: "Y", x: 425, y: 250, fb: 0, he: -1, hd: -1 }
     ],
     links: [ ["W","X"], ["X","Y"] ]
   },
@@ -68,9 +93,9 @@ const levels = [
     name: "Treino 2: O Joelho",
     desc: "Cuidado com o nó do meio!",
     nodes: [
-      { id: "W", x: 275, y: 50, fb: -2 },
-      { id: "P", x: 175, y: 150, fb: 1 },
-      { id: "R", x: 250, y: 250, fb: 0 }
+      { id: "W", x: 275, y: 50, fb: -2, he: 1, hd: -1 },
+      { id: "P", x: 175, y: 150, fb: 1, he: -1, hd: 0 },
+      { id: "R", x: 250, y: 250, fb: 0, he: -1, hd: -1 }
     ],
     links: [ ["W","P"], ["P","R"] ]
   },
@@ -78,11 +103,11 @@ const levels = [
     name: "Treino 3: A Árvore Grande",
     desc: "Calcule de baixo para cima! Raiz 14 da Lista 3.",
     nodes: [
-      { id: "14", x: 275, y: 50, fb: 1 },
-      { id: "5", x: 150, y: 150, fb: 0 },
-      { id: "2", x: 75, y: 250, fb: 0 },
-      { id: "8", x: 225, y: 250, fb: 0 },
-      { id: "28", x: 400, y: 150, fb: 0 }
+      { id: "14", x: 275, y: 50, fb: -1, he: 1, hd: 0 },
+      { id: "5", x: 150, y: 150, fb: 0, he: 0, hd: 0 },
+      { id: "2", x: 75, y: 250, fb: 0, he: -1, hd: -1 },
+      { id: "8", x: 225, y: 250, fb: 0, he: -1, hd: -1 },
+      { id: "28", x: 400, y: 150, fb: 0, he: -1, hd: -1 }
     ],
     links: [ ["14","5"], ["14","28"], ["5","2"], ["5","8"] ]
   }
@@ -172,7 +197,15 @@ ui.btn.addEventListener('click', () => {
     showMsg("FBs perfeitamente calculados! Pode avançar.", "success"); 
     ui.btn.textContent = "Próximo Nível"; 
   } else {
-    showMsg("Ops! Algum botão está errado. Lembre-se: Altura Dir - Altura Esq.", "error");
+    let errorMsgs = [];
+    document.querySelectorAll('.fb-buttons').forEach(inpCont => {
+      const nodeData = levels[currentLevel].nodes.find(n => n.id === inpCont.dataset.nodeId);
+      const val = parseInt(inpCont.dataset.selectedValue);
+      if(val !== nodeData.fb) {
+         errorMsgs.push(`<b>Nó ${nodeData.id}:</b> Você pôs ${val>0?'+'+val:val}, mas o certo é ${nodeData.fb>0?'+'+nodeData.fb:nodeData.fb} <br><span style="font-size:14px;font-weight:normal">(Altura Dir (${nodeData.hd}) - Altura Esq (${nodeData.he}) = ${nodeData.fb})</span>`);
+      }
+    });
+    showMsg(`<b>Ops! Veja as correções:</b><br><br>${errorMsgs.join('<br><br>')}`, "error");
   }
 });
 
