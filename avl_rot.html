@@ -316,6 +316,28 @@
     border-radius: 8px;
     border-left: 3px solid var(--accent);
   }
+  .station-why {
+    font-size: 13px;
+    color: #cdd6f4;
+    line-height: 1.55;
+    background: rgba(203, 166, 247, 0.08);
+    padding: 11px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(203, 166, 247, 0.25);
+    border-left: 4px solid var(--purple);
+  }
+  .station-why .why-title {
+    color: var(--purple);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+    font-size: 13.5px;
+  }
+  .station-why strong.term {
+    color: var(--yellow);
+  }
 
   /* Workout Grid */
   .workout-grid {
@@ -656,6 +678,7 @@ const stationsData = [
     badgeText: "SINAIS IGUAIS NEGATIVOS",
     badgeColor: "#f38ba8",
     desc: "W (fb = -2) e H (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Regra: O primeiro filho da esquerda (H) VIRA PAI (sobe para a raiz), e o W desce para a direita dele!",
+    why: "Como W tem fb = -2, a perna esquerda está desbalanceada. Ao girar para a DIREITA no W, o filho esquerdo (H) sobe e o W desce para a direita dele. Na ordem de BST, isso é perfeito porque <strong class=\"term\">H &lt; W</strong>!",
     nodes: [ { id: "W", val: "W", fb: -2, x: 170, y: 30 }, { id: "H", val: "H", fb: -1, x: 100, y: 110 }, { id: "F", val: "F", fb: 0, x: 30, y: 190 } ],
     linksLeft: [ ["W","H"], ["H","F"] ],
     slots: [ { id: "S1", x: 170, y: 30, expected: "H" }, { id: "S2", x: 100, y: 110, expected: "F" }, { id: "S3", x: 240, y: 110, expected: "W" } ],
@@ -667,6 +690,7 @@ const stationsData = [
     badgeText: "SINAIS IGUAIS POSITIVOS",
     badgeColor: "#89b4fa",
     desc: "Q (fb = +2) e Z (fb = +1). Sinais iguais positivos! A perna direita está pesada. Regra: O primeiro filho da direita (Z) VIRA PAI (sobe para a raiz), e o Q desce para a esquerda dele!",
+    why: "Como Q tem fb = +2, a perna direita está desbalanceada. Ao girar para a ESQUERDA no Q, o filho direito (Z) sobe e o Q desce para a esquerda dele. Na ordem de BST, isso é perfeito porque <strong class=\"term\">Q &lt; Z</strong>!",
     nodes: [ { id: "Q", val: "Q", fb: 2, x: 100, y: 30 }, { id: "Z", val: "Z", fb: 1, x: 170, y: 110 }, { id: "Y", val: "Y", fb: 0, x: 240, y: 190 } ],
     linksLeft: [ ["Q","Z"], ["Z","Y"] ],
     slots: [ { id: "S1", x: 170, y: 30, expected: "Z" }, { id: "S2", x: 100, y: 110, expected: "Q" }, { id: "S3", x: 240, y: 110, expected: "Y" } ],
@@ -678,6 +702,7 @@ const stationsData = [
     badgeText: "PASSO 1: FILHO GIRA",
     badgeColor: "#fab387",
     desc: "W (fb = -2) e P (fb = +1). Sinais diferentes (formou joelho!). PASSO 1: No filho P, o filho da direita (R) VIRA PAI do P (sobe pro lugar do P). Agora a perna esticou e os sinais ficaram iguais!",
+    why: "<strong>Por que o R sobe no lugar do P?</strong> O nó P tem fb = +1 (pesado à DIREITA). Para balancear essa subárvore, giramos à ESQUERDA no P: o nó da direita (R) sobe para ser o novo pai, e o P desce para a esquerda dele (pois <strong class=\"term\">P &lt; R</strong>). Isso desfaz o joelho e deixa a perna esticada reta!",
     nodes: [ { id: "W", val: "W", fb: -2, x: 170, y: 30 }, { id: "P", val: "P", fb: 1, x: 100, y: 110 }, { id: "R", val: "R", fb: 0, x: 170, y: 190 } ],
     linksLeft: [ ["W","P"], ["P","R"] ],
     slots: [ { id: "S1", x: 170, y: 30, expected: "W" }, { id: "S2", x: 100, y: 110, expected: "R" }, { id: "S3", x: 30, y: 190, expected: "P" } ],
@@ -689,6 +714,7 @@ const stationsData = [
     badgeText: "PASSO 2: RAIZ GIRA",
     badgeColor: "#a6e3a1",
     desc: "A perna já esticou: W (fb = -2) e R (fb = -1) têm sinais iguais! Perna esquerda pesada: o filho da esquerda (R) VIRA PAI (nova raiz), e o W desce para a direita dele!",
+    why: "<strong>Por que o R vira a nova raiz?</strong> Na espinha dorsal temos as 3 chaves: <strong class=\"term\">P &lt; R &lt; W</strong>. A raiz de uma árvore balanceada DEVE ser a <strong class=\"term\">MEDIANA (o elemento do meio: R)</strong>! Ao girar para a direita no W, o R assume a raiz principal, deixando o menor (P) à sua esquerda e o maior (W) à sua direita!",
     nodes: [ { id: "W", val: "W", fb: -2, x: 170, y: 30 }, { id: "R", val: "R", fb: -1, x: 100, y: 110 }, { id: "P", val: "P", fb: 0, x: 30, y: 190 } ],
     linksLeft: [ ["W","R"], ["R","P"] ],
     slots: [ { id: "S1", x: 170, y: 30, expected: "R" }, { id: "S2", x: 100, y: 110, expected: "P" }, { id: "S3", x: 240, y: 110, expected: "W" } ],
@@ -722,6 +748,7 @@ const stationsData = [
     badgeText: "FILHO ADOTIVO ESQUERDO",
     badgeColor: "#cba6f7",
     desc: "50 (fb = -2) e 30 (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Gire para a DIREITA no 50: O primeiro filho da esquerda (30) VIRA PAI e o 50 desce para a direita. E o nó 40 que estava no meio? Ele é adotado como filho da ESQUERDA do 50!",
+    why: "<strong>Por que o 30 vira raiz e o 40 vai para o 50?</strong> Entre 30 e 50, o 30 é menor (<strong class=\"term\">30 &lt; 50</strong>), então o 30 sobe para a raiz e o 50 desce para a direita dele. E o 40? O 40 era filho direito do 30 (<strong>40 &gt; 30</strong>) e subárvore esquerda do 50 (<strong>40 &lt; 50</strong>). Ou seja, <strong class=\"term\">30 &lt; 40 &lt; 50</strong>! Quando o 50 desce, seu braço esquerdo fica livre, sendo o único lugar na BST onde o 40 pode se encaixar!",
     nodes: [
       { id: "50", val: "50", fb: -2, x: 210, y: 30 },
       { id: "30", val: "30", fb: -1, x: 125, y: 95 },
@@ -745,6 +772,7 @@ const stationsData = [
     badgeText: "FILHO ADOTIVO DIREITO",
     badgeColor: "#89b4fa",
     desc: "Raiz 30 (fb = +2) e nó 50 (fb = +1). Perna direita pesada: O filho da direita (50) VIRA PAI! O 30 desce para a esquerda dele. Mas atenção: e o nó 40 que era filho esquerdo do 50? Ele é adotado como filho DIREITO do 30 (pois 40 > 30)!",
+    why: "<strong>Por que o 50 vira raiz e o 40 vai para o 30?</strong> Entre 30 e 50, o 50 sobe e o 30 desce para a esquerda dele (pois <strong class=\"term\">30 &lt; 50</strong>). O nó 40 era filho esquerdo do 50 (<strong>40 &lt; 50</strong>) e subárvore direita do 30 (<strong>40 &gt; 30</strong>), ou seja, <strong class=\"term\">30 &lt; 40 &lt; 50</strong>! Quando o 30 desce, seu braço direito fica desocupado, recebendo o 40 por adoção para manter a ordem da BST!",
     nodes: [
       { id: "30", val: "30", fb: 2, x: 100, y: 30 },
       { id: "15", val: "15", fb: 0, x: 40, y: 95 },
@@ -768,6 +796,7 @@ const stationsData = [
     badgeText: "SUB-ÁRVORE ESQUERDA",
     badgeColor: "#fab387",
     desc: "Atenção: A Raiz Principal é 70 (fb = -1, balanceada!). O nó 30 lá embaixo quebrou (fb = -2). NÃO mexa na raiz 70! A rotação é local na subárvore do 30: o nó 20 sobe para ser o novo pai do 30 e do 10!",
+    why: "<strong>Por que a raiz 70 não sai do lugar?</strong> O fator de balanceamento da raiz principal 70 é fb = -1, perfeitamente aceito pela AVL (limite de -1 a +1). Quem estourou foi exclusivamente o nó 30 (fb = -2). A rotação é uma cirurgia local: conserta-se o nó 30 (o 20 sobe para o lugar dele) e o ponteiro da raiz 70 continua apontando para essa nova raiz local (o 20)!",
     nodes: [
       { id: "70", val: "70", fb: -1, x: 230, y: 25 },
       { id: "30", val: "30", fb: -2, x: 135, y: 95 },
@@ -814,6 +843,7 @@ const stationsData = [
     badgeText: "PASSO 1 DE 2: FILHO GIRA",
     badgeColor: "#fab387",
     desc: "Nó 50 (fb = -2) e nó 20 (fb = +1) formam joelho! PASSO 1: No filho 20, o neto 35 VIRA PAI do 20 (sobe pro lugar dele). O 20 desce para a esquerda do 35. E o nó 25? Como 25 > 20, ele é adotado na DIREITA do 20! O nó 50 continua parado na raiz. A perna esticou!",
+    why: "<strong>1. Por que o 35 vira pai do 20?</strong> Olhe isoladamente para a subárvore do 20: ele tem fb = +1 (pesado à DIREITA). Para desfazer o joelho, giramos para a ESQUERDA no 20. O seu filho direito (35) sobe para ser o novo pai, e o 20 desce para a esquerda dele (pois <strong class=\"term\">20 &lt; 35</strong>).<br><strong>2. Por que o 25 vira filho da DIREITA do 20?</strong> O nó 25 era filho esquerdo do 35 (logo <strong class=\"term\">25 &lt; 35</strong>), mas pertencia à subárvore direita do 20 (logo <strong class=\"term\">25 &gt; 20</strong>). Como <strong class=\"term\">20 &lt; 25 &lt; 35</strong>, quando o 20 desce, seu braço direito fica vago e adota o 25!",
     nodes: [
       { id: "50", val: "50", fb: -2, x: 220, y: 25 },
       { id: "20", val: "20", fb: 1, x: 100, y: 90 },
@@ -837,6 +867,7 @@ const stationsData = [
     badgeText: "PASSO 2 DE 2: RAIZ GIRA",
     badgeColor: "#a6e3a1",
     desc: "A perna foi esticada no Passo 1! Agora 50 (fb = -2) e 35 (fb = -1) têm sinais iguais negativos. Perna esquerda pesada: o filho da esquerda (35) VIRA A NOVA RAIZ! O 50 desce para a direita dele e adota o 40 na sua esquerda (40 < 50). A subárvore 20-25 continua na esquerda!",
+    why: "<strong>1. Por que o 35 vira a NOVA RAIZ principal da árvore toda?</strong> Olhe os 3 nós da espinha dorsal: <strong class=\"term\">20, 35 e 50</strong>. Em qualquer BST balanceada, a raiz DEVE ser a <strong class=\"term\">MEDIANA (o valor do meio)</strong>! Como <strong class=\"term\">20 &lt; 35 &lt; 50</strong>, o 35 é o único nó que pode ficar no topo com o menor (20) à esquerda e o maior (50) à direita!<br><strong>2. Por que o 40 vira filho da ESQUERDA do 50?</strong> O nó 40 era filho direito do 35 (logo <strong class=\"term\">40 &gt; 35</strong>), mas pertencia à subárvore esquerda do 50 (logo <strong class=\"term\">40 &lt; 50</strong>). Como <strong class=\"term\">35 &lt; 40 &lt; 50</strong>, quando o 50 desce para a direita do 35, seu braço esquerdo fica vago e adota o 40!",
     nodes: [
       { id: "50", val: "50", fb: -2, x: 220, y: 25 },
       { id: "35", val: "35", fb: -1, x: 125, y: 90 },
@@ -860,6 +891,7 @@ const stationsData = [
     badgeText: "PASSO 1 DE 2: FILHO GIRA",
     badgeColor: "#fab387",
     desc: "Nó 20 (fb = +2) e nó 60 (fb = -1) formam joelho à direita! PASSO 1: No filho 60, o neto 40 VIRA PAI do 60 (sobe pro lugar dele). O 60 desce para a direita do 40. E o nó 50? Como 50 < 60, ele é adotado na ESQUERDA do 60! O nó 20 continua parado na raiz. A perna esticou!",
+    why: "<strong>1. Por que o 40 vira pai do 60?</strong> O filho 60 tem fb = -1 (pesado à ESQUERDA). Giramos para a DIREITA no 60: o nó da esquerda (40) sobe para o lugar dele e o 60 desce para a direita (pois <strong class=\"term\">40 &lt; 60</strong>).<br><strong>2. Por que o 50 vai para a ESQUERDA do 60?</strong> O nó 50 era filho direito do 40 (logo <strong class=\"term\">50 &gt; 40</strong>), mas pertencia à subárvore esquerda do 60 (logo <strong class=\"term\">50 &lt; 60</strong>). Como <strong class=\"term\">40 &lt; 50 &lt; 60</strong>, o 60 adota o 50 no seu braço esquerdo vago!",
     nodes: [
       { id: "20", val: "20", fb: 2, x: 90, y: 25 },
       { id: "60", val: "60", fb: -1, x: 210, y: 90 },
@@ -883,6 +915,7 @@ const stationsData = [
     badgeText: "PASSO 2 DE 2: RAIZ GIRA",
     badgeColor: "#a6e3a1",
     desc: "A perna foi esticada no Passo 1! Agora 20 (fb = +2) e 40 (fb = +1) têm sinais iguais positivos. Perna direita pesada: o filho da direita (40) VIRA A NOVA RAIZ! O 20 desce para a esquerda dele e adota o 30 na sua direita (30 > 20). A subárvore 60-50 continua na direita!",
+    why: "<strong>1. Por que o 40 vira a NOVA RAIZ principal?</strong> Entre as 3 chaves <strong class=\"term\">20, 40 e 60</strong>, a mediana é <strong class=\"term\">40</strong>! Para que a árvore fique perfeitamente simétrica, o 40 DEVE ser a raiz, com 20 à esquerda e 60 à direita.<br><strong>2. Por que o 30 vai para a DIREITA do 20?</strong> O nó 30 era filho esquerdo do 40 (logo <strong class=\"term\">30 &lt; 40</strong>), mas descendente direito do 20 (logo <strong class=\"term\">30 &gt; 20</strong>). Como <strong class=\"term\">20 &lt; 30 &lt; 40</strong>, o 20 adota o 30 no seu braço direito vago!",
     nodes: [
       { id: "20", val: "20", fb: 2, x: 90, y: 25 },
       { id: "40", val: "40", fb: 1, x: 190, y: 90 },
@@ -927,6 +960,7 @@ const stationsData = [
     badgeText: "REMOÇÃO: FILHO COM FB = 0",
     badgeColor: "#a6e3a1",
     desc: "Pegadinha de Prova! Na remoção, o nó Q tem fb = +2, mas o filho Z tem fb = 0. Muitos acham que é rotação dupla, mas NÃO! Filho com fb = 0 exige ROTAÇÃO SIMPLES à Esquerda! O Z vira pai, o Q desce e adota o Y na sua direita!",
+    why: "<strong>Por que a rotação é SIMPLES e não dupla?</strong> Na inserção, o filho sempre tem sinal &plusmn;1. Mas na remoção, a altura de um ramo pode cair deixando o filho perfeitamente simétrico (<strong class=\"term\">fb = 0</strong>). Como o filho NÃO tem sinal oposto (não formou joelho!), uma única rotação simples à esquerda é suficiente para restaurar a AVL: a nova raiz Z fica com fb = -1 e o nó Q com fb = +1, ambos válidos!",
     nodes: [
       { id: "Q", val: "Q", fb: 2, x: 100, y: 35 },
       { id: "Z", val: "Z", fb: 0, x: 200, y: 105 },
@@ -1021,6 +1055,12 @@ function renderAllStations() {
           <span style="background:${st.badgeColor}; color:#11111b; font-size:11px; font-weight:800; padding:2px 8px; border-radius:10px;">${st.badgeText}</span>
         </div>
         <div class="station-desc">${st.desc}</div>
+        ${st.why ? `
+          <div class="station-why">
+            <div class="why-title">🧠 Por que isso acontece? (A Lógica da Árvore):</div>
+            <div>${st.why}</div>
+          </div>
+        ` : ''}
       </div>
       
       <div class="workout-grid">
