@@ -359,64 +359,6 @@
 <button id="btn-next">Próximo Percurso</button>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    MobileDragDrop.polyfill({
-        dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
-    });
-    window.addEventListener('touchmove', function() {}, {passive: false});
-  });
-</script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
-
-</head>
-<body>
-
-<a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
-<button class="voltar" style="left: auto; right: 20px; cursor: pointer; border: none; font-size: 14px; font-family: inherit;" onclick="loadLevel(currentLevel)">🔄 Refazer Nível</button>
-
-<h1>🌳 Percursos Visuais</h1>
-<div class="level-info">
-  <h2 id="level-name">Carregando...</h2>
-</div>
-
-<div class="game-container">
-  <div class="panel">
-    <svg id="svg"></svg>
-    <div id="nodes"></div>
-  </div>
-  <div class="console-panel" style="width: 400px; margin-top: 0; max-height: 400px; overflow-y: auto; align-self: flex-start;">
-    <div style="color: #a6e3a1; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #45475a; padding-bottom: 5px;">🤖 Call Stack do Algoritmo:</div>
-    <div id="console-text">Aguardando início...</div>
-  </div>
-  
-</div>
-
-
-<div class="mirror-panel">
-    <h3>🪞 O Espelho</h3>
-    <div class="mirror-title" id="mirror-title">RED</div>
-    
-    <div class="mini-board">
-      <svg class="mini-line">
-        <line x1="100" y1="23" x2="50" y2="83"></line>
-        <line x1="100" y1="23" x2="150" y2="83"></line>
-      </svg>
-      <!-- Backgrounds controlados via JS para reforçar a ordem 1, 2, 3 -->
-      <div class="mini-node" id="mini-R" style="background: #181825; border: 2px dashed #585b70; border-radius: 12px; padding: 15px; width: 100%; max-width: 780px; display: flex; flex-direction: row; justify-content: space-around; align-items: center; margin-top: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.3);"><span>Raiz</span>R</div>
-      <div class="mini-node" id="mini-E" style="left: 27px; top: 60px; background: #f38ba8;"><span>Esq</span>E</div>
-      <div class="mini-node" id="mini-D" style="left: 127px; top: 60px; background: #f9e2af;"><span>Dir</span>D</div>
-    </div>
-    
-    <div class="mirror-desc" id="mirror-desc">
-      Carregando mentalidade...
-    </div>
-  </div>
-
-<div class="sequence-box" id="sequence"></div>
-<div id="feedback" class="feedback"></div>
-<button id="btn-next">Próximo Percurso</button>
-
-<script>
 const levels = [
   {
     "name": "Nível 1: Pré-Ordem (RED)",
@@ -1663,14 +1605,6 @@ function updateMirror(mirrorConfig) {
   ui.mR.className = "mini-node " + (mirrorConfig.order.R === "1º" ? "pulse-1" : (mirrorConfig.order.R === "2º" ? "pulse-2" : "pulse-3"));
   ui.mE.className = "mini-node " + (mirrorConfig.order.E === "1º" ? "pulse-1" : (mirrorConfig.order.E === "2º" ? "pulse-2" : "pulse-3"));
   ui.mD.className = "mini-node " + (mirrorConfig.order.D === "1º" ? "pulse-1" : (mirrorConfig.order.D === "2º" ? "pulse-2" : "pulse-3"));
-}</span>R`;
-  ui.mE.innerHTML = `<span>${mirrorConfig.order.E}</span>E`;
-  ui.mD.innerHTML = `<span>${mirrorConfig.order.D}</span>D`;
-  
-  // Highlight the #1 element to draw attention
-  [ui.mR, ui.mE, ui.mD].forEach(el => el.style.boxShadow = "none");
-  if(mirrorConfig.order.R === "1º") ui.mR.style.boxShadow = "0 0 15px #a6e3a1";
-  if(mirrorConfig.order.E === "1º") ui.mE.style.boxShadow = "0 0 15px #a6e3a1";
 }
 
 function loadLevel(idx) {
