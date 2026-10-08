@@ -216,13 +216,13 @@ const levels = [
       "desc": "Raiz primeiro!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Esquerda de B é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Sim. Fim do nó D.<br>Terminei toda a perna esquerda do B.<br>Direita de B é NULL? Sim. Fim do nó B.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Esquerda de C é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Esquerda de E é NULL? Sim.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a perna esquerda do C.<br>Direita de C é NULL? Não (F). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
-      "Esquerda de F é NULL? Sim.<br>Direita de F é NULL? Sim. Fim do nó F.<br>Terminei toda a direita do C. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+      "Tô no A. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Anotado o A! Agora vou pra Esquerda. Existe? Sim (B). Desço pro B...<br><br>Tô no B. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Anotado o B! Agora vou pra Esquerda. Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Anotado o D! Esquerda dele existe? Não, é NULL.<br>Direita do D existe? Não, é NULL.<br>Acabou tudo do D! Subo.<br>Acabou toda a perna esquerda do B.<br>Direita do B existe? Não, é NULL.<br>Acabou tudo do B! Subo.<br>Acabou toda a perna esquerda do A.<br>Agora vou pra Direita do A. Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Anotado o C! Agora vou pra Esquerda. Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Anotado o E! Esquerda dele existe? Não, é NULL.<br>Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo.<br>Acabou toda a perna esquerda do C.<br>Agora vou pra Direita do C. Existe? Sim (F). Desço pro F...<br><br>Tô no F. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Anotado o F! Esquerda dele existe? Não, é NULL.<br>Direita do F existe? Não, é NULL.<br>Acabou tudo do F! Subo.<br>Acabou toda a perna direita do C. Subo de volta.<br>Acabou toda a perna direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -299,13 +299,13 @@ const levels = [
       "desc": "Esquerda, Raiz, Direita."
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esq de B é NULL? Não (D). Adio o B e desço pra esq...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Direita de D é NULL. Fim do nó D.<br>Voltei pro B da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Direita de B é NULL. Fim do nó B.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Agora vou descer pra direita do A (C)...<br>Esq de C é NULL? Não (E). Adio o C e desço pra esq...<br>Esquerda de E é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Direita de E é NULL. Fim do nó E.<br>Voltei pro C da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Agora vou descer pra direita do C (F)...<br>Esquerda de F é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
-      "Direita de F é NULL. Fim do nó F.<br>Fim da direita do C. Subo.<br>Fim da direita do A. Subo.<br>"
+      "Tô no A. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (B). Então adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (D). Então adio o B e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do D existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "A Direita do D existe? Não, é NULL.<br>Acabou tudo do D! Subo de volta pro pai.<br>De volta no B (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "A Direita do B existe? Não, é NULL.<br>Acabou tudo do B! Subo de volta pro pai.<br>De volta no A (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Já anotei a raiz A. Falta a Direita! Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (E). Então adio o C e desço pro E...<br><br>Tô no E. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do E existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "A Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo de volta pro pai.<br>De volta no C (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Já anotei a raiz C. Falta a Direita! Existe? Sim (F). Desço pro F...<br><br>Tô no F. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do F existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "A Direita do F existe? Não, é NULL.<br>Acabou tudo do F! Subo de volta pro pai.<br>Acabou a Direita do C. Subo de volta.<br>Acabou a Direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -379,15 +379,15 @@ const levels = [
         "D": "2º",
         "R": "3º"
       },
-      "desc": "Deixe o Pai por último!"
+      "desc": "A Raiz é sempre a última!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL? Não (D). Adio o B e vou pra Esq...<br>Esq de D é NULL.<br>Dir de D é NULL.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Voltei pro B da esquerda.<br>Dir de B é NULL.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Voltei pro A da esquerda.<br>Dir de A é NULL? Não (C). Adio o A e vou pra Dir...<br>Esq de C é NULL? Não (E). Adio o C e vou pra Esq...<br>Esq de E é NULL.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Voltei pro C da esquerda.<br>Dir de C é NULL? Não (F). Adio o C e vou pra Dir...<br>Esq de F é NULL.<br>Dir de F é NULL.<br>Esq e Dir de F são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
-      "Voltei pro C da direita.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+      "Tô no A. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (B). Adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (D). Adio o B e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do D existe? Não, é NULL.<br>A Direita do D existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "De volta no B (subi da esquerda).<br>A Direita do B existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "De volta no A (subi da esquerda).<br>A Direita existe? Sim (C). Adio o A DE NOVO e desço pro C...<br><br>Tô no C. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (E). Adio o C e desço pro E...<br><br>Tô no E. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do E existe? Não, é NULL.<br>A Direita do E existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "De volta no C (subi da esquerda).<br>A Direita existe? Sim (F). Adio o C DE NOVO e desço pro F...<br><br>Tô no F. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do F existe? Não, é NULL.<br>A Direita do F existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "De volta no C (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "De volta no A (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
     ]
   },
   {
@@ -454,12 +454,12 @@ const levels = [
       "desc": "Raiz primeiro!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Esquerda de B é NULL? Sim.<br>Direita de B é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Esquerda de C é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Esquerda de E é NULL? Sim.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a direita do D. Subo de volta.<br>Terminei toda a perna esquerda do C.<br>Direita de C é NULL? Sim. Fim do nó C.<br>Terminei toda a direita do B. Subo de volta.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Sim. Fim do nó A.<br>"
+      "Tô no A. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Anotado o A! Agora vou pra Esquerda. Existe? Sim (B). Desço pro B...<br><br>Tô no B. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Anotado o B! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do B. Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Anotado o C! Agora vou pra Esquerda. Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Anotado o D! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do D. Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Anotado o E! Esquerda dele existe? Não, é NULL.<br>Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo.<br>Acabou toda a perna direita do D. Subo de volta.<br>Acabou toda a perna esquerda do C.<br>Direita do C existe? Não, é NULL.<br>Acabou tudo do C! Subo.<br>Acabou toda a perna direita do B. Subo de volta.<br>Acabou toda a perna esquerda do A.<br>Direita do A existe? Não, é NULL.<br>Acabou tudo do A! Subo.<br>"
     ]
   },
   {
@@ -526,12 +526,12 @@ const levels = [
       "desc": "Esquerda, Raiz, Direita."
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esquerda de B é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Agora vou descer pra direita do B (C)...<br>Esq de C é NULL? Não (D). Adio o C e desço pra esq...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Agora vou descer pra direita do D (E)...<br>Esquerda de E é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Direita de E é NULL. Fim do nó E.<br>Fim da direita do D. Subo.<br>Voltei pro C da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Direita de C é NULL. Fim do nó C.<br>Fim da direita do B. Subo.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Direita de A é NULL. Fim do nó A.<br>"
+      "Tô no A. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (B). Então adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do B existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Já anotei a raiz B. Falta a Direita! Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (D). Então adio o C e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do D existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Já anotei a raiz D. Falta a Direita! Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do E existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "A Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo de volta pro pai.<br>Acabou a Direita do D. Subo de volta.<br>De volta no C (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "A Direita do C existe? Não, é NULL.<br>Acabou tudo do C! Subo de volta pro pai.<br>Acabou a Direita do B. Subo de volta.<br>De volta no A (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "A Direita do A existe? Não, é NULL.<br>Acabou tudo do A! Subo de volta pro pai.<br>"
     ]
   },
   {
@@ -595,14 +595,14 @@ const levels = [
         "D": "2º",
         "R": "3º"
       },
-      "desc": "Deixe o Pai por último!"
+      "desc": "A Raiz é sempre a última!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL.<br>Dir de B é NULL? Não (C). Adio o B e vou pra Dir...<br>Esq de C é NULL? Não (D). Adio o C e vou pra Esq...<br>Esq de D é NULL.<br>Dir de D é NULL? Não (E). Adio o D e vou pra Dir...<br>Esq de E é NULL.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Voltei pro D da direita.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Voltei pro C da esquerda.<br>Dir de C é NULL.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Voltei pro B da direita.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Voltei pro A da esquerda.<br>Dir de A é NULL.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+      "Tô no A. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (B). Adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do B existe? Não, é NULL.<br>A Direita existe? Sim (C). Adio o B DE NOVO e desço pro C...<br><br>Tô no C. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (D). Adio o C e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do D existe? Não, é NULL.<br>A Direita existe? Sim (E). Adio o D DE NOVO e desço pro E...<br><br>Tô no E. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do E existe? Não, é NULL.<br>A Direita do E existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "De volta no D (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "De volta no C (subi da esquerda).<br>A Direita do C existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "De volta no B (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "De volta no A (subi da esquerda).<br>A Direita do A existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
     ]
   },
   {
@@ -669,12 +669,12 @@ const levels = [
       "desc": "Raiz primeiro!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Esquerda de B é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Esquerda de C é NULL? Sim.<br>Direita de C é NULL? Sim. Fim do nó C.<br>Terminei toda a perna esquerda do B.<br>Direita de B é NULL? Sim. Fim do nó B.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Esquerda de E é NULL? Sim.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a direita do D. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+      "Tô no A. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Anotado o A! Agora vou pra Esquerda. Existe? Sim (B). Desço pro B...<br><br>Tô no B. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Anotado o B! Agora vou pra Esquerda. Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Anotado o C! Esquerda dele existe? Não, é NULL.<br>Direita do C existe? Não, é NULL.<br>Acabou tudo do C! Subo.<br>Acabou toda a perna esquerda do B.<br>Direita do B existe? Não, é NULL.<br>Acabou tudo do B! Subo.<br>Acabou toda a perna esquerda do A.<br>Agora vou pra Direita do A. Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Anotado o D! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do D. Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Anotado o E! Esquerda dele existe? Não, é NULL.<br>Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo.<br>Acabou toda a perna direita do D. Subo de volta.<br>Acabou toda a perna direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -741,12 +741,12 @@ const levels = [
       "desc": "Esquerda, Raiz, Direita."
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esq de B é NULL? Não (C). Adio o B e desço pra esq...<br>Esquerda de C é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Direita de C é NULL. Fim do nó C.<br>Voltei pro B da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Direita de B é NULL. Fim do nó B.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Agora vou descer pra direita do A (D)...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Agora vou descer pra direita do D (E)...<br>Esquerda de E é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Direita de E é NULL. Fim do nó E.<br>Fim da direita do D. Subo.<br>Fim da direita do A. Subo.<br>"
+      "Tô no A. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (B). Então adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (C). Então adio o B e desço pro C...<br><br>Tô no C. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do C existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "A Direita do C existe? Não, é NULL.<br>Acabou tudo do C! Subo de volta pro pai.<br>De volta no B (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "A Direita do B existe? Não, é NULL.<br>Acabou tudo do B! Subo de volta pro pai.<br>De volta no A (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Já anotei a raiz A. Falta a Direita! Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do D existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Já anotei a raiz D. Falta a Direita! Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do E existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "A Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo de volta pro pai.<br>Acabou a Direita do D. Subo de volta.<br>Acabou a Direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -810,14 +810,14 @@ const levels = [
         "D": "2º",
         "R": "3º"
       },
-      "desc": "Deixe o Pai por último!"
+      "desc": "A Raiz é sempre a última!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL? Não (C). Adio o B e vou pra Esq...<br>Esq de C é NULL.<br>Dir de C é NULL.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Voltei pro B da esquerda.<br>Dir de B é NULL.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Voltei pro A da esquerda.<br>Dir de A é NULL? Não (D). Adio o A e vou pra Dir...<br>Esq de D é NULL.<br>Dir de D é NULL? Não (E). Adio o D e vou pra Dir...<br>Esq de E é NULL.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Voltei pro D da direita.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+      "Tô no A. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (B). Adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (C). Adio o B e desço pro C...<br><br>Tô no C. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do C existe? Não, é NULL.<br>A Direita do C existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "De volta no B (subi da esquerda).<br>A Direita do B existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "De volta no A (subi da esquerda).<br>A Direita existe? Sim (D). Adio o A DE NOVO e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do D existe? Não, é NULL.<br>A Direita existe? Sim (E). Adio o D DE NOVO e desço pro E...<br><br>Tô no E. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do E existe? Não, é NULL.<br>A Direita do E existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "De volta no D (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "De volta no A (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
     ]
   },
   {
@@ -924,16 +924,16 @@ const levels = [
       "desc": "Raiz primeiro!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Esquerda de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Esquerda de B é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Sim. Fim do nó D.<br>Terminei toda a perna esquerda do B.<br>Direita de B é NULL? Não (E). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Esquerda de E é NULL? Não (H). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
-      "Esquerda de H é NULL? Sim.<br>Direita de H é NULL? Sim. Fim do nó H.<br>Terminei toda a perna esquerda do E.<br>Direita de E é NULL? Sim. Fim do nó E.<br>Terminei toda a direita do B. Subo de volta.<br>Terminei toda a perna esquerda do A.<br>Direita de A é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Esquerda de C é NULL? Não (F). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
-      "Esquerda de F é NULL? Sim.<br>Direita de F é NULL? Sim. Fim do nó F.<br>Terminei toda a perna esquerda do C.<br>Direita de C é NULL? Não (G). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
-      "Esquerda de G é NULL? Sim.<br>Direita de G é NULL? Não (I). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
-      "Esquerda de I é NULL? Sim.<br>Direita de I é NULL? Sim. Fim do nó I.<br>Terminei toda a direita do G. Subo de volta.<br>Terminei toda a direita do C. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+      "Tô no A. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Anotado o A! Agora vou pra Esquerda. Existe? Sim (B). Desço pro B...<br><br>Tô no B. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Anotado o B! Agora vou pra Esquerda. Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Anotado o D! Esquerda dele existe? Não, é NULL.<br>Direita do D existe? Não, é NULL.<br>Acabou tudo do D! Subo.<br>Acabou toda a perna esquerda do B.<br>Agora vou pra Direita do B. Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "Anotado o E! Agora vou pra Esquerda. Existe? Sim (H). Desço pro H...<br><br>Tô no H. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
+      "Anotado o H! Esquerda dele existe? Não, é NULL.<br>Direita do H existe? Não, é NULL.<br>Acabou tudo do H! Subo.<br>Acabou toda a perna esquerda do E.<br>Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo.<br>Acabou toda a perna direita do B. Subo de volta.<br>Acabou toda a perna esquerda do A.<br>Agora vou pra Direita do A. Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Anotado o C! Agora vou pra Esquerda. Existe? Sim (F). Desço pro F...<br><br>Tô no F. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "Anotado o F! Esquerda dele existe? Não, é NULL.<br>Direita do F existe? Não, é NULL.<br>Acabou tudo do F! Subo.<br>Acabou toda a perna esquerda do C.<br>Agora vou pra Direita do C. Existe? Sim (G). Desço pro G...<br><br>Tô no G. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
+      "Anotado o G! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do G. Existe? Sim (I). Desço pro I...<br><br>Tô no I. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
+      "Anotado o I! Esquerda dele existe? Não, é NULL.<br>Direita do I existe? Não, é NULL.<br>Acabou tudo do I! Subo.<br>Acabou toda a perna direita do G. Subo de volta.<br>Acabou toda a perna direita do C. Subo de volta.<br>Acabou toda a perna direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -1040,16 +1040,16 @@ const levels = [
       "desc": "Esquerda, Raiz, Direita."
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e desço pra esq...<br>Esq de B é NULL? Não (D). Adio o B e desço pra esq...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Direita de D é NULL. Fim do nó D.<br>Voltei pro B da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Agora vou descer pra direita do B (E)...<br>Esq de E é NULL? Não (H). Adio o E e desço pra esq...<br>Esquerda de H é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
-      "Direita de H é NULL. Fim do nó H.<br>Voltei pro E da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Direita de E é NULL. Fim do nó E.<br>Fim da direita do B. Subo.<br>Voltei pro A da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Agora vou descer pra direita do A (C)...<br>Esq de C é NULL? Não (F). Adio o C e desço pra esq...<br>Esquerda de F é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
-      "Direita de F é NULL. Fim do nó F.<br>Voltei pro C da esquerda.<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Agora vou descer pra direita do C (G)...<br>Esquerda de G é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
-      "Agora vou descer pra direita do G (I)...<br>Esquerda de I é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
-      "Direita de I é NULL. Fim do nó I.<br>Fim da direita do G. Subo.<br>Fim da direita do C. Subo.<br>Fim da direita do A. Subo.<br>"
+      "Tô no A. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (B). Então adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (D). Então adio o B e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do D existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "A Direita do D existe? Não, é NULL.<br>Acabou tudo do D! Subo de volta pro pai.<br>De volta no B (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Já anotei a raiz B. Falta a Direita! Existe? Sim (E). Desço pro E...<br><br>Tô no E. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (H). Então adio o E e desço pro H...<br><br>Tô no H. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do H existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
+      "A Direita do H existe? Não, é NULL.<br>Acabou tudo do H! Subo de volta pro pai.<br>De volta no E (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "A Direita do E existe? Não, é NULL.<br>Acabou tudo do E! Subo de volta pro pai.<br>Acabou a Direita do B. Subo de volta.<br>De volta no A (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Já anotei a raiz A. Falta a Direita! Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda existe? Sim (F). Então adio o C e desço pro F...<br><br>Tô no F. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do F existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "A Direita do F existe? Não, é NULL.<br>Acabou tudo do F! Subo de volta pro pai.<br>De volta no C (subi da esquerda). A Esquerda dele já foi toda feita.<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Já anotei a raiz C. Falta a Direita! Existe? Sim (G). Desço pro G...<br><br>Tô no G. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do G existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
+      "Já anotei a raiz G. Falta a Direita! Existe? Sim (I). Desço pro I...<br><br>Tô no I. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do I existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
+      "A Direita do I existe? Não, é NULL.<br>Acabou tudo do I! Subo de volta pro pai.<br>Acabou a Direita do G. Subo de volta.<br>Acabou a Direita do C. Subo de volta.<br>Acabou a Direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -1153,18 +1153,18 @@ const levels = [
         "D": "2º",
         "R": "3º"
       },
-      "desc": "Deixe o Pai por último!"
+      "desc": "A Raiz é sempre a última!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL? Não (B). Adio o A e vou pra Esq...<br>Esq de B é NULL? Não (D). Adio o B e vou pra Esq...<br>Esq de D é NULL.<br>Dir de D é NULL.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Voltei pro B da esquerda.<br>Dir de B é NULL? Não (E). Adio o B e vou pra Dir...<br>Esq de E é NULL? Não (H). Adio o E e vou pra Esq...<br>Esq de H é NULL.<br>Dir de H é NULL.<br>Esq e Dir de H são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
-      "Voltei pro E da esquerda.<br>Dir de E é NULL.<br>Esq e Dir de E são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
-      "Voltei pro B da direita.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Voltei pro A da esquerda.<br>Dir de A é NULL? Não (C). Adio o A e vou pra Dir...<br>Esq de C é NULL? Não (F). Adio o C e vou pra Esq...<br>Esq de F é NULL.<br>Dir de F é NULL.<br>Esq e Dir de F são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
-      "Voltei pro C da esquerda.<br>Dir de C é NULL? Não (G). Adio o C e vou pra Dir...<br>Esq de G é NULL.<br>Dir de G é NULL? Não (I). Adio o G e vou pra Dir...<br>Esq de I é NULL.<br>Dir de I é NULL.<br>Esq e Dir de I são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
-      "Voltei pro G da direita.<br>Esq e Dir de G são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
-      "Voltei pro C da direita.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+      "Tô no A. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (B). Adio o A e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (D). Adio o B e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do D existe? Não, é NULL.<br>A Direita do D existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "De volta no B (subi da esquerda).<br>A Direita existe? Sim (E). Adio o B DE NOVO e desço pro E...<br><br>Tô no E. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (H). Adio o E e desço pro H...<br><br>Tô no H. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do H existe? Não, é NULL.<br>A Direita do H existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>H</b></span>",
+      "De volta no E (subi da esquerda).<br>A Direita do E existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>E</b></span>",
+      "De volta no B (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "De volta no A (subi da esquerda).<br>A Direita existe? Sim (C). Adio o A DE NOVO e desço pro C...<br><br>Tô no C. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda existe? Sim (F). Adio o C e desço pro F...<br><br>Tô no F. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do F existe? Não, é NULL.<br>A Direita do F existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>F</b></span>",
+      "De volta no C (subi da esquerda).<br>A Direita existe? Sim (G). Adio o C DE NOVO e desço pro G...<br><br>Tô no G. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do G existe? Não, é NULL.<br>A Direita existe? Sim (I). Adio o G DE NOVO e desço pro I...<br><br>Tô no I. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do I existe? Não, é NULL.<br>A Direita do I existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>I</b></span>",
+      "De volta no G (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>G</b></span>",
+      "De volta no C (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "De volta no A (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
     ]
   },
   {
@@ -1221,11 +1221,11 @@ const levels = [
       "desc": "Raiz primeiro!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Esquerda de A é NULL? Sim.<br>Direita de A é NULL? Não (B). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Esquerda de B é NULL? Sim.<br>Direita de B é NULL? Não (C). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Esquerda de C é NULL? Sim.<br>Direita de C é NULL? Não (D). Desço pra lá...<br>Modo RED: A Raiz vem 1º. Então já anoto! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Esquerda de D é NULL? Sim.<br>Direita de D é NULL? Sim. Fim do nó D.<br>Terminei toda a direita do C. Subo de volta.<br>Terminei toda a direita do B. Subo de volta.<br>Terminei toda a direita do A. Subo de volta.<br>"
+      "Tô no A. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Anotado o A! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do A. Existe? Sim (B). Desço pro B...<br><br>Tô no B. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Anotado o B! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do B. Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Anotado o C! Esquerda dele existe? Não, é NULL.<br>Agora vou pra Direita do C. Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Raiz, Esq, Dir</b>.<br>A Raiz é a primeira! Então já anoto logo de cara. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "Anotado o D! Esquerda dele existe? Não, é NULL.<br>Direita do D existe? Não, é NULL.<br>Acabou tudo do D! Subo.<br>Acabou toda a perna direita do C. Subo de volta.<br>Acabou toda a perna direita do B. Subo de volta.<br>Acabou toda a perna direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -1282,11 +1282,11 @@ const levels = [
       "desc": "Esquerda, Raiz, Direita."
     },
     "explanations": [
-      "Começando na raiz A.<br>Esquerda de A é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
-      "Agora vou descer pra direita do A (B)...<br>Esquerda de B é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Agora vou descer pra direita do B (C)...<br>Esquerda de C é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Agora vou descer pra direita do C (D)...<br>Esquerda de D é NULL!<br>Como já limpei a esquerda, chegou a vez da Raiz. 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Direita de D é NULL. Fim do nó D.<br>Fim da direita do C. Subo.<br>Fim da direita do B. Subo.<br>Fim da direita do A. Subo.<br>"
+      "Tô no A. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do A existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>",
+      "Já anotei a raiz A. Falta a Direita! Existe? Sim (B). Desço pro B...<br><br>Tô no B. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do B existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "Já anotei a raiz B. Falta a Direita! Existe? Sim (C). Desço pro C...<br><br>Tô no C. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do C existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "Já anotei a raiz C. Falta a Direita! Existe? Sim (D). Desço pro D...<br><br>Tô no D. Regra: <b>Esq, Raiz, Dir</b>.<br>A Esquerda do D existe? Não, é NULL!<br>Se a Esquerda tá resolvida, agora é a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "A Direita do D existe? Não, é NULL.<br>Acabou tudo do D! Subo de volta pro pai.<br>Acabou a Direita do C. Subo de volta.<br>Acabou a Direita do B. Subo de volta.<br>Acabou a Direita do A. Subo de volta.<br>"
     ]
   },
   {
@@ -1340,13 +1340,13 @@ const levels = [
         "D": "2º",
         "R": "3º"
       },
-      "desc": "Deixe o Pai por último!"
+      "desc": "A Raiz é sempre a última!"
     },
     "explanations": [
-      "Começando na raiz A.<br>Esq de A é NULL.<br>Dir de A é NULL? Não (B). Adio o A e vou pra Dir...<br>Esq de B é NULL.<br>Dir de B é NULL? Não (C). Adio o B e vou pra Dir...<br>Esq de C é NULL.<br>Dir de C é NULL? Não (D). Adio o C e vou pra Dir...<br>Esq de D é NULL.<br>Dir de D é NULL.<br>Esq e Dir de D são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
-      "Voltei pro C da direita.<br>Esq e Dir de C são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
-      "Voltei pro B da direita.<br>Esq e Dir de B são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
-      "Voltei pro A da direita.<br>Esq e Dir de A são NULL (ou já foram processadas). Sobrou só a Raiz! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
+      "Tô no A. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do A existe? Não, é NULL.<br>A Direita existe? Sim (B). Adio o A DE NOVO e desço pro B...<br><br>Tô no B. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do B existe? Não, é NULL.<br>A Direita existe? Sim (C). Adio o B DE NOVO e desço pro C...<br><br>Tô no C. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do C existe? Não, é NULL.<br>A Direita existe? Sim (D). Adio o C DE NOVO e desço pro D...<br><br>Tô no D. Regra: <b>Esq, Dir, Raiz</b> (A Raiz é sempre a última de todas!).<br>A Esquerda do D existe? Não, é NULL.<br>A Direita do D existe? Não, é NULL.<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>D</b></span>",
+      "De volta no C (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>C</b></span>",
+      "De volta no B (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>B</b></span>",
+      "De volta no A (subi da direita).<br>Esq e Dir já foram resolvidas (ou eram vazias). Finalmente chegou a vez da <b>Raiz</b>! 👉 <span style='color:#a6e3a1'>Clique <b>A</b></span>"
     ]
   }
 ];
