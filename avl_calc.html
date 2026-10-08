@@ -91,7 +91,7 @@
 <script>
 const levels = [
   {
-    name: "Treino 1: O Cotoco",
+    name: "Treino 1: O Cotoco (Desbalanceado à Direita)",
     desc: "Qual o FB de cada nó? Lembre-se: FB = Altura Direita - Altura Esquerda. Folhas têm filhos vazios (altura -1).",
     nodes: [
       { id: "W", x: 275, y: 50, fb: 2, he: -1, hd: 1 },
@@ -101,8 +101,18 @@ const levels = [
     links: [ ["W","X"], ["X","Y"] ]
   },
   {
-    name: "Treino 2: O Joelho",
-    desc: "Cuidado com o nó do meio!",
+    name: "Treino 2: O Cotoco Invertido (Esquerda)",
+    desc: "Agora a árvore pendeu pro outro lado. Preste atenção no sinal do FB!",
+    nodes: [
+      { id: "W", x: 275, y: 50, fb: -2, he: 1, hd: -1 },
+      { id: "X", x: 200, y: 150, fb: -1, he: 0, hd: -1 },
+      { id: "Y", x: 125, y: 250, fb: 0, he: -1, hd: -1 }
+    ],
+    links: [ ["W","X"], ["X","Y"] ]
+  },
+  {
+    name: "Treino 3: O Joelho (Direita-Esquerda)",
+    desc: "Cuidado com o nó do meio! Altura Direita menos Altura Esquerda.",
     nodes: [
       { id: "W", x: 275, y: 50, fb: -2, he: 1, hd: -1 },
       { id: "P", x: 175, y: 150, fb: 1, he: -1, hd: 0 },
@@ -111,16 +121,55 @@ const levels = [
     links: [ ["W","P"], ["P","R"] ]
   },
   {
-    name: "Treino 3: A Árvore Grande",
-    desc: "Calcule de baixo para cima! Raiz 14 da Lista 3.",
+    name: "Treino 4: O Joelho (Esquerda-Direita)",
+    desc: "Dessa vez o joelho quebrou para a direita. O sinal do pai e do filho serão diferentes.",
+    nodes: [
+      { id: "W", x: 275, y: 50, fb: 2, he: -1, hd: 1 },
+      { id: "P", x: 375, y: 150, fb: -1, he: 0, hd: -1 },
+      { id: "R", x: 300, y: 250, fb: 0, he: -1, hd: -1 }
+    ],
+    links: [ ["W","P"], ["P","R"] ]
+  },
+  {
+    name: "Treino 5: A Árvore Quase Perfeita",
+    desc: "Não se confunda com a raiz! Avalie sub-árvore por sub-árvore.",
+    nodes: [
+      { id: "10", x: 275, y: 50, fb: 0, he: 1, hd: 1 },
+      { id: "5",  x: 150, y: 150, fb: 0, he: 0, hd: 0 },
+      { id: "15", x: 400, y: 150, fb: -1, he: 0, hd: -1 },
+      { id: "3",  x: 75,  y: 250, fb: 0, he: -1, hd: -1 },
+      { id: "7",  x: 225, y: 250, fb: 0, he: -1, hd: -1 },
+      { id: "12", x: 325, y: 250, fb: 0, he: -1, hd: -1 }
+    ],
+    links: [ ["10","5"], ["10","15"], ["5","3"], ["5","7"], ["15","12"] ]
+  },
+  {
+    name: "Treino 6: A Árvore da Lista 3",
+    desc: "Calcule de baixo para cima. Use o Apple Pencil (✏️) pra anotar as alturas se precisar!",
     nodes: [
       { id: "14", x: 275, y: 50, fb: -1, he: 1, hd: 0 },
-      { id: "5", x: 150, y: 150, fb: 0, he: 0, hd: 0 },
-      { id: "2", x: 75, y: 250, fb: 0, he: -1, hd: -1 },
-      { id: "8", x: 225, y: 250, fb: 0, he: -1, hd: -1 },
+      { id: "5",  x: 150, y: 150, fb: 0, he: 0, hd: 0 },
+      { id: "2",  x: 75,  y: 250, fb: 0, he: -1, hd: -1 },
+      { id: "8",  x: 225, y: 250, fb: 0, he: -1, hd: -1 },
       { id: "28", x: 400, y: 150, fb: 0, he: -1, hd: -1 }
     ],
     links: [ ["14","5"], ["14","28"], ["5","2"], ["5","8"] ]
+  },
+  {
+    name: "Treino 7: O Pesadelo Cascata",
+    desc: "A raiz está completamente torta por conta daquela folha solitária lá embaixo. Cuidado redobrado na perna esquerda inteira!",
+    nodes: [
+      { id: "50", x: 275, y: 20, fb: -2, he: 3, hd: 1 },
+      { id: "30", x: 150, y: 100, fb: -2, he: 2, hd: 0 },
+      { id: "70", x: 400, y: 100, fb: 0, he: 0, hd: 0 },
+      { id: "20", x: 75,  y: 180, fb: -2, he: 1, hd: -1 },
+      { id: "40", x: 225, y: 180, fb: 0, he: -1, hd: -1 },
+      { id: "60", x: 325, y: 180, fb: 0, he: -1, hd: -1 },
+      { id: "80", x: 475, y: 180, fb: 0, he: -1, hd: -1 },
+      { id: "10", x: 25,  y: 260, fb: 1, he: -1, hd: 0 },
+      { id: "15", x: 65,  y: 340, fb: 0, he: -1, hd: -1 }
+    ],
+    links: [ ["50","30"], ["50","70"], ["30","20"], ["30","40"], ["70","60"], ["70","80"], ["20","10"], ["10","15"] ]
   }
 ];
 
