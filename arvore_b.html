@@ -3,83 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de Árvore B</title>
+<title>Simulador de Árvore B Master - ED2 UTFPR</title>
 <style>
-  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-  h1 { text-align: center; color: #fab387; margin-bottom: 5px; }
-  .level-info { text-align: center; margin-bottom: 20px; max-width: 650px; }
-  .level-info h2 { color: #f9e2af; margin: 0 0 10px 0; }
-  
-  .game-container { display: flex; gap: 40px; justify-content: center; align-items: center; margin-top: 10px; flex-wrap: wrap; }
-  
-  .panel { background: #313244; padding: 20px; border-radius: 12px; width: 450px; min-height: 350px; border: 2px solid #45475a; box-shadow: 0 10px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; }
-  .panel-title { text-align: center; font-weight: bold; margin-bottom: 15px; color: #fab387; font-size: 18px; }
-  
-  /* B-Tree Nodes container */
-  .btree-node-box { background: rgba(0,0,0,0.2); border: 2px solid #a6adc8; border-radius: 8px; padding: 10px; display: flex; gap: 5px; margin-bottom: 20px; position: relative; }
-  .btree-node-box::before { content: attr(data-label); position: absolute; top: -12px; left: 10px; background: #313244; padding: 0 5px; font-size: 12px; color: #a6adc8; font-weight: bold; }
-  
-  /* The draggable blocks */
-  .block { width: 50px; height: 50px; background: #fab387; color: #11111b; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; border: 3px solid #f38ba8; cursor: grab; user-select: none; transition: transform 0.1s; }
-  .block:active { cursor: grabbing; transform: scale(1.1); }
-  
-  /* The slots inside the B-Tree Nodes */
-  .slot { width: 50px; height: 50px; border: 2px dashed #6c7086; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: 0.2s; }
-  .slot.drag-over { background: rgba(250, 179, 135, 0.3); border-color: #fab387; transform: scale(1.1); }
-  
-  /* Lixeira */
-  .trash { border-color: #f38ba8; background: rgba(243, 139, 168, 0.1); width: 80px; height: 80px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 30px; align-self: center; margin-top: auto; }
-  .trash.drag-over { background: rgba(243, 139, 168, 0.4); transform: scale(1.1); }
-  .trash::after { content: '🗑️'; }
+  :root {
+    --bg: #1e1e2e;
+    --card-bg: #181825;
+    --panel-bg: #313244;
+    --border: #45475a;
+    --text: #cdd6f4;
+    --subtext: #a6adc8;
+    --accent: #89b4fa;
+    --peach: #fab387;
+    --yellow: #f9e2af;
+    --green: #a6e3a1;
+    --red: #f38ba8;
+    --purple: #cba6f7;
+  }
 
-  .tree-layout { display: flex; flex-direction: column; align-items: center; gap: 30px; width: 100%; }
-  .tree-children { display: flex; gap: 20px; justify-content: center; width: 100%; position: relative; }
-  
-  /* Fake lines for tree structure */
-  .line { position: absolute; border-top: 3px solid #a6adc8; border-left: 3px solid #a6adc8; border-right: 3px solid #a6adc8; height: 15px; top: -20px; left: 25%; right: 25%; z-index: 1; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
 
-  .pool { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; background: #181825; padding: 20px; border-radius: 12px; border: 2px dashed #585b70; width: 100%; min-height: 80px; }
+  h1 {
+    text-align: center;
+    color: var(--peach);
+    margin: 10px 0 5px;
+    font-size: 26px;
+    font-weight: 800;
+  }
+  .level-info {
+    text-align: center;
+    margin-bottom: 15px;
+    max-width: 680px;
+  }
+  .level-info h2 {
+    color: var(--yellow);
+    margin: 0 0 8px 0;
+    font-size: 19px;
+  }
+  .level-info p {
+    color: #bac2de;
+    line-height: 1.5;
+    font-size: 14px;
+    margin: 0;
+    background: #181825;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 3px solid var(--peach);
+  }
 
-  .controls { text-align: center; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
-  button { background: #fab387; color: #11111b; border: none; padding: 12px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-  button:hover { background: #f9e2af; transform: translateY(-2px); }
-  
-  .feedback { margin-top: 15px; font-size: 18px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; transition: 0.3s; opacity: 0; }
-  .feedback.show { opacity: 1; }
-  .success { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; border: 1px solid #a6e3a1; }
-  .error { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
-  
-  .voltar { position: absolute; top: 20px; left: 20px; background: #45475a; color: #cdd6f4; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; }
-  .voltar:hover { background: #585b70; }
+  .voltar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #45475a;
+    color: #cdd6f4;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    transition: 0.2s;
+  }
+  .voltar:hover { background: #585b70; color: #fff; }
 
-  .mirror-panel { background: #181825; border: 2px dashed #585b70; border-radius: 12px; padding: 15px; width: 230px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); align-self: flex-start; }
-  .mirror-panel h3 { color: #fab387; margin-top: 0; border-bottom: 1px solid #45475a; padding-bottom: 10px; text-align: center; }
-  .mirror-panel ul { padding-left: 20px; margin: 0; color: #bac2de; line-height: 1.6; font-size: 14px;}
-  .mirror-panel li { margin-bottom: 8px; }
-  .mirror-panel strong { color: #cdd6f4; }
-
-
-/* Ajustes para iPad e Telas Menores */
-@media (max-width: 1024px) {
-  .game-container { flex-direction: column; align-items: center; }
-  .panel { max-width: 95vw; overflow-x: auto; height: auto; padding-bottom: 20px;}
-  .board { flex-direction: column; align-items: center; max-width: 100vw; overflow-x: auto;}
-  .mirror-panel { width: 90vw; margin-bottom: 20px; }
-  svg { min-width: 500px; }
-  #nodes, #nodes-left, #slots-right { min-width: 500px; position: relative; height: 350px;}
-}
-
-
-/* Apple Pencil / Scratchpad Mode */
-#scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
-#scratchpad.active { pointer-events: auto; cursor: crosshair; }
-.pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
-.pencil-btn { background: #fab387; color: #1e1e2e; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
-.pencil-btn:hover { transform: scale(1.1); }
-.pencil-btn.active { background: #f38ba8; }
-.clear-btn { background: #89b4fa; display: none; }
-#scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
-
+  /* Dica de interação interativa */
+  .interaction-tip {
+    background: rgba(137, 180, 250, 0.1);
+    border: 1px solid rgba(137, 180, 250, 0.3);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 960px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
   /* Menu de Categorias e Fases da Árvore B */
   .menu-container {
@@ -89,7 +101,7 @@
     gap: 12px;
     width: 100%;
     max-width: 960px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
   .category-tabs {
     display: flex;
@@ -103,9 +115,9 @@
     background: transparent;
     color: #a6adc8;
     border: none;
-    padding: 10px 20px;
+    padding: 9px 20px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
@@ -115,16 +127,16 @@
     background: #313244;
   }
   .cat-tab.active {
-    background: #fab387;
+    background: var(--peach);
     color: #11111b;
-    box-shadow: 0 4px 10px rgba(250, 179, 135, 0.3);
+    box-shadow: 0 4px 10px rgba(250, 179, 135, 0.35);
   }
   .level-pills {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 900px;
+    max-width: 920px;
   }
   .pill-btn {
     background: #313244;
@@ -132,43 +144,365 @@
     border: 1.5px solid #45475a;
     padding: 6px 14px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
   }
   .pill-btn:hover {
-    border-color: #fab387;
-    color: #fab387;
+    border-color: var(--peach);
+    color: var(--peach);
     transform: translateY(-1px);
   }
   .pill-btn.active {
-    background: #f9e2af;
+    background: var(--yellow);
     color: #11111b;
-    border-color: #f9e2af;
+    border-color: var(--yellow);
     font-weight: 700;
     box-shadow: 0 2px 8px rgba(249, 226, 175, 0.4);
   }
+
+  .game-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1280px;
+  }
+
+  .mirror-panel {
+    background: #181825;
+    border: 2px dashed #585b70;
+    border-radius: 12px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  .mirror-panel h3 {
+    color: var(--peach);
+    margin-top: 0;
+    border-bottom: 1px solid #45475a;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 16px;
+  }
+  .mirror-panel ul {
+    padding-left: 18px;
+    margin: 0;
+    color: #bac2de;
+    line-height: 1.5;
+    font-size: 13px;
+  }
+  .mirror-panel li { margin-bottom: 8px; }
+  .mirror-panel strong { color: #cdd6f4; }
+
+  .panel {
+    background: #313244;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #45475a;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .panel-title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--peach);
+    font-size: 17px;
+  }
+
+  /* Painel de Peças Disponíveis */
+  .pool-panel {
+    width: 380px;
+    min-height: 380px;
+    flex-shrink: 0;
+  }
+  .pool {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #181825;
+    padding: 18px;
+    border-radius: 12px;
+    border: 2px dashed #585b70;
+    width: 100%;
+    min-height: 90px;
+    box-sizing: border-box;
+  }
+
+  /* Botão de Ordenar */
+  #btn-sort {
+    margin-top: 14px;
+    font-size: 13.5px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--purple);
+    color: #11111b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  }
+  #btn-sort:hover {
+    background: #d9b8ff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(203, 166, 247, 0.4);
+  }
+  #btn-sort:active {
+    transform: scale(0.96);
+  }
+
+  /* Painel da Árvore Final */
+  .tree-panel {
+    flex-grow: 1;
+    min-width: 480px;
+    max-width: 620px;
+    min-height: 380px;
+  }
+
+  /* B-Tree Nodes container */
+  .btree-node-box {
+    background: rgba(0,0,0,0.25);
+    border: 2px solid #a6adc8;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .btree-node-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background: #313244;
+    padding: 0 6px;
+    font-size: 11.5px;
+    color: #a6adc8;
+    font-weight: bold;
+  }
+
+  /* The draggable blocks */
+  .block {
+    width: 50px;
+    height: 50px;
+    background: var(--peach);
+    color: #11111b;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 19px;
+    border: 3px solid var(--red);
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  .block * {
+    pointer-events: none;
+  }
+  .block:hover {
+    transform: scale(1.08);
+  }
+  .block:active, .block.dragging {
+    cursor: grabbing;
+    transform: scale(1.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.7);
+    z-index: 1000 !important;
+  }
+  .block.selected {
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 15px var(--purple) !important;
+    transform: scale(1.15);
+  }
+
+  /* The slots inside the B-Tree Nodes */
+  .slot {
+    width: 50px;
+    height: 50px;
+    border: 2px dashed #6c7086;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.05);
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .slot:hover, .slot.highlight {
+    border-color: var(--yellow);
+    background: rgba(249, 226, 175, 0.12);
+  }
+  .slot.drag-over {
+    background: rgba(250, 179, 135, 0.35);
+    border-color: var(--peach);
+    transform: scale(1.12);
+  }
+
+  /* Lixeira */
+  .trash-container {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 15px;
+  }
+  .trash {
+    border: 2px dashed var(--red);
+    background: rgba(243, 139, 168, 0.1);
+    width: 76px;
+    height: 76px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .trash:hover, .trash.highlight {
+    background: rgba(243, 139, 168, 0.25);
+    transform: scale(1.08);
+  }
+  .trash.drag-over {
+    background: rgba(243, 139, 168, 0.45);
+    transform: scale(1.15);
+  }
+  .trash-placeholder {
+    position: absolute;
+    font-size: 30px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .tree-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+  }
+  .tree-children {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  
+  /* Linhas conectoras */
+  .line {
+    position: absolute;
+    border-top: 3px solid #a6adc8;
+    border-left: 3px solid #a6adc8;
+    border-right: 3px solid #a6adc8;
+    height: 15px;
+    top: -20px;
+    left: 20%;
+    right: 20%;
+    z-index: 1;
+  }
+
+  .controls {
+    text-align: center;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  #btn-action {
+    background: var(--peach);
+    color: #11111b;
+    border: none;
+    padding: 12px 34px;
+    font-size: 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  #btn-action:hover {
+    background: var(--yellow);
+    transform: translateY(-2px);
+  }
+
+  .feedback {
+    font-size: 16px;
+    font-weight: bold;
+    min-height: 25px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    transition: 0.3s;
+    opacity: 0;
+  }
+  .feedback.show { opacity: 1; }
+  .feedback.success { background: rgba(166, 227, 161, 0.2); color: var(--green); border: 1px solid var(--green); }
+  .feedback.error { background: rgba(243, 139, 168, 0.2); color: var(--red); border: 1px solid var(--red); }
+
+  /* Ajustes para Telas Menores */
+  @media (max-width: 1024px) {
+    .game-container { flex-direction: column; align-items: center; }
+    .pool-panel, .tree-panel { width: 100%; max-width: 550px; min-width: auto; }
+    .mirror-panel { width: 100%; max-width: 550px; }
+  }
+
+  /* Apple Pencil */
+  #scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
+  #scratchpad.active { pointer-events: auto; cursor: crosshair; }
+  .pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
+  .pencil-btn {
+    background: var(--peach);
+    color: #1e1e2e;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+  }
+  .pencil-btn:hover { transform: scale(1.1); }
+  .pencil-btn.active { background: var(--red); }
+  .clear-btn { background: var(--accent); display: none; }
+  #scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
 </style>
-
-<!-- Polyfill para iPad Touch Drag & Drop -->
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour-polyfill.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    MobileDragDrop.polyfill({
-        dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
-    });
-    window.addEventListener('touchmove', function() {}, {passive: false});
-  });
-</script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
-
 </head>
 <body>
 
 <a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
-<button class="voltar" style="left: auto; right: 20px; cursor: pointer; border: none; font-size: 14px; font-family: inherit;" onclick="loadLevel(currentLevel)">🔄 Refazer Nível</button>
+<button class="voltar" style="left: auto; right: 20px; cursor: pointer; border: none;" onclick="loadLevel(currentLevel)">🔄 Refazer Nível</button>
 
 <h1>📦 Árvore B Master</h1>
 <div class="level-info">
@@ -176,7 +510,13 @@
   <p id="level-desc"></p>
 </div>
 
-<!-- Menu de Seleção por Operações do Moodle / UTFPR -->
+<!-- Dica de Usabilidade -->
+<div class="interaction-tip">
+  <span>💡</span>
+  <span><strong>Como jogar:</strong> Você pode <strong>arrastar e soltar</strong> os blocos OU simplesmente <strong>clicar no número</strong> e depois <strong>clicar no slot/lixeira desejado</strong>! Clicar em um número já posicionado o devolve para a caixa de chaves soltas.</span>
+</div>
+
+<!-- Menu de Seleção por Operações da UTFPR -->
 <div class="menu-container">
   <div class="category-tabs">
     <button class="cat-tab active" id="tab-insercao" onclick="switchCategory('insercao')">📥 Árvore B - Busca e Inserção</button>
@@ -187,44 +527,48 @@
 </div>
 
 <div class="game-container">
-  
+  <!-- Cola Teórica -->
   <div class="mirror-panel">
     <h3>🪞 Cola (Árvore B)</h3>
-        <ul>
-      <li style="margin-bottom: 12px;"><strong>Grau Mínimo (t = 3):</strong><br>É o "tamanho da fôrma" definido pela professora. Ele é a base matemática que dita o tamanho máximo e mínimo de cada nó.</li>
+    <ul>
+      <li style="margin-bottom: 12px;"><strong>Grau Mínimo (t = 3):</strong><br>Tamanho da fôrma definido pela professora na lista. Base matemática dos limites.</li>
       
       <li style="margin-bottom: 12px;"><strong>Máximo de Chaves (2t - 1 = <span style="color:#f38ba8; font-weight:bold;">5</span>):</strong><br>
-      É o limite de números que cabem juntos dentro de um único "retângulo" (nó).<br>
-      👉 <i style="color:#bac2de;">Se você tentar socar o 6º número lá dentro, a caixa "estoura" e rola o <b>Split</b>!</i></li>
+      Limite de números que cabem em um único nó.<br>
+      👉 <i style="color:#bac2de;">O 6º número faz a caixa estourar e rola o <b>Split</b>!</i></li>
       
       <li style="margin-bottom: 12px;"><strong>Mínimo de Chaves (t - 1 = <span style="color:#a6e3a1; font-weight:bold;">2</span>):</strong><br>
-      É o mínimo de números que um nó é OBRIGADO a ter para existir (exceto a Raiz).<br>
-      👉 <i style="color:#bac2de;">Se você remover um número e o nó ficar só com 1, ele "passa fome" (<b>Underflow</b>). Ele terá que pedir emprestado (Redistribuição) ou se juntar com o irmão (Merge).</i></li>
+      Mínimo de números obrigatório (exceto Raiz).<br>
+      👉 <i style="color:#bac2de;">Se ficar só com 1 após remoção: <b>Underflow</b> (pede emprestado ou faz Merge).</i></li>
       
       <hr style="border-color:#45475a; margin: 15px 0;">
       
-      <li style="margin-bottom: 10px;"><strong>Split:</strong> A caixa estourou (chegou em 6)! O número bem do MEIO (Mediana) é chutado pra cima (pro Pai) e a caixa parte em duas.</li>
-      <li style="margin-bottom: 10px;"><strong>Redistribuição:</strong> Nó passou fome! Olhe SEMPRE pro irmão da <b>esquerda</b> primeiro. Se ele for rico (tiver 3 ou mais), roube um número dele (o roubo passa pelo Pai).</li>
-      <li><strong>Merge:</strong> O irmão também tá pobre (só tem 2)? Então dê um abraço: junte você, seu irmão e o número do Pai que separava vocês em um nó só.</li>
+      <li style="margin-bottom: 10px;"><strong>Split:</strong> A caixa estourou! O número do MEIO (Mediana) sobe pro Pai e o nó se parte em dois.</li>
+      <li style="margin-bottom: 10px;"><strong>Redistribuição:</strong> Underflow! Olhe SEMPRE pro irmão da <b>esquerda</b> primeiro. Se ele tiver 3 ou mais, roube um dele através do Pai.</li>
+      <li><strong>Merge:</strong> Irmão também pobre (só 2)? Junte irmão, você e o separador do Pai em uma folha só!</li>
     </ul>
   </div>
 
   <!-- Painel de Peças Disponíveis -->
-  <div class="panel" style="width: 400px;">
+  <div class="panel pool-panel">
     <div class="panel-title">Chaves Soltas</div>
     
     <div class="pool" id="pool"></div>
-    <button id="btn-sort" class="action-btn" style="margin-top: 20px; font-size: 14px; padding: 8px 15px; display: block; margin-left: auto; margin-right: auto; background: #cba6f7; color: #11111b; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s;">🔢 Ordenar Chaves</button>
+    <button id="btn-sort">🔢 Ordenar Chaves</button>
 
-    <p style="color: #bac2de; font-size: 13px; text-align: center; margin-top: 20px;">Arraste esses blocos para reconstruir a árvore final na direita.</p>
-    <div id="trash" class="trash" data-is-trash="true"></div>
+    <div class="trash-container" id="trash-container">
+      <div style="font-size: 12px; color: #a6adc8; font-weight: bold;">Lixeira (Descarte na Remoção)</div>
+      <div id="trash" class="trash" data-is-trash="true">
+        <span class="trash-placeholder">🗑️</span>
+      </div>
+    </div>
   </div>
   
   <!-- Painel da Árvore Final -->
-  <div class="panel" style="width: 550px;">
+  <div class="panel tree-panel">
     <div class="panel-title">Monte o Resultado Final (t=3)</div>
     <div class="tree-layout" id="tree-layout">
-      <!-- Generated slots will go here -->
+      <!-- Slots gerados dinamicamente -->
     </div>
   </div>
 </div>
@@ -367,6 +711,23 @@ const levels = [
 
 let currentLevel = 0;
 let currentCategory = 'insercao';
+let selectedBlock = null; // Para modo Click-to-Move
+
+const ui = {
+  levelName: document.getElementById('level-name'),
+  levelDesc: document.getElementById('level-desc'),
+  pool: document.getElementById('pool'),
+  treeLayout: document.getElementById('tree-layout'),
+  trash: document.getElementById('trash'),
+  trashContainer: document.getElementById('trash-container'),
+  btn: document.getElementById('btn-action'),
+  fbk: document.getElementById('feedback')
+};
+
+function showMsg(msg, type) {
+  ui.fbk.innerHTML = msg;
+  ui.fbk.className = `feedback show ${type}`;
+}
 
 function renderLevelPills() {
   const container = document.getElementById('level-pills');
@@ -393,144 +754,297 @@ function switchCategory(cat) {
   if (firstIdx !== -1) loadLevel(firstIdx);
 }
 
-const ui = {
-  levelName: document.getElementById('level-name'), levelDesc: document.getElementById('level-desc'),
-  pool: document.getElementById('pool'), treeLayout: document.getElementById('tree-layout'),
-  trash: document.getElementById('trash'), btn: document.getElementById('btn-action'),
-  fbk: document.getElementById('feedback')
-};
+// Desselecionar qualquer bloco
+function clearSelection() {
+  if (selectedBlock) {
+    selectedBlock.classList.remove('selected');
+    selectedBlock = null;
+  }
+  document.querySelectorAll('.slot, .trash').forEach(el => el.classList.remove('highlight'));
+}
 
-function showMsg(msg, type) { ui.fbk.innerHTML = msg; ui.fbk.className = `feedback show ${type}`; }
-
+// Criar Slot
 function createSlot(expectedVal) {
-  const el = document.createElement('div'); el.className = 'slot'; el.dataset.expected = expectedVal;
-  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
-  el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-  el.addEventListener('drop', e => {
-    e.preventDefault(); el.classList.remove('drag-over');
-    const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-    const blockEl = document.getElementById(id);
-    if(el.children.length > 0) ui.pool.appendChild(el.children[0]);
-    el.appendChild(blockEl);
+  const el = document.createElement('div');
+  el.className = 'slot';
+  el.dataset.expected = expectedVal;
+
+  // Clique no slot para receber o bloco selecionado
+  el.addEventListener('click', e => {
+    e.stopPropagation();
+    if (!selectedBlock) return;
+
+    // Se o slot já tem um bloco, devolver o anterior para o pool
+    if (el.children.length > 0) {
+      ui.pool.appendChild(el.children[0]);
+    }
+    el.appendChild(selectedBlock);
+    clearSelection();
   });
+
   return el;
 }
 
+// Adicionar interatividade física completa (Pointer Events + Click) a um bloco
+function makeBlockInteractive(blockEl) {
+  let isPointerDown = false;
+  let isDragging = false;
+  let startX = 0, startY = 0;
+
+  blockEl.addEventListener('pointerdown', e => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    isPointerDown = true;
+    isDragging = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    blockEl.setPointerCapture(e.pointerId);
+  });
+
+  blockEl.addEventListener('pointermove', e => {
+    if (!isPointerDown) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+
+    if (!isDragging && Math.hypot(dx, dy) > 5) {
+      isDragging = true;
+      blockEl.classList.add('dragging');
+      clearSelection();
+    }
+
+    if (isDragging) {
+      blockEl.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+
+      // Destacar slot ou trash sob o cursor
+      const curX = e.clientX;
+      const curY = e.clientY;
+      document.querySelectorAll('.slot, .trash').forEach(target => {
+        const rect = target.getBoundingClientRect();
+        const dist = Math.hypot(curX - (rect.left + rect.width/2), curY - (rect.top + rect.height/2));
+        if (dist < 40) target.classList.add('drag-over');
+        else target.classList.remove('drag-over');
+      });
+    }
+  });
+
+  function finishDrag(e) {
+    if (!isPointerDown) return;
+    isPointerDown = false;
+
+    if (isDragging) {
+      isDragging = false;
+      blockEl.classList.remove('dragging');
+      blockEl.style.transform = '';
+
+      const curX = e.clientX;
+      const curY = e.clientY;
+
+      let bestTarget = null;
+      let minDistance = 50; // raio de atração em px
+
+      document.querySelectorAll('.slot, .trash').forEach(target => {
+        target.classList.remove('drag-over');
+        const rect = target.getBoundingClientRect();
+        const dist = Math.hypot(curX - (rect.left + rect.width/2), curY - (rect.top + rect.height/2));
+        if (dist < minDistance) {
+          minDistance = dist;
+          bestTarget = target;
+        }
+      });
+
+      if (bestTarget) {
+        if (bestTarget.children.length > 0 && bestTarget.children[0] !== blockEl) {
+          ui.pool.appendChild(bestTarget.children[0]);
+        }
+        bestTarget.appendChild(blockEl);
+      } else {
+        // Soltou fora de qualquer slot ou soltou no pool -> Devolve ao pool
+        ui.pool.appendChild(blockEl);
+      }
+    } else {
+      // FOI UM CLIQUE OU TOQUE RÁPIDO
+      blockEl.style.transform = '';
+      if (blockEl.parentElement && (blockEl.parentElement.classList.contains('slot') || blockEl.parentElement.classList.contains('trash'))) {
+        // Se já está no slot ou lixeira, um clique devolve ao pool imediatamente!
+        ui.pool.appendChild(blockEl);
+        clearSelection();
+      } else {
+        // Se está no pool, seleciona para Click-to-Move
+        if (selectedBlock === blockEl) {
+          clearSelection();
+        } else {
+          clearSelection();
+          selectedBlock = blockEl;
+          blockEl.classList.add('selected');
+          document.querySelectorAll('.slot, .trash').forEach(el => el.classList.add('highlight'));
+        }
+      }
+    }
+  }
+
+  blockEl.addEventListener('pointerup', finishDrag);
+  blockEl.addEventListener('pointercancel', finishDrag);
+}
+
+// Configurar Lixeira
+ui.trash.addEventListener('click', e => {
+  e.stopPropagation();
+  if (!selectedBlock) return;
+  if (ui.trash.children.length > 0) {
+    ui.pool.appendChild(ui.trash.children[0]);
+  }
+  ui.trash.appendChild(selectedBlock);
+  clearSelection();
+});
+
+// Desselecionar ao clicar fora
+document.addEventListener('click', e => {
+  if (!e.target.closest('.block') && !e.target.closest('.slot') && !e.target.closest('.trash')) {
+    clearSelection();
+  }
+});
+
+// Carregar Nível
 function loadLevel(idx) {
   currentLevel = idx;
   const lvl = levels[idx];
   currentCategory = lvl.category;
+  clearSelection();
   
   if (document.getElementById('tab-insercao')) {
     document.getElementById('tab-insercao').classList.toggle('active', currentCategory === 'insercao');
     document.getElementById('tab-remocao').classList.toggle('active', currentCategory === 'remocao');
   }
   renderLevelPills();
-  ui.levelName.textContent = lvl.name; ui.levelDesc.textContent = lvl.desc;
-  ui.pool.innerHTML = ''; ui.treeLayout.innerHTML = ''; ui.fbk.className = 'feedback';
-  ui.btn.textContent = "Verificar Árvore B"; ui.btn.style.display = 'inline-block';
   
-  // Create Draggable Blocks in the Pool
-  // Shuffle blocks
+  ui.levelName.textContent = lvl.name;
+  ui.levelDesc.textContent = lvl.desc;
+  ui.pool.innerHTML = '';
+  ui.treeLayout.innerHTML = '';
+  ui.trash.innerHTML = '<span class="trash-placeholder">🗑️</span>';
+  ui.fbk.className = 'feedback';
+  ui.btn.textContent = "Verificar Árvore B";
+  ui.btn.style.display = 'inline-block';
+
+  // Mostrar Lixeira somente se o nível tiver target de remoção
+  if (lvl.targetTrash !== null) {
+    ui.trashContainer.style.display = 'flex';
+  } else {
+    ui.trashContainer.style.display = 'none';
+  }
+  
+  // Criar Blocos no Pool (embaralhados)
   const shuffled = [...lvl.blocks].sort(() => Math.random() - 0.5);
   shuffled.forEach(val => {
-    const el = document.createElement('div'); el.className = 'block'; el.id = 'B' + val; el.textContent = val;
-    el.draggable = true;
-    el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(() => el.style.opacity = '0.4', 0); });
-    el.addEventListener('dragend', () => el.style.opacity = '1');
+    const el = document.createElement('div');
+    el.className = 'block';
+    el.id = 'B' + val;
+    el.textContent = val;
+    makeBlockInteractive(el);
     ui.pool.appendChild(el);
   });
   
-  // Create Target Layout
+  // Criar Layout Alvo
   lvl.layout.forEach(row => {
     if (row.children) {
-      const rowEl = document.createElement('div'); rowEl.className = 'tree-children';
-      const line = document.createElement('div'); line.className = 'line'; rowEl.appendChild(line);
+      const rowEl = document.createElement('div');
+      rowEl.className = 'tree-children';
+      const line = document.createElement('div');
+      line.className = 'line';
+      rowEl.appendChild(line);
       row.children.forEach(childNode => {
-        const nodeBox = document.createElement('div'); nodeBox.className = 'btree-node-box'; nodeBox.dataset.label = childNode.label;
+        const nodeBox = document.createElement('div');
+        nodeBox.className = 'btree-node-box';
+        nodeBox.dataset.label = childNode.label;
         childNode.slots.forEach(s => nodeBox.appendChild(createSlot(s)));
         rowEl.appendChild(nodeBox);
       });
       ui.treeLayout.appendChild(rowEl);
     } else {
-      const nodeBox = document.createElement('div'); nodeBox.className = 'btree-node-box'; nodeBox.dataset.label = row.label;
+      const nodeBox = document.createElement('div');
+      nodeBox.className = 'btree-node-box';
+      nodeBox.dataset.label = row.label;
       row.slots.forEach(s => nodeBox.appendChild(createSlot(s)));
       ui.treeLayout.appendChild(nodeBox);
     }
   });
-  
-  ui.trash.dataset.expected = lvl.targetTrash || "NONE";
 }
 
-// Trash logic
-ui.trash.addEventListener('dragover', e => { e.preventDefault(); ui.trash.classList.add('drag-over'); });
-ui.trash.addEventListener('dragleave', () => ui.trash.classList.remove('drag-over'));
-ui.trash.addEventListener('drop', e => {
-  e.preventDefault(); ui.trash.classList.remove('drag-over');
-  const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-  const blockEl = document.getElementById(id);
-  if(ui.trash.children.length > 0) ui.pool.appendChild(ui.trash.children[0]);
-  ui.trash.appendChild(blockEl);
-});
-
-// Pool logic (to return blocks)
-ui.pool.addEventListener('dragover', e => e.preventDefault());
-ui.pool.addEventListener('drop', e => {
-  e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-  ui.pool.appendChild(document.getElementById(id));
-});
-
+// Botão Verificar
 ui.btn.addEventListener('click', () => {
   if (ui.btn.textContent === "Próximo Nível") {
     currentLevel++;
-    if (currentLevel < levels.length) loadLevel(currentLevel);
-    else {
-      ui.levelName.textContent = "Parabéns! 🎉"; ui.levelDesc.textContent = "Você dominou os 3 pesadelos da Árvore B!";
-      ui.pool.innerHTML = ''; ui.treeLayout.innerHTML = ''; ui.btn.style.display = 'none'; ui.fbk.style.display = 'none';
-      document.querySelector('.trash').style.display = 'none';
+    if (currentLevel < levels.length) {
+      loadLevel(currentLevel);
+    } else {
+      ui.levelName.textContent = "Parabéns! 🎉";
+      ui.levelDesc.textContent = "Você dominou completamente a Busca, Inserção e Remoção na Árvore B!";
+      ui.pool.innerHTML = '';
+      ui.treeLayout.innerHTML = '';
+      ui.btn.style.display = 'none';
+      ui.fbk.style.display = 'none';
+      ui.trashContainer.style.display = 'none';
     }
     return;
   }
   
-  let allPlaced = true; let allCorrect = true;
+  let allPlaced = true;
+  let allCorrect = true;
+
   document.querySelectorAll('.slot').forEach(slot => {
-    if (slot.children.length === 0) allPlaced = false;
-    else {
-      if (parseInt(slot.children[0].textContent) !== parseInt(slot.dataset.expected)) allCorrect = false;
+    const block = slot.querySelector('.block');
+    if (!block) {
+      allPlaced = false;
+    } else {
+      if (parseInt(block.textContent) !== parseInt(slot.dataset.expected)) {
+        allCorrect = false;
+      }
     }
   });
   
   const lvl = levels[currentLevel];
-  if (lvl.targetTrash) {
-    if (ui.trash.children.length === 0) allPlaced = false;
-    else if (parseInt(ui.trash.children[0].textContent) !== lvl.targetTrash) allCorrect = false;
+  if (lvl.targetTrash !== null) {
+    const trashBlock = ui.trash.querySelector('.block');
+    if (!trashBlock) {
+      allPlaced = false;
+    } else if (parseInt(trashBlock.textContent) !== lvl.targetTrash) {
+      allCorrect = false;
+    }
   }
   
-  if (!allPlaced) showMsg("Arraste TODOS os blocos para os slots (se for remoção, coloque um na lixeira)!", "error");
-  else if (!allCorrect) showMsg("Montagem incorreta! Lembre-se: os números dentro de um nó DEVEM ficar em ordem crescente. E a mediana é a que sobe!", "error");
-  else { showMsg("Perfeito! Você aplicou a regra da Árvore B corretamente! 📦", "success"); ui.btn.textContent = "Próximo Nível"; }
+  if (!allPlaced) {
+    showMsg("Coloque TODOS os blocos nos slots (se for remoção, coloque um na lixeira)!", "error");
+  } else if (!allCorrect) {
+    showMsg("Montagem incorreta! Lembre-se: chaves dentro de um nó DEVEM ficar em ordem crescente, e a mediana é quem sobe!", "error");
+  } else {
+    showMsg("Perfeito! Você aplicou a regra da Árvore B com maestria! 📦", "success");
+    ui.btn.textContent = "Próximo Nível";
+  }
 });
 
-
+// Botão de Ordenação de Chaves (TOTALMENTE CORRIGIDO)
 document.getElementById('btn-sort').addEventListener('click', () => {
-  const pool = document.getElementById('pool');
-  const nodes = Array.from(pool.querySelectorAll('.node'));
-  nodes.sort((a, b) => parseInt(a.textContent) - parseInt(b.textContent));
-  nodes.forEach(n => {
-    // Adding a tiny animation for flair
-    n.style.transform = 'scale(1.2)';
-    pool.appendChild(n);
-    setTimeout(() => n.style.transform = '', 200);
+  const blocks = Array.from(ui.pool.querySelectorAll('.block'));
+  if (blocks.length === 0) return;
+
+  blocks.sort((a, b) => parseInt(a.textContent) - parseInt(b.textContent));
+  blocks.forEach((b, i) => {
+    b.style.transition = 'transform 0.2s';
+    b.style.transform = 'scale(1.18)';
+    ui.pool.appendChild(b);
+    setTimeout(() => {
+      b.style.transform = '';
+    }, 150 + i * 40);
   });
 });
 
+// Carrega o primeiro nível
 loadLevel(0);
 </script>
 
 <!-- Apple Pencil Script -->
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  if(document.getElementById('scratchpad')) return; // already injected somehow
+  if(document.getElementById('scratchpad')) return;
   
   const canvas = document.createElement('canvas');
   canvas.id = 'scratchpad';
@@ -558,7 +1072,7 @@ window.addEventListener('DOMContentLoaded', () => {
     pencilBtn.classList.toggle('active');
     if(canvas.classList.contains('active')) {
       pencilBtn.textContent = '❌';
-      document.body.style.overflow = 'hidden'; // lock scrolling while drawing
+      document.body.style.overflow = 'hidden';
     } else {
       pencilBtn.textContent = '✏️';
       document.body.style.overflow = 'auto';
