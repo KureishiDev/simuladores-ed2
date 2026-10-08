@@ -245,15 +245,16 @@
       <div class="flashcard-inner">
         <div class="flashcard-front">
           <div class="fc-badge neg">FB NEGATIVO (-)</div>
-          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">Perna ESQUERDA maior</div>
-          <div style="font-size: 11px; color: #a6adc8;">Toque para ver a rotação 👆</div>
+          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">Perna ESQUERDA pesada</div>
+          <div style="font-size: 11px; color: #a6adc8;">Toque para ver quem vira Pai 👆</div>
         </div>
         <div class="flashcard-back">
-          <div class="fc-badge action">AÇÃO</div>
-          <div style="font-weight: 800; font-size: 15px; color: #a6e3a1; margin: 4px 0;">GIRA PRA DIREITA! ➡️</div>
-          <div style="font-size: 11px; color: #bac2de;">O filho esquerdo sobe e a raiz desce para a direita.</div>
+          <div class="fc-badge action">GIRA DIREITA ➡️</div>
+          <div style="font-weight: 800; font-size: 14px; color: #a6e3a1; margin: 3px 0;">Filho da ESQUERDA vira PAI!</div>
+          <div style="font-size: 11px; color: #bac2de; line-height: 1.3;">Ele sobe para a raiz, e a antiga raiz desce e vira filho da direita dele.</div>
         </div>
       </div>
+    </div>
     </div>
 
     <!-- Card 2: FB Positivo -->
@@ -261,15 +262,16 @@
       <div class="flashcard-inner">
         <div class="flashcard-front">
           <div class="fc-badge pos">FB POSITIVO (+)</div>
-          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">Perna DIREITA maior</div>
-          <div style="font-size: 11px; color: #a6adc8;">Toque para ver a rotação 👆</div>
+          <div style="font-weight: bold; font-size: 14px; margin: 4px 0;">Perna DIREITA pesada</div>
+          <div style="font-size: 11px; color: #a6adc8;">Toque para ver quem vira Pai 👆</div>
         </div>
         <div class="flashcard-back">
-          <div class="fc-badge action">AÇÃO</div>
-          <div style="font-weight: 800; font-size: 15px; color: #89b4fa; margin: 4px 0;">GIRA PRA ESQUERDA! ⬅️</div>
-          <div style="font-size: 11px; color: #bac2de;">O filho direito sobe e a raiz desce para a esquerda.</div>
+          <div class="fc-badge action">GIRA ESQUERDA ⬅️</div>
+          <div style="font-weight: 800; font-size: 14px; color: #89b4fa; margin: 3px 0;">Filho da DIREITA vira PAI!</div>
+          <div style="font-size: 11px; color: #bac2de; line-height: 1.3;">Ele sobe para a raiz, e a antiga raiz desce e vira filho da esquerda dele.</div>
         </div>
       </div>
+    </div>
     </div>
 
     <!-- Card 3: Sinais Iguais -->
@@ -320,7 +322,7 @@ const levels = [
     name: "Nível 1: Rotação Simples Direita",
     phases: [
       {
-        desc: "W (fb = -2) e H (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Gire para a DIREITA no W.",
+        desc: "W (fb = -2) e H (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Regra: O primeiro filho da esquerda (H) VIRA PAI (sobe para a raiz), e o W desce para a direita dele!",
         nodes: [ { id: "W", val: "W", fb: -2, x: 175, y: 50 }, { id: "H", val: "H", fb: -1, x: 100, y: 140 }, { id: "F", val: "F", fb: 0, x: 25, y: 230 } ],
         linksLeft: [ ["W","H"], ["H","F"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "H" }, { id: "S2", x: 100, y: 140, expected: "F" }, { id: "S3", x: 250, y: 140, expected: "W" } ],
@@ -332,14 +334,14 @@ const levels = [
     name: "Nível 2: Rotação Dupla Esq-Dir",
     phases: [
       {
-        desc: "W (fb = -2) e P (fb = +1). Sinais diferentes! Formou joelho. PASSO 1: Gire o FILHO (P) para a esquerda para alinhar os sinais.",
+        desc: "W (fb = -2) e P (fb = +1). Sinais diferentes (formou joelho!). PASSO 1: No filho P, o filho da direita (R) VIRA PAI do P (sobe pro lugar do P). Agora a perna esticou e os sinais ficaram iguais!",
         nodes: [ { id: "W", val: "W", fb: -2, x: 175, y: 50 }, { id: "P", val: "P", fb: 1, x: 100, y: 140 }, { id: "R", val: "R", fb: 0, x: 175, y: 230 } ],
         linksLeft: [ ["W","P"], ["P","R"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "W" }, { id: "S2", x: 100, y: 140, expected: "R" }, { id: "S3", x: 25, y: 230, expected: "P" } ],
         linksRight: [ ["S1","S2"], ["S2","S3"] ]
       },
       {
-        desc: "PASSO 2: Agora W (fb = -2) e R (fb = -1) têm sinais iguais! A perna esticou. Aplique a Rotação Simples à DIREITA no W.",
+        desc: "PASSO 2: Agora W (fb = -2) e R (fb = -1) têm sinais iguais! Perna esquerda pesada: o filho da esquerda (R) VIRA PAI (nova raiz), e o W desce para a direita dele!",
         nodes: [ { id: "W", val: "W", fb: -2, x: 175, y: 50 }, { id: "R", val: "R", fb: -1, x: 100, y: 140 }, { id: "P", val: "P", fb: 0, x: 25, y: 230 } ],
         linksLeft: [ ["W","R"], ["R","P"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "R" }, { id: "S2", x: 100, y: 140, expected: "P" }, { id: "S3", x: 250, y: 140, expected: "W" } ],
@@ -351,14 +353,14 @@ const levels = [
     name: "Nível 3: Rotação Dupla Dir-Esq",
     phases: [
       {
-        desc: "Q (fb = +2) e T (fb = -1). Sinais diferentes (+ com -)! Formou joelho. PASSO 1: Gire o FILHO (T) para a direita.",
+        desc: "Q (fb = +2) e T (fb = -1). Sinais diferentes (formou joelho!). PASSO 1: No filho T, o filho da esquerda (M) VIRA PAI do T (sobe pro lugar do T). A perna esticou!",
         nodes: [ { id: "Q", val: "Q", fb: 2, x: 175, y: 50 }, { id: "T", val: "T", fb: -1, x: 250, y: 140 }, { id: "M", val: "M", fb: 0, x: 175, y: 230 } ],
         linksLeft: [ ["Q","T"], ["T","M"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "Q" }, { id: "S2", x: 250, y: 140, expected: "M" }, { id: "S3", x: 325, y: 230, expected: "T" } ],
         linksRight: [ ["S1","S2"], ["S2","S3"] ]
       },
       {
-        desc: "PASSO 2: Agora Q (fb = +2) e M (fb = +1) têm sinais iguais positivos! Aplique a Rotação Simples à ESQUERDA no Q.",
+        desc: "PASSO 2: Agora Q (fb = +2) e M (fb = +1) têm sinais iguais positivos! Perna direita pesada: o primeiro filho da direita (M) VIRA PAI (nova raiz), e o Q desce para a esquerda dele!",
         nodes: [ { id: "Q", val: "Q", fb: 2, x: 175, y: 50 }, { id: "M", val: "M", fb: 1, x: 250, y: 140 }, { id: "T", val: "T", fb: 0, x: 325, y: 230 } ],
         linksLeft: [ ["Q","M"], ["M","T"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "M" }, { id: "S2", x: 100, y: 140, expected: "Q" }, { id: "S3", x: 250, y: 140, expected: "T" } ],
@@ -370,7 +372,7 @@ const levels = [
     name: "Nível 4: Rotação Simples Esquerda",
     phases: [
       {
-        desc: "Q (fb = +2) e Z (fb = +1). Sinais iguais positivos! A perna direita está pesada. Gire para a ESQUERDA no Q.",
+        desc: "Q (fb = +2) e Z (fb = +1). Sinais iguais positivos! A perna direita está pesada. Regra: O primeiro filho da direita (Z) VIRA PAI (sobe para a raiz), e o Q desce para a esquerda dele!",
         nodes: [ { id: "Q", val: "Q", fb: 2, x: 100, y: 50 }, { id: "Z", val: "Z", fb: 1, x: 175, y: 140 }, { id: "Y", val: "Y", fb: 0, x: 250, y: 230 } ],
         linksLeft: [ ["Q","Z"], ["Z","Y"] ],
         slots: [ { id: "S1", x: 175, y: 50, expected: "Z" }, { id: "S2", x: 100, y: 140, expected: "Q" }, { id: "S3", x: 250, y: 140, expected: "Y" } ],
@@ -382,7 +384,7 @@ const levels = [
     name: "Nível 5: Rotação com Transferência de Subárvore (Filho Adotivo)",
     phases: [
       {
-        desc: "PEGADINHA DE PROVA! Nó 50 tem fb = -2 e nó 30 tem fb = -1. Gire para a DIREITA. Onde vai parar o nó 40? O 40 vira filho esquerdo do 50!",
+        desc: "PEGADINHA DE PROVA! Nó 50 tem fb = -2 e nó 30 tem fb = -1. O filho da esquerda (30) VIRA PAI (sobe para a raiz) e o 50 desce. Mas e o nó 40? Ele é adotado como filho esquerdo do 50!",
         nodes: [
           { id: "50", val: "50", fb: -2, x: 220, y: 40 },
           { id: "30", val: "30", fb: -1, x: 130, y: 110 },
