@@ -3,186 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AVL - Ginásio de Rotações (One Page)</title>
+<title>Ginásio de Rotações AVL (Modo One Page) - ED2 UTFPR</title>
 <style>
-  html { scroll-behavior: smooth; }
-  body { 
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-    background: #11111b; 
-    color: #cdd6f4; 
-    margin: 0; 
-    padding: 20px 15px 80px 15px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    min-height: 100vh;
-    box-sizing: border-box;
-  }
-  
-  h1 { text-align: center; color: #89b4fa; margin: 10px 0 4px 0; font-size: 28px; }
-  .subtitle { text-align: center; color: #a6adc8; font-size: 15px; margin-bottom: 15px; }
-
-  /* Barra de Navegação Rápida (Pills) */
-  .nav-bar {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 960px;
-    margin-bottom: 20px;
-    position: sticky;
-    top: 10px;
-    z-index: 100;
-    background: rgba(17, 17, 27, 0.9);
-    backdrop-filter: blur(8px);
-    padding: 8px 14px;
-    border-radius: 30px;
-    border: 1px solid #45475a;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  }
-  .nav-pill {
-    background: #313244;
-    color: #cdd6f4;
-    border: 1px solid #45475a;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.2s;
-  }
-  .nav-pill:hover {
-    background: #89b4fa;
-    color: #11111b;
-    border-color: #89b4fa;
-    transform: translateY(-1px);
-  }
-  .score-badge {
-    background: #a6e3a1;
-    color: #11111b;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 13px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  :root {
+    --bg: #1e1e2e;
+    --card-bg: #181825;
+    --panel-bg: #1e1e2e;
+    --border: #313244;
+    --text: #cdd6f4;
+    --subtext: #a6adc8;
+    --accent: #89b4fa;
+    --green: #a6e3a1;
+    --red: #f38ba8;
+    --yellow: #f9e2af;
+    --purple: #cba6f7;
+    --peach: #fab387;
   }
 
-  /* Flashcards Interativos Horizontalizados */
-  .flashcards-section {
-    width: 100%;
-    max-width: 960px;
-    margin-bottom: 30px;
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px 15px 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  h1 {
+    text-align: center;
+    color: var(--yellow);
+    margin: 10px 0 5px;
+    font-size: 26px;
+    font-weight: 800;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--subtext);
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .voltar {
+    align-self: flex-start;
+    color: var(--subtext);
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    background: #181825;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: 0.2s;
+  }
+  .voltar:hover { color: #fff; border-color: var(--accent); }
+
+  /* Barra de Navegação Fixa / Sticky */
+  .nav-bar {
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+    background: rgba(24, 24, 37, 0.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 960px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+  }
+  .nav-bar::-webkit-scrollbar { height: 4px; }
+  .nav-bar::-webkit-scrollbar-thumb { background: #45475a; border-radius: 4px; }
+
+  .score-badge {
+    background: #313244;
+    color: var(--yellow);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    border: 1px solid #45475a;
+  }
+
+  .nav-pill {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    text-decoration: none;
+    padding: 5px 11px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: 0.2s;
+    flex-shrink: 0;
+  }
+  .nav-pill:hover {
+    background: rgba(137, 180, 250, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .nav-pill.completed {
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+    background: rgba(166, 227, 161, 0.12) !important;
+  }
+
+  /* Flashcards de Regras de Rotação */
+  .flashcards-section {
+    width: 100%;
+    max-width: 960px;
+    background: #181825;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   }
   .flashcards-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    width: 100%;
-    padding: 0 4px;
-    box-sizing: border-box;
+    align-items: center;
+    margin-bottom: 12px;
   }
   .flashcards-title {
-    color: #fab387;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--yellow);
     display: flex;
     align-items: center;
     gap: 8px;
   }
   .flip-all-btn {
     background: #313244;
-    color: #cdd6f4;
-    border: 1px solid #585b70;
-    border-radius: 6px;
+    color: var(--subtext);
+    border: 1px solid #45475a;
     padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 600;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
   }
   .flip-all-btn:hover { background: #45475a; color: #fff; }
-  
+
   .flashcards-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    width: 100%;
-    box-sizing: border-box;
+    gap: 12px;
+    margin-bottom: 10px;
   }
+  @media (max-width: 860px) {
+    .flashcards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 500px) {
+    .flashcards-grid { grid-template-columns: 1fr; }
+  }
+
   .flashcard {
-    height: 105px;
+    height: 100px;
     perspective: 1000px;
     cursor: pointer;
-    user-select: none;
-    width: 100%;
   }
   .flashcard-inner {
     position: relative;
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transition: transform 0.4s ease;
     transform-style: preserve-3d;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
   .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
   .flashcard-front, .flashcard-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     border-radius: 10px;
-    padding: 8px 10px;
     box-sizing: border-box;
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid #45475a;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
-  .flashcard-front { background: #181825; color: #cdd6f4; }
-  .flashcard-front:hover { border-color: #89b4fa; }
-  .flashcard-back { background: #1e1e2e; transform: rotateY(180deg); }
-  .card-neg .flashcard-back { border-color: #f38ba8; }
-  .card-pos .flashcard-back { border-color: #89b4fa; }
-  .card-eq .flashcard-back { border-color: #f9e2af; }
-  .card-diff .flashcard-back { border-color: #eba0ac; }
-  
-  .fc-badge {
-    font-size: 10px;
-    font-weight: 800;
-    padding: 2px 7px;
-    border-radius: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+  .flashcard-front {
+    background: #1e1e2e;
+    border: 1.5px solid #313244;
   }
-  .fc-badge.neg { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
-  .fc-badge.pos { background: rgba(137, 180, 250, 0.2); color: #89b4fa; border: 1px solid #89b4fa; }
-  .fc-badge.eq { background: rgba(249, 226, 175, 0.2); color: #f9e2af; border: 1px solid #f9e2af; }
-  .fc-badge.diff { background: rgba(235, 160, 172, 0.2); color: #eba0ac; border: 1px solid #eba0ac; }
-  .fc-badge.action { background: #a6e3a1; color: #11111b; }
+  .flashcard:hover .flashcard-front { border-color: #585b70; }
+  .flashcard-back {
+    transform: rotateY(180deg);
+    border: 1.5px solid transparent;
+  }
 
-  /* Estações de Treino (Station Cards) */
+  .card-neg .flashcard-back { background: #261b24; border-color: var(--red); }
+  .card-pos .flashcard-back { background: #192338; border-color: var(--accent); }
+  .card-eq .flashcard-back { background: #2b271d; border-color: var(--yellow); }
+  .card-diff .flashcard-back { background: #2d1d2b; border-color: var(--red); }
+
+  .fc-badge {
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+  }
+  .fc-badge.neg { background: rgba(243, 139, 168, 0.2); color: var(--red); border: 1px solid var(--red); }
+  .fc-badge.pos { background: rgba(137, 180, 250, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+  .fc-badge.eq { background: rgba(249, 226, 175, 0.2); color: var(--yellow); border: 1px solid var(--yellow); }
+  .fc-badge.diff { background: rgba(235, 160, 172, 0.2); color: #eba0ac; border: 1px solid #eba0ac; }
+  .fc-badge.action { background: var(--green); color: #11111b; }
+
+  /* Dica de interação interativa */
+  .interaction-tip {
+    background: rgba(137, 180, 250, 0.1);
+    border: 1px solid rgba(137, 180, 250, 0.3);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 960px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Container das Estações */
   .stations-container {
     display: flex;
     flex-direction: column;
-    gap: 35px;
+    gap: 32px;
     width: 100%;
     max-width: 960px;
   }
-  
+
   .station-card {
     background: #181825;
-    border: 2px solid #313244;
+    border: 2px solid var(--border);
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.35);
@@ -190,113 +273,140 @@
     flex-direction: column;
     gap: 15px;
     position: relative;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
   .station-card.completed {
-    border-color: #a6e3a1;
+    border-color: var(--green);
+    box-shadow: 0 8px 24px rgba(166, 227, 161, 0.15);
   }
   .station-card.completed::after {
-    content: "✓ CONCLUÍDO";
+    content: "✓ DOMINADA";
     position: absolute;
     top: 18px;
     right: 20px;
     background: rgba(166, 227, 161, 0.2);
-    color: #a6e3a1;
-    border: 1px solid #a6e3a1;
+    color: var(--green);
+    border: 1px solid var(--green);
     padding: 3px 10px;
     border-radius: 12px;
     font-size: 11px;
     font-weight: 800;
   }
-  
+
   .station-header {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
   .station-title {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 800;
-    color: #f9e2af;
+    color: var(--yellow);
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .station-desc {
-    font-size: 14px;
+    font-size: 13.5px;
     color: #bac2de;
     line-height: 1.5;
     background: #1e1e2e;
     padding: 10px 14px;
     border-radius: 8px;
-    border-left: 3px solid #89b4fa;
+    border-left: 3px solid var(--accent);
   }
 
-  /* Grid dos Dois Boxes: Esquerda e Direita */
+  /* Workout Grid */
   .workout-grid {
     display: flex;
     gap: 20px;
     justify-content: center;
     align-items: stretch;
     width: 100%;
+    flex-wrap: wrap;
   }
-  .panel { 
-    background: #1e1e2e; 
-    padding: 15px; 
-    border-radius: 12px; 
-    width: 440px; 
-    height: 310px; 
-    position: relative; 
-    border: 2px solid #313244; 
-    box-shadow: 0 6px 16px rgba(0,0,0,0.3); 
+
+  .panel {
+    background: #1e1e2e;
+    padding: 15px;
+    border-radius: 12px;
+    width: 440px;
+    height: 310px;
+    position: relative;
+    border: 2px solid var(--border);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
     box-sizing: border-box;
     flex-shrink: 0;
+    overflow: hidden;
   }
-  .panel-title { 
-    text-align: center; 
-    font-weight: 700; 
-    margin-bottom: 10px; 
-    color: #89dceb; 
-    font-size: 15px; 
+  @media (max-width: 950px) {
+    .panel { width: 100%; max-width: 440px; }
   }
-  
-  .panel svg { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    pointer-events: none; 
-    z-index: 1; 
+
+  .panel-title {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #89dceb;
+    font-size: 14px;
   }
-  .panel line { 
-    stroke: #585b70; 
-    stroke-width: 4; 
-    stroke-linecap: round; 
+
+  .panel svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .panel line {
+    stroke: #585b70;
+    stroke-width: 4;
+    stroke-linecap: round;
   }
 
   /* Nós e Slots */
-  .node { 
-    width: 48px; 
-    height: 48px; 
-    background: #f9e2af; 
-    color: #11111b; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-weight: bold; 
-    font-size: 19px; 
-    position: absolute; 
-    z-index: 10; 
-    border: 3px solid #fab387; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.4); 
-    user-select: none; 
-    transition: transform 0.1s; 
-    cursor: grab; 
+  .node {
+    width: 48px;
+    height: 48px;
+    background: var(--yellow);
+    color: #11111b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 19px;
+    position: absolute;
+    z-index: 10;
+    border: 3px solid var(--peach);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    cursor: grab;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
   }
-  .node:active { cursor: grabbing; transform: scale(1.1); }
-  
+  .node * {
+    pointer-events: none;
+  }
+  .node:hover {
+    transform: scale(1.08);
+  }
+  .node:active, .node.dragging {
+    cursor: grabbing;
+    transform: scale(1.18);
+    z-index: 1000 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+  }
+  .node.selected {
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 14px var(--purple) !important;
+    transform: scale(1.15);
+  }
+
   .fb-badge {
     position: absolute;
     top: -12px;
@@ -312,43 +422,50 @@
     white-space: nowrap;
     z-index: 12;
   }
-  .fb-badge.neg { background: #f38ba8; color: #11111b; }
-  .fb-badge.pos { background: #89b4fa; color: #11111b; }
-  .fb-badge.zero { background: #a6e3a1; color: #11111b; }
+  .fb-badge.neg { background: var(--red); color: #11111b; }
+  .fb-badge.pos { background: var(--accent); color: #11111b; }
+  .fb-badge.zero { background: var(--green); color: #11111b; }
 
-  .slot { 
-    width: 48px; 
-    height: 48px; 
-    border: 2.5px dashed #6c7086; 
-    border-radius: 50%; 
-    position: absolute; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 5; 
-    background: rgba(255,255,255,0.04); 
-    transition: 0.2s; 
+  .slot {
+    width: 48px;
+    height: 48px;
+    border: 2.5px dashed #6c7086;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    background: rgba(255,255,255,0.04);
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
     box-sizing: border-box;
+    cursor: pointer;
   }
-  .slot.drag-over { 
-    background: rgba(166, 227, 161, 0.25); 
-    border-color: #a6e3a1; 
-    transform: scale(1.12); 
+  .slot:hover, .slot.highlight {
+    border-color: var(--yellow);
+    background: rgba(249, 226, 175, 0.12);
+  }
+  .slot.drag-over {
+    background: rgba(166, 227, 161, 0.25);
+    border-color: var(--green);
+    transform: scale(1.15);
   }
 
-  /* Controles por Estação */
+  /* Controles */
   .station-controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-top: 5px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
   .check-btn {
-    background: #89b4fa;
+    background: var(--accent);
     color: #11111b;
     border: none;
-    padding: 10px 24px;
-    font-size: 15px;
+    padding: 9px 22px;
+    font-size: 14px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 700;
@@ -357,7 +474,7 @@
   .check-btn:hover { background: #b4befe; transform: translateY(-1px); }
   .reset-btn {
     background: transparent;
-    color: #a6adc8;
+    color: var(--subtext);
     border: 1px solid #45475a;
     padding: 8px 16px;
     font-size: 13px;
@@ -366,83 +483,88 @@
     font-weight: 600;
     transition: 0.2s;
   }
-  .reset-btn:hover { background: #313244; color: #cdd6f4; }
-  
+  .reset-btn:hover { background: #313244; color: #fff; }
+
   .station-feedback {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 13.5px;
+    font-weight: 600;
     padding: 6px 14px;
-    border-radius: 6px;
+    border-radius: 8px;
     opacity: 0;
-    transition: 0.3s;
+    transition: opacity 0.2s;
     flex-grow: 1;
-    margin: 0 15px;
     text-align: center;
   }
   .station-feedback.show { opacity: 1; }
-  .station-feedback.success { background: rgba(166, 227, 161, 0.15); color: #a6e3a1; border: 1px solid #a6e3a1; }
-  .station-feedback.error { background: rgba(243, 139, 168, 0.15); color: #f38ba8; border: 1px solid #f38ba8; }
-
-  .voltar { position: absolute; top: 20px; left: 20px; background: #313244; color: #cdd6f4; text-decoration: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; font-size: 14px; }
-  .voltar:hover { background: #585b70; }
-
-  /* Responsivo iPad / Mobile */
-  @media (max-width: 960px) {
-    .workout-grid { flex-direction: column; align-items: center; }
-    .panel { width: 100%; max-width: 480px; }
-    .flashcards-grid { display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
-    .flashcard { min-width: 200px; flex-shrink: 0; }
+  .station-feedback.success {
+    background: rgba(166, 227, 161, 0.15);
+    color: var(--green);
+    border: 1px solid var(--green);
+  }
+  .station-feedback.error {
+    background: rgba(243, 139, 168, 0.15);
+    color: var(--red);
+    border: 1px solid var(--red);
   }
 
   /* Apple Pencil */
   #scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
   #scratchpad.active { pointer-events: auto; cursor: crosshair; }
   .pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
-  .pencil-btn { background: #fab387; color: #1e1e2e; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+  .pencil-btn {
+    background: var(--peach);
+    color: #1e1e2e;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+  }
   .pencil-btn:hover { transform: scale(1.1); }
-  .pencil-btn.active { background: #f38ba8; }
-  .clear-btn { background: #89b4fa; display: none; }
+  .pencil-btn.active { background: var(--red); }
+  .clear-btn { background: var(--accent); display: none; }
   #scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
 </style>
-
-<!-- Polyfill iPad Touch Drag & Drop -->
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour-polyfill.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    MobileDragDrop.polyfill({dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride});
-    window.addEventListener('touchmove', function() {}, {passive: false});
-  });
-</script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
 </head>
 <body>
 
 <a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
 
-<h1>⚖️ Ginásio de Rotações AVL (Modo One Page)</h1>
-<div class="subtitle">Treine todas as rotações da prova em uma única página contínua, sem trocas de tela!</div>
+<h1>⚖️ Ginásio Completo de Rotações AVL (One Page)</h1>
+<div class="subtitle">14 Estações de Prova com Física Híbrida: Arraste com Mouse/Dedo OU Toque no Nó e no Círculo!</div>
 
-<!-- Barra de Navegação e Contador de Conquistas -->
+<!-- Barra de Navegação Rápida -->
 <div class="nav-bar">
-  <span class="score-badge" id="score-badge">🏆 0 / 9 Dominadas</span>
-  <a href="#st-1" class="nav-pill">1. Simples Dir</a>
-  <a href="#st-2" class="nav-pill">2. Simples Esq</a>
-  <a href="#st-3a" class="nav-pill">3A. Dupla LR (Passo 1)</a>
-  <a href="#st-3b" class="nav-pill">3B. Dupla LR (Passo 2)</a>
-  <a href="#st-4" class="nav-pill">4. Dupla RL</a>
-  <a href="#st-5" class="nav-pill">5. Adotivo Dir</a>
-  <a href="#st-6" class="nav-pill" style="border-color:#fab387; color:#fab387;">6. Adotivo Esq 🔥</a>
-  <a href="#st-7" class="nav-pill" style="border-color:#fab387; color:#fab387;">7. Cirurgia Local 🔥</a>
-  <a href="#st-8" class="nav-pill" style="border-color:#f38ba8; color:#f38ba8;">8. Dupla Mestre ⚠️</a>
-  <a href="#st-9" class="nav-pill" style="border-color:#f38ba8; color:#f38ba8;">9. Filho fb=0 ⚠️</a>
+  <span class="score-badge" id="score-badge">🏆 0 / 14 Dominadas</span>
+  <a href="#st-1" class="nav-pill" id="pill-st-1">1. LL Simples</a>
+  <a href="#st-2" class="nav-pill" id="pill-st-2">2. RR Simples</a>
+  <a href="#st-3a" class="nav-pill" id="pill-st-3a">3A. LR Joelho</a>
+  <a href="#st-3b" class="nav-pill" id="pill-st-3b">3B. LR Raiz</a>
+  <a href="#st-4a" class="nav-pill" id="pill-st-4a">4A. RL Joelho</a>
+  <a href="#st-4b" class="nav-pill" id="pill-st-4b">4B. RL Raiz</a>
+  <a href="#st-5" class="nav-pill" id="pill-st-5">5. Adotivo Dir</a>
+  <a href="#st-6" class="nav-pill" id="pill-st-6">6. Adotivo Esq</a>
+  <a href="#st-7" class="nav-pill" id="pill-st-7">7. Cirurgia Esq</a>
+  <a href="#st-8" class="nav-pill" id="pill-st-8">8. Cirurgia Dir</a>
+  <a href="#st-9" class="nav-pill" id="pill-st-9">9. Dupla LR Mestre</a>
+  <a href="#st-10" class="nav-pill" id="pill-st-10">10. Dupla RL Mestre</a>
+  <a href="#st-11" class="nav-pill" id="pill-st-11">11. Lista 3 UTFPR</a>
+  <a href="#st-12" class="nav-pill" id="pill-st-12">12. Remoção fb=0 Dir</a>
+  <a href="#st-13" class="nav-pill" id="pill-st-13">13. Remoção fb=0 Esq</a>
+  <a href="#st-14" class="nav-pill" id="pill-st-14">14. Desafio Chefe</a>
 </div>
 
-<!-- Flashcards de Regras de Rotação AVL (Horizontalizados) -->
+<!-- Flashcards de Regras de Ouro -->
 <div class="flashcards-section">
   <div class="flashcards-header">
     <div class="flashcards-title">
-      <span>🎴</span> Regras de Ouro da Rotação (Toque em qualquer card para virar)
+      <span>🎴</span> Regras de Ouro de Rotação (Toque em qualquer card para virar)
     </div>
     <button class="flip-all-btn" id="btn-flip-all" onclick="toggleAllCards()">🔄 Virar Todos</button>
   </div>
@@ -457,7 +579,7 @@
         </div>
         <div class="flashcard-back">
           <div class="fc-badge action">GIRA DIREITA ➡️</div>
-          <div style="font-weight: 800; font-size: 13px; color: #a6e3a1; margin: 2px 0;">Filho da ESQ vira PAI!</div>
+          <div style="font-weight: 800; font-size: 13px; color: #f38ba8; margin: 2px 0;">Filho da ESQ vira PAI!</div>
           <div style="font-size: 10.5px; color: #bac2de;">Antiga raiz desce p/ direita.</div>
         </div>
       </div>
@@ -509,16 +631,22 @@
     </div>
   </div>
   
-  <div style="font-size: 12.5px; color: #a6adc8; margin-top: 2px;">
-    📐 Regra da UTFPR: <strong style="color: #a6e3a1;">fb(x) = h<sub>d</sub>(x) - h<sub>e</sub>(x)</strong>
+  <div style="font-size: 12px; color: #a6adc8; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+    <span>📐 Regra da UTFPR: <strong style="color: #a6e3a1;">fb(x) = h<sub>d</sub>(x) - h<sub>e</sub>(x)</strong></span>
+    <span>💡 Dica: Na remoção, se o filho tiver <strong style="color: #f9e2af;">fb = 0</strong>, a rotação é <strong>SIMPLES</strong>!</span>
   </div>
 </div>
 
-<!-- Container com Todas as Estações de Treino -->
+<div class="interaction-tip">
+  <span>💡</span>
+  <span><strong>Como jogar:</strong> Você pode <strong>arrastar e soltar</strong> os nós nos círculos pontilhados OU simplesmente <strong>clicar no nó</strong> e depois <strong>clicar no círculo desejado</strong>. Clicar em um nó já encaixado o devolve para a esquerda!</span>
+</div>
+
+<!-- Container com as Estações -->
 <div class="stations-container" id="stations-container"></div>
 
 <script>
-// Dados de Todas as Estações do One Page
+// Base de Conhecimento das 14 Estações
 const stationsData = [
   {
     id: "st-1",
@@ -544,8 +672,8 @@ const stationsData = [
   },
   {
     id: "st-3a",
-    title: "3A. Rotação Dupla Esq-Dir (Passo 1: Alinhar Filho)",
-    badgeText: "PASSO 1 DE 2: FILHO GIRA",
+    title: "3A. Rotação Dupla Esq-Dir (Passo 1: Alinhar Joelho)",
+    badgeText: "PASSO 1: FILHO GIRA",
     badgeColor: "#fab387",
     desc: "W (fb = -2) e P (fb = +1). Sinais diferentes (formou joelho!). PASSO 1: No filho P, o filho da direita (R) VIRA PAI do P (sobe pro lugar do P). Agora a perna esticou e os sinais ficaram iguais!",
     nodes: [ { id: "W", val: "W", fb: -2, x: 170, y: 30 }, { id: "P", val: "P", fb: 1, x: 100, y: 110 }, { id: "R", val: "R", fb: 0, x: 170, y: 190 } ],
@@ -556,7 +684,7 @@ const stationsData = [
   {
     id: "st-3b",
     title: "3B. Rotação Dupla Esq-Dir (Passo 2: Finalizar na Raiz)",
-    badgeText: "PASSO 2 DE 2: RAIZ GIRA",
+    badgeText: "PASSO 2: RAIZ GIRA",
     badgeColor: "#a6e3a1",
     desc: "A perna já esticou: W (fb = -2) e R (fb = -1) têm sinais iguais! Perna esquerda pesada: o filho da esquerda (R) VIRA PAI (nova raiz), e o W desce para a direita dele!",
     nodes: [ { id: "W", val: "W", fb: -2, x: 170, y: 30 }, { id: "R", val: "R", fb: -1, x: 100, y: 110 }, { id: "P", val: "P", fb: 0, x: 30, y: 190 } ],
@@ -565,10 +693,21 @@ const stationsData = [
     linksRight: [ ["S1","S2"], ["S1","S3"] ]
   },
   {
-    id: "st-4",
-    title: "4. Rotação Dupla Dir-Esq (Passo Final na Raiz)",
-    badgeText: "DUPLA DIR-ESQ FINAL",
-    badgeColor: "#f38ba8",
+    id: "st-4a",
+    title: "4A. Rotação Dupla Dir-Esq (Passo 1: Alinhar Joelho)",
+    badgeText: "PASSO 1: FILHO GIRA",
+    badgeColor: "#fab387",
+    desc: "A (fb = +2) e C (fb = -1). Sinais diferentes (joelho à direita!). PASSO 1: No filho C, o filho da esquerda (B) VIRA PAI do C (sobe pro lugar dele). Agora a perna esticou para a direita!",
+    nodes: [ { id: "A", val: "A", fb: 2, x: 100, y: 30 }, { id: "C", val: "C", fb: -1, x: 200, y: 110 }, { id: "B", val: "B", fb: 0, x: 140, y: 190 } ],
+    linksLeft: [ ["A","C"], ["C","B"] ],
+    slots: [ { id: "S1", x: 100, y: 30, expected: "A" }, { id: "S2", x: 200, y: 110, expected: "B" }, { id: "S3", x: 270, y: 190, expected: "C" } ],
+    linksRight: [ ["S1","S2"], ["S2","S3"] ]
+  },
+  {
+    id: "st-4b",
+    title: "4B. Rotação Dupla Dir-Esq (Passo 2: Finalizar na Raiz)",
+    badgeText: "PASSO 2: RAIZ GIRA",
+    badgeColor: "#a6e3a1",
     desc: "Após esticar a perna do joelho: Q (fb = +2) e M (fb = +1) têm sinais iguais positivos! Perna direita pesada: o primeiro filho da direita (M) VIRA PAI (nova raiz), e o Q desce para a esquerda dele!",
     nodes: [ { id: "Q", val: "Q", fb: 2, x: 100, y: 30 }, { id: "M", val: "M", fb: 1, x: 170, y: 110 }, { id: "T", val: "T", fb: 0, x: 240, y: 190 } ],
     linksLeft: [ ["Q","M"], ["M","T"] ],
@@ -580,7 +719,7 @@ const stationsData = [
     title: "5. Pegadinha: Rotação à Direita com Filho Adotivo",
     badgeText: "FILHO ADOTIVO ESQUERDO",
     badgeColor: "#cba6f7",
-    desc: "50 (fb = -2) e 30 (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Gire para a DIREITA no 50: O primeiro filho da esquerda (30) VIRA PAI (sobe para a raiz) e o 50 desce para a direita dele. E o nó 40 que estava no meio? Ele é adotado e vira filho da ESQUERDA do 50!",
+    desc: "50 (fb = -2) e 30 (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Gire para a DIREITA no 50: O primeiro filho da esquerda (30) VIRA PAI e o 50 desce para a direita. E o nó 40 que estava no meio? Ele é adotado como filho da ESQUERDA do 50!",
     nodes: [
       { id: "50", val: "50", fb: -2, x: 210, y: 30 },
       { id: "30", val: "30", fb: -1, x: 125, y: 95 },
@@ -623,10 +762,10 @@ const stationsData = [
   },
   {
     id: "st-7",
-    title: "7. Pegadinha: Cirurgia Local (A Raiz NÃO Muda!)",
-    badgeText: "SUB-ÁRVORE PROFUNDA",
+    title: "7. Pegadinha: Cirurgia Local Esquerda (Raiz NÃO Muda!)",
+    badgeText: "SUB-ÁRVORE ESQUERDA",
     badgeColor: "#fab387",
-    desc: "Cuidado! A Raiz Principal da árvore é 70 (fb = -1, perfeitamente balanceada!). Quem quebrou foi o nó 30 lá embaixo (fb = -2). NÃO MEXA NO 70! A rotação é local na subárvore do 30: o nó 20 sobe para ser o novo pai do 30 e do 10!",
+    desc: "Atenção: A Raiz Principal é 70 (fb = -1, balanceada!). O nó 30 lá embaixo quebrou (fb = -2). NÃO mexa na raiz 70! A rotação é local na subárvore do 30: o nó 20 sobe para ser o novo pai do 30 e do 10!",
     nodes: [
       { id: "70", val: "70", fb: -1, x: 230, y: 25 },
       { id: "30", val: "30", fb: -2, x: 135, y: 95 },
@@ -646,7 +785,30 @@ const stationsData = [
   },
   {
     id: "st-8",
-    title: "8. Pegadinha Mestre: Dupla LR com 2 Subárvores no Joelho",
+    title: "8. Pegadinha: Cirurgia Local Direita (Raiz NÃO Muda!)",
+    badgeText: "SUB-ÁRVORE DIREITA",
+    badgeColor: "#fab387",
+    desc: "A Raiz Principal é 40 (fb = +1, balanceada!). Quem quebrou foi o nó 70 na direita (fb = +2). A raiz 40 NÃO sai do lugar! A rotação simples à esquerda ocorre apenas na subárvore: o 90 sobe para o lugar do 70 e o 70 desce para a esquerda dele!",
+    nodes: [
+      { id: "40", val: "40", fb: 1, x: 130, y: 25 },
+      { id: "20", val: "20", fb: 0, x: 50, y: 95 },
+      { id: "70", val: "70", fb: 2, x: 220, y: 95 },
+      { id: "90", val: "90", fb: 1, x: 280, y: 165 },
+      { id: "95", val: "95", fb: 0, x: 335, y: 235 }
+    ],
+    linksLeft: [ ["40","20"], ["40","70"], ["70","90"], ["90","95"] ],
+    slots: [
+      { id: "S_Root", x: 130, y: 25, expected: "40" },
+      { id: "S_Left", x: 50, y: 95, expected: "20" },
+      { id: "S_NewSub", x: 220, y: 95, expected: "90" },
+      { id: "S_SubLeft", x: 170, y: 165, expected: "70" },
+      { id: "S_SubRight", x: 290, y: 165, expected: "95" }
+    ],
+    linksRight: [ ["S_Root","S_Left"], ["S_Root","S_NewSub"], ["S_NewSub","S_SubLeft"], ["S_NewSub","S_SubRight"] ]
+  },
+  {
+    id: "st-9",
+    title: "9. Pegadinha Mestre: Dupla LR com 2 Subárvores no Joelho",
     badgeText: "DUAS SUBÁRVORES ADOTIVAS",
     badgeColor: "#f38ba8",
     desc: "O nó 50 (fb = -2), filho 20 (fb = +1) e neto 35 (fb = 0). O neto 35 tem DOIS filhos (25 e 40)! Na rotação dupla, o 35 VIRA A NOVA RAIZ! E as duas subárvores? O 25 vai para a direita do 20, e o 40 vai para a esquerda do 50!",
@@ -668,11 +830,55 @@ const stationsData = [
     linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"], ["S3","S5"] ]
   },
   {
-    id: "st-9",
-    title: "9. Pegadinha de Remoção: O Filho tem fb = 0!",
+    id: "st-10",
+    title: "10. Pegadinha Mestre: Dupla RL com 2 Subárvores no Joelho",
+    badgeText: "DUAS SUBÁRVORES ADOTIVAS",
+    badgeColor: "#f38ba8",
+    desc: "O nó 20 (fb = +2), filho 60 (fb = -1) e neto 40 (fb = 0). O neto 40 tem filhos 30 e 50. Na rotação dupla RL completa, o 40 sobe e VIRA A NOVA RAIZ! O 30 vira filho direito do 20, e o 50 vira filho esquerdo do 60!",
+    nodes: [
+      { id: "20", val: "20", fb: 2, x: 90, y: 25 },
+      { id: "60", val: "60", fb: -1, x: 210, y: 90 },
+      { id: "40", val: "40", fb: 0, x: 155, y: 155 },
+      { id: "30", val: "30", fb: 0, x: 120, y: 225 },
+      { id: "50", val: "50", fb: 0, x: 190, y: 225 }
+    ],
+    linksLeft: [ ["20","60"], ["60","40"], ["40","30"], ["40","50"] ],
+    slots: [
+      { id: "S1", x: 160, y: 25, expected: "40" },
+      { id: "S2", x: 95, y: 100, expected: "20" },
+      { id: "S3", x: 235, y: 100, expected: "60" },
+      { id: "S4", x: 135, y: 175, expected: "30" },
+      { id: "S5", x: 195, y: 175, expected: "50" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"], ["S3","S5"] ]
+  },
+  {
+    id: "st-11",
+    title: "11. Lista 3 Oficial UTFPR: Inserção de Q, Z, B, Y",
+    badgeText: "EXERCÍCIO REAL DA LISTA",
+    badgeColor: "#cba6f7",
+    desc: "Questão clássica da lista: após inserir Q, Z, B e Y, o nó Q desbalanceia com fb = +2 e Z com fb = -1 (joelho à direita!). Na rotação dupla RL na raiz, o neto Y sobe para ser a nova raiz, com Q à esquerda e Z à direita!",
+    nodes: [
+      { id: "Q", val: "Q", fb: 2, x: 135, y: 30 },
+      { id: "B", val: "B", fb: 0, x: 60, y: 105 },
+      { id: "Z", val: "Z", fb: -1, x: 215, y: 105 },
+      { id: "Y", val: "Y", fb: 0, x: 165, y: 180 }
+    ],
+    linksLeft: [ ["Q","B"], ["Q","Z"], ["Z","Y"] ],
+    slots: [
+      { id: "S1", x: 150, y: 30, expected: "Y" },
+      { id: "S2", x: 90, y: 105, expected: "Q" },
+      { id: "S3", x: 220, y: 105, expected: "Z" },
+      { id: "S4", x: 45, y: 180, expected: "B" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"] ]
+  },
+  {
+    id: "st-12",
+    title: "12. Pegadinha de Remoção: Filho com fb = 0 (Direita)",
     badgeText: "REMOÇÃO: FILHO COM FB = 0",
     badgeColor: "#a6e3a1",
-    desc: "Pegadinha de Prova da UTFPR! Na remoção, o nó Q tem fb = +2, mas o filho Z tem fb = 0. Muitos acham que é rotação dupla, mas NÃO! Filho com fb = 0 exige ROTAÇÃO SIMPLES à Esquerda! O Z vira pai, o Q desce e adota o Y na sua direita!",
+    desc: "Pegadinha de Prova! Na remoção, o nó Q tem fb = +2, mas o filho Z tem fb = 0. Muitos acham que é rotação dupla, mas NÃO! Filho com fb = 0 exige ROTAÇÃO SIMPLES à Esquerda! O Z vira pai, o Q desce e adota o Y na sua direita!",
     nodes: [
       { id: "Q", val: "Q", fb: 2, x: 100, y: 35 },
       { id: "Z", val: "Z", fb: 0, x: 200, y: 105 },
@@ -687,10 +893,57 @@ const stationsData = [
       { id: "S4", x: 145, y: 175, expected: "Y" }
     ],
     linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"] ]
+  },
+  {
+    id: "st-13",
+    title: "13. Pegadinha de Remoção: Filho com fb = 0 (Esquerda)",
+    badgeText: "REMOÇÃO: FILHO COM FB = 0",
+    badgeColor: "#a6e3a1",
+    desc: "O inverso também cai na prova! Nó 80 com fb = -2, mas seu filho esquerdo 40 tem fb = 0 (com filhos 20 e 60). Como fb do filho é 0, faz-se ROTAÇÃO SIMPLES à Direita: o 40 vira nova raiz, o 80 desce para a direita e adota o 60 na esquerda!",
+    nodes: [
+      { id: "80", val: "80", fb: -2, x: 200, y: 35 },
+      { id: "40", val: "40", fb: 0, x: 100, y: 105 },
+      { id: "20", val: "20", fb: 0, x: 55, y: 175 },
+      { id: "60", val: "60", fb: 0, x: 145, y: 175 }
+    ],
+    linksLeft: [ ["80","40"], ["40","20"], ["40","60"] ],
+    slots: [
+      { id: "S1", x: 115, y: 35, expected: "40" },
+      { id: "S2", x: 55, y: 105, expected: "20" },
+      { id: "S3", x: 195, y: 105, expected: "80" },
+      { id: "S4", x: 155, y: 175, expected: "60" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S3","S4"] ]
+  },
+  {
+    id: "st-14",
+    title: "14. Grande Desafio de Prova: Rotação com Múltiplas Subárvores",
+    badgeText: "DESAFIO CHEFE DE PROVA",
+    badgeColor: "#f38ba8",
+    desc: "A árvore tem 6 nós! Raiz 65 (fb = -2), filho 35 (fb = -1). Sinais iguais negativos: Rotação Simples à Direita no 65! O 35 vira Pai (nova raiz). O 65 desce para a direita e adota o 50 na sua esquerda. O ramo 20-10 permanece intacto!",
+    nodes: [
+      { id: "65", val: "65", fb: -2, x: 230, y: 25 },
+      { id: "35", val: "35", fb: -1, x: 135, y: 90 },
+      { id: "80", val: "80", fb: 0, x: 310, y: 90 },
+      { id: "20", val: "20", fb: -1, x: 75, y: 160 },
+      { id: "50", val: "50", fb: 0, x: 180, y: 160 },
+      { id: "10", val: "10", fb: 0, x: 30, y: 230 }
+    ],
+    linksLeft: [ ["65","35"], ["65","80"], ["35","20"], ["35","50"], ["20","10"] ],
+    slots: [
+      { id: "S1", x: 170, y: 25, expected: "35" },
+      { id: "S2", x: 95, y: 90, expected: "20" },
+      { id: "S3", x: 260, y: 90, expected: "65" },
+      { id: "S4", x: 45, y: 160, expected: "10" },
+      { id: "S5", x: 215, y: 160, expected: "50" },
+      { id: "S6", x: 315, y: 160, expected: "80" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"], ["S3","S5"], ["S3","S6"] ]
   }
 ];
 
 let solvedStations = new Set();
+let selectedNode = null; // Para modo Click-to-Move
 
 function updateScore() {
   document.getElementById('score-badge').textContent = `🏆 ${solvedStations.size} / ${stationsData.length} Dominadas`;
@@ -703,12 +956,12 @@ function drawLine(svg, x1, y1, x2, y2) {
   svg.appendChild(line);
 }
 
-// Renderizar Todas as Estações no One Page
+// Renderizar Todas as Estações
 function renderAllStations() {
   const container = document.getElementById('stations-container');
   container.innerHTML = '';
 
-  stationsData.forEach((st, idx) => {
+  stationsData.forEach(st => {
     const card = document.createElement('div');
     card.className = 'station-card';
     card.id = st.id;
@@ -726,13 +979,13 @@ function renderAllStations() {
         <div class="panel" id="panel-left-${st.id}">
           <div class="panel-title">1. Árvore Original</div>
           <svg id="svg-left-${st.id}"></svg>
-          <div id="nodes-left-${st.id}"></div>
+          <div id="nodes-left-${st.id}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
         </div>
         
         <div class="panel" id="panel-right-${st.id}">
-          <div class="panel-title">2. Arraste para Consertar (Quem vira Pai?)</div>
+          <div class="panel-title">2. Conserte a Árvore (Quem vira Pai?)</div>
           <svg id="svg-right-${st.id}"></svg>
-          <div id="slots-right-${st.id}"></div>
+          <div id="slots-right-${st.id}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
         </div>
       </div>
       
@@ -748,7 +1001,29 @@ function renderAllStations() {
   });
 }
 
-// Inicializar ou Resetar uma Estação Específica
+// Desselecionar qualquer nó
+function clearSelection() {
+  if (selectedNode) {
+    selectedNode.classList.remove('selected');
+    selectedNode = null;
+  }
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('highlight'));
+}
+
+// Devolver um nó à sua posição inicial na esquerda
+function returnNodeToHome(nodeEl, st) {
+  const stId = st.id;
+  const nodesLeft = document.getElementById(`nodes-left-${stId}`);
+  const origNode = st.nodes.find(n => n.id === nodeEl.dataset.nodeId);
+  if (!origNode) return;
+
+  nodesLeft.appendChild(nodeEl);
+  nodeEl.style.left = origNode.x + 'px';
+  nodeEl.style.top = origNode.y + 'px';
+  nodeEl.classList.remove('in-slot');
+}
+
+// Inicializar ou Resetar uma Estação
 function initStation(stId) {
   const st = stationsData.find(s => s.id === stId);
   if (!st) return;
@@ -759,92 +1034,210 @@ function initStation(stId) {
   const slotsRight = document.getElementById(`slots-right-${stId}`);
   const feedback = document.getElementById(`feedback-${stId}`);
   const card = document.getElementById(stId);
+  const pill = document.getElementById(`pill-${stId}`);
 
   svgLeft.innerHTML = ''; nodesLeft.innerHTML = '';
   svgRight.innerHTML = ''; slotsRight.innerHTML = '';
   feedback.className = 'station-feedback';
+  feedback.textContent = '';
   card.classList.remove('completed');
+  if (pill) pill.classList.remove('completed');
   solvedStations.delete(stId);
   updateScore();
 
-  // Desenhar linhas esquerdas
+  // Linhas esquerdas
   st.linksLeft.forEach(l => {
     const n1 = st.nodes.find(n => n.id === l[0]);
     const n2 = st.nodes.find(n => n.id === l[1]);
-    drawLine(svgLeft, n1.x, n1.y, n2.x, n2.y);
+    if (n1 && n2) drawLine(svgLeft, n1.x, n1.y, n2.x, n2.y);
   });
 
-  // Desenhar linhas direitas
+  // Linhas direitas
   st.linksRight.forEach(l => {
     const s1 = st.slots.find(s => s.id === l[0]);
     const s2 = st.slots.find(s => s.id === l[1]);
-    drawLine(svgRight, s1.x, s1.y, s2.x, s2.y);
+    if (s1 && s2) drawLine(svgRight, s1.x, s1.y, s2.x, s2.y);
   });
 
   // Criar Slots
   st.slots.forEach(s => {
-    const el = document.createElement('div');
-    el.className = 'slot';
-    el.style.left = s.x + 'px';
-    el.style.top = s.y + 'px';
-    el.dataset.expected = s.expected;
+    const slotEl = document.createElement('div');
+    slotEl.className = 'slot';
+    slotEl.id = `${stId}-slot-${s.id}`;
+    slotEl.style.left = s.x + 'px';
+    slotEl.style.top = s.y + 'px';
+    slotEl.dataset.expected = s.expected;
+    slotEl.dataset.station = stId;
+    slotEl.dataset.slotId = s.id;
 
-    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
-    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-    el.addEventListener('drop', e => {
-      e.preventDefault(); el.classList.remove('drag-over');
-      const id = e.dataTransfer.getData('text/plain'); if (!id) return;
-      const nodeEl = document.getElementById(id);
-      if (nodeEl && nodeEl.dataset.station === stId) {
-        if (el.children.length > 0) nodesLeft.appendChild(el.children[0]);
-        el.appendChild(nodeEl);
-        nodeEl.style.left = '0px'; nodeEl.style.top = '0px';
+    // Clique no slot (Modo Click-to-Move)
+    slotEl.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!selectedNode || selectedNode.dataset.station !== stId) return;
+
+      // Se slot já tem um nó, devolver o ocupante
+      if (slotEl.children.length > 0) {
+        returnNodeToHome(slotEl.children[0], st);
       }
+
+      // Encaixar nó selecionado
+      slotEl.appendChild(selectedNode);
+      selectedNode.style.left = '0px';
+      selectedNode.style.top = '0px';
+      selectedNode.classList.add('in-slot');
+      clearSelection();
     });
 
-    slotsRight.appendChild(el);
+    slotsRight.appendChild(slotEl);
   });
 
-  // Criar Nós Arrastáveis
+  // Criar Nós Arrastáveis com Pointer Events Universais
   st.nodes.forEach(n => {
-    const el = document.createElement('div');
-    el.className = 'node';
-    el.id = `${stId}-node-${n.id}`;
-    el.dataset.val = n.val;
-    el.dataset.station = stId;
-    el.style.left = n.x + 'px';
-    el.style.top = n.y + 'px';
+    const nodeEl = document.createElement('div');
+    nodeEl.className = 'node';
+    nodeEl.id = `${stId}-node-${n.id}`;
+    nodeEl.dataset.val = n.val;
+    nodeEl.dataset.nodeId = n.id;
+    nodeEl.dataset.station = stId;
+    nodeEl.style.left = n.x + 'px';
+    nodeEl.style.top = n.y + 'px';
 
     const sign = n.fb > 0 ? `+${n.fb}` : `${n.fb}`;
     const fbClass = n.fb < 0 ? 'neg' : (n.fb > 0 ? 'pos' : 'zero');
-    el.innerHTML = `<span>${n.val}</span><span class="fb-badge ${fbClass}">fb: ${sign}</span>`;
+    nodeEl.innerHTML = `<span>${n.val}</span><span class="fb-badge ${fbClass}">fb: ${sign}</span>`;
 
-    el.draggable = true;
-    el.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', el.id);
-      setTimeout(() => el.style.opacity = '0.4', 0);
+    // Estado de Drag & Pointer
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let nodeStartX = 0, nodeStartY = 0;
+    let currentSlot = null;
+
+    nodeEl.addEventListener('pointerdown', e => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      isPointerDown = true;
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = nodeEl.getBoundingClientRect();
+      const parentRect = (nodeEl.parentElement || document.body).getBoundingClientRect();
+      nodeStartX = rect.left - parentRect.left;
+      nodeStartY = rect.top - parentRect.top;
+
+      nodeEl.setPointerCapture(e.pointerId);
     });
-    el.addEventListener('dragend', () => el.style.opacity = '1');
 
-    nodesLeft.appendChild(el);
-  });
+    nodeEl.addEventListener('pointermove', e => {
+      if (!isPointerDown) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
 
-  // Permitir devolver nós para a esquerda
-  nodesLeft.addEventListener('dragover', e => e.preventDefault());
-  nodesLeft.addEventListener('drop', e => {
-    e.preventDefault();
-    const id = e.dataTransfer.getData('text/plain'); if (!id) return;
-    const nodeEl = document.getElementById(id);
-    if (nodeEl && nodeEl.dataset.station === stId) {
-      nodesLeft.appendChild(nodeEl);
-      const originalNode = st.nodes.find(n => `${stId}-node-${n.id}` === id);
-      if (originalNode) {
-        nodeEl.style.left = originalNode.x + 'px';
-        nodeEl.style.top = originalNode.y + 'px';
+      if (!isDragging && Math.hypot(dx, dy) > 5) {
+        isDragging = true;
+        nodeEl.classList.add('dragging');
+        clearSelection();
+
+        // Se estava em um slot, desacoplar temporariamente para mover no painel direito
+        if (nodeEl.parentElement && nodeEl.parentElement.classList.contains('slot')) {
+          currentSlot = nodeEl.parentElement;
+          const slotRect = currentSlot.getBoundingClientRect();
+          const pRight = document.getElementById(`panel-right-${stId}`).getBoundingClientRect();
+          document.getElementById(`slots-right-${stId}`).appendChild(nodeEl);
+          nodeStartX = slotRect.left - pRight.left;
+          nodeStartY = slotRect.top - pRight.top;
+        }
+      }
+
+      if (isDragging) {
+        nodeEl.style.left = (nodeStartX + dx) + 'px';
+        nodeEl.style.top = (nodeStartY + dy) + 'px';
+
+        // Destacar slot mais próximo sob o ponteiro
+        const pRight = document.getElementById(`panel-right-${stId}`);
+        const pRightRect = pRight.getBoundingClientRect();
+        const curX = e.clientX;
+        const curY = e.clientY;
+
+        document.querySelectorAll(`#slots-right-${stId} .slot`).forEach(s => {
+          const sRect = s.getBoundingClientRect();
+          const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
+          if (dist < 40) s.classList.add('drag-over');
+          else s.classList.remove('drag-over');
+        });
+      }
+    });
+
+    function finishDrag(e) {
+      if (!isPointerDown) return;
+      isPointerDown = false;
+
+      if (isDragging) {
+        isDragging = false;
+        nodeEl.classList.remove('dragging');
+
+        // Procurar slot sob o ponteiro ou o mais próximo
+        const curX = e.clientX;
+        const curY = e.clientY;
+        let targetSlot = null;
+        let minDistance = 50; // raio de captura em px
+
+        document.querySelectorAll(`#slots-right-${stId} .slot`).forEach(s => {
+          s.classList.remove('drag-over');
+          const sRect = s.getBoundingClientRect();
+          const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
+          if (dist < minDistance) {
+            minDistance = dist;
+            targetSlot = s;
+          }
+        });
+
+        if (targetSlot) {
+          // Se slot já tem um nó, devolver o antigo
+          if (targetSlot.children.length > 0 && targetSlot.children[0] !== nodeEl) {
+            returnNodeToHome(targetSlot.children[0], st);
+          }
+          targetSlot.appendChild(nodeEl);
+          nodeEl.style.left = '0px';
+          nodeEl.style.top = '0px';
+          nodeEl.classList.add('in-slot');
+        } else {
+          // Soltou fora dos slots -> Devolve à esquerda
+          returnNodeToHome(nodeEl, st);
+        }
+      } else {
+        // FOI UM CLIQUE / TOQUE RÁPIDO
+        if (nodeEl.classList.contains('in-slot')) {
+          // Se já está no slot, um clique devolve para a esquerda!
+          returnNodeToHome(nodeEl, st);
+          clearSelection();
+        } else {
+          // Se está na esquerda, seleciona para Click-to-Move
+          if (selectedNode === nodeEl) {
+            clearSelection();
+          } else {
+            clearSelection();
+            selectedNode = nodeEl;
+            nodeEl.classList.add('selected');
+            document.querySelectorAll(`#slots-right-${stId} .slot`).forEach(s => s.classList.add('highlight'));
+          }
+        }
       }
     }
+
+    nodeEl.addEventListener('pointerup', finishDrag);
+    nodeEl.addEventListener('pointercancel', finishDrag);
+
+    nodesLeft.appendChild(nodeEl);
   });
 }
+
+// Fechar seleção ao clicar no fundo
+document.addEventListener('click', e => {
+  if (!e.target.closest('.node') && !e.target.closest('.slot')) {
+    clearSelection();
+  }
+});
 
 // Verificar uma Estação
 function verifyStation(stId) {
@@ -854,6 +1247,7 @@ function verifyStation(stId) {
   const slotsRight = document.getElementById(`slots-right-${stId}`);
   const feedback = document.getElementById(`feedback-${stId}`);
   const card = document.getElementById(stId);
+  const pill = document.getElementById(`pill-${stId}`);
 
   let allPlaced = true;
   let allCorrect = true;
@@ -868,7 +1262,7 @@ function verifyStation(stId) {
   });
 
   if (!allPlaced) {
-    feedback.textContent = "Arraste todas as letras para os círculos tracejados!";
+    feedback.textContent = "Coloque todas as letras nos círculos tracejados!";
     feedback.className = "station-feedback show error";
   } else if (!allCorrect) {
     feedback.textContent = "Ops! Rotação incorreta. Lembre-se: quem vira pai sobe para a raiz!";
@@ -877,6 +1271,7 @@ function verifyStation(stId) {
     feedback.textContent = "✨ Perfeito! Rotação executada com maestria!";
     feedback.className = "station-feedback show success";
     card.classList.add('completed');
+    if (pill) pill.classList.add('completed');
     solvedStations.add(stId);
     updateScore();
   }
@@ -893,15 +1288,10 @@ function toggleAllCards() {
   document.getElementById('btn-flip-all').textContent = allFlipped ? '🔄 Mostrar Perguntas' : '🔄 Mostrar Respostas';
 }
 
-// Iniciar ao carregar página
+// Apple Pencil Script
 window.addEventListener('DOMContentLoaded', () => {
   renderAllStations();
-});
-</script>
 
-<!-- Apple Pencil Script -->
-<script>
-window.addEventListener('DOMContentLoaded', () => {
   if(document.getElementById('scratchpad')) return;
   const canvas = document.createElement('canvas'); canvas.id = 'scratchpad'; document.body.appendChild(canvas);
   const tools = document.createElement('div'); tools.className = 'pencil-tools';
