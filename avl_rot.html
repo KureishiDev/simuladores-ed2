@@ -425,13 +425,17 @@
 
 <!-- Barra de Navegação e Contador de Conquistas -->
 <div class="nav-bar">
-  <span class="score-badge" id="score-badge">🏆 0 / 6 Dominadas</span>
-  <a href="#st-1" class="nav-pill">1. Simples Direita</a>
-  <a href="#st-2" class="nav-pill">2. Simples Esquerda</a>
-  <a href="#st-3a" class="nav-pill">3. Dupla LR (Passo 1)</a>
-  <a href="#st-3b" class="nav-pill">3. Dupla LR (Passo 2)</a>
+  <span class="score-badge" id="score-badge">🏆 0 / 9 Dominadas</span>
+  <a href="#st-1" class="nav-pill">1. Simples Dir</a>
+  <a href="#st-2" class="nav-pill">2. Simples Esq</a>
+  <a href="#st-3a" class="nav-pill">3A. Dupla LR (Passo 1)</a>
+  <a href="#st-3b" class="nav-pill">3B. Dupla LR (Passo 2)</a>
   <a href="#st-4" class="nav-pill">4. Dupla RL</a>
-  <a href="#st-5" class="nav-pill">5. Filho Adotivo</a>
+  <a href="#st-5" class="nav-pill">5. Adotivo Dir</a>
+  <a href="#st-6" class="nav-pill" style="border-color:#fab387; color:#fab387;">6. Adotivo Esq 🔥</a>
+  <a href="#st-7" class="nav-pill" style="border-color:#fab387; color:#fab387;">7. Cirurgia Local 🔥</a>
+  <a href="#st-8" class="nav-pill" style="border-color:#f38ba8; color:#f38ba8;">8. Dupla Mestre ⚠️</a>
+  <a href="#st-9" class="nav-pill" style="border-color:#f38ba8; color:#f38ba8;">9. Filho fb=0 ⚠️</a>
 </div>
 
 <!-- Flashcards de Regras de Rotação AVL (Horizontalizados) -->
@@ -573,8 +577,8 @@ const stationsData = [
   },
   {
     id: "st-5",
-    title: "5. Pegadinha de Prova: Rotação com Filho Adotivo",
-    badgeText: "SUB-ÁRVORE ÓRFÃ",
+    title: "5. Pegadinha: Rotação à Direita com Filho Adotivo",
+    badgeText: "FILHO ADOTIVO ESQUERDO",
     badgeColor: "#cba6f7",
     desc: "50 (fb = -2) e 30 (fb = -1). Sinais iguais negativos! A perna esquerda está pesada. Gire para a DIREITA no 50: O primeiro filho da esquerda (30) VIRA PAI (sobe para a raiz) e o 50 desce para a direita dele. E o nó 40 que estava no meio? Ele é adotado e vira filho da ESQUERDA do 50!",
     nodes: [
@@ -593,6 +597,96 @@ const stationsData = [
       { id: "S5", x: 345, y: 165, expected: "60" }
     ],
     linksRight: [ ["S1","S2"], ["S1","S3"], ["S3","S4"], ["S3","S5"] ]
+  },
+  {
+    id: "st-6",
+    title: "6. Pegadinha: Rotação à Esquerda com Filho Adotivo",
+    badgeText: "FILHO ADOTIVO DIREITO",
+    badgeColor: "#89b4fa",
+    desc: "Raiz 30 (fb = +2) e nó 50 (fb = +1). Perna direita pesada: O filho da direita (50) VIRA PAI! O 30 desce para a esquerda dele. Mas atenção: e o nó 40 que era filho esquerdo do 50? Ele é adotado como filho DIREITO do 30 (pois 40 > 30)!",
+    nodes: [
+      { id: "30", val: "30", fb: 2, x: 100, y: 30 },
+      { id: "15", val: "15", fb: 0, x: 40, y: 95 },
+      { id: "50", val: "50", fb: 1, x: 185, y: 95 },
+      { id: "40", val: "40", fb: 0, x: 135, y: 165 },
+      { id: "70", val: "70", fb: 0, x: 235, y: 165 }
+    ],
+    linksLeft: [ ["30","15"], ["30","50"], ["50","40"], ["50","70"] ],
+    slots: [
+      { id: "S1", x: 185, y: 30, expected: "50" },
+      { id: "S2", x: 100, y: 95, expected: "30" },
+      { id: "S3", x: 235, y: 95, expected: "70" },
+      { id: "S4", x: 40, y: 165, expected: "15" },
+      { id: "S5", x: 140, y: 165, expected: "40" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"], ["S2","S5"] ]
+  },
+  {
+    id: "st-7",
+    title: "7. Pegadinha: Cirurgia Local (A Raiz NÃO Muda!)",
+    badgeText: "SUB-ÁRVORE PROFUNDA",
+    badgeColor: "#fab387",
+    desc: "Cuidado! A Raiz Principal da árvore é 70 (fb = -1, perfeitamente balanceada!). Quem quebrou foi o nó 30 lá embaixo (fb = -2). NÃO MEXA NO 70! A rotação é local na subárvore do 30: o nó 20 sobe para ser o novo pai do 30 e do 10!",
+    nodes: [
+      { id: "70", val: "70", fb: -1, x: 230, y: 25 },
+      { id: "30", val: "30", fb: -2, x: 135, y: 95 },
+      { id: "85", val: "85", fb: 0, x: 310, y: 95 },
+      { id: "20", val: "20", fb: -1, x: 80, y: 165 },
+      { id: "10", val: "10", fb: 0, x: 30, y: 235 }
+    ],
+    linksLeft: [ ["70","30"], ["70","85"], ["30","20"], ["20","10"] ],
+    slots: [
+      { id: "S_Root", x: 230, y: 25, expected: "70" },
+      { id: "S_Right", x: 310, y: 95, expected: "85" },
+      { id: "S_NewSub", x: 135, y: 95, expected: "20" },
+      { id: "S_SubLeft", x: 80, y: 165, expected: "10" },
+      { id: "S_SubRight", x: 185, y: 165, expected: "30" }
+    ],
+    linksRight: [ ["S_Root","S_NewSub"], ["S_Root","S_Right"], ["S_NewSub","S_SubLeft"], ["S_NewSub","S_SubRight"] ]
+  },
+  {
+    id: "st-8",
+    title: "8. Pegadinha Mestre: Dupla LR com 2 Subárvores no Joelho",
+    badgeText: "DUAS SUBÁRVORES ADOTIVAS",
+    badgeColor: "#f38ba8",
+    desc: "O nó 50 (fb = -2), filho 20 (fb = +1) e neto 35 (fb = 0). O neto 35 tem DOIS filhos (25 e 40)! Na rotação dupla, o 35 VIRA A NOVA RAIZ! E as duas subárvores? O 25 vai para a direita do 20, e o 40 vai para a esquerda do 50!",
+    nodes: [
+      { id: "50", val: "50", fb: -2, x: 220, y: 25 },
+      { id: "20", val: "20", fb: 1, x: 100, y: 90 },
+      { id: "35", val: "35", fb: 0, x: 155, y: 155 },
+      { id: "25", val: "25", fb: 0, x: 120, y: 225 },
+      { id: "40", val: "40", fb: 0, x: 190, y: 225 }
+    ],
+    linksLeft: [ ["50","20"], ["20","35"], ["35","25"], ["35","40"] ],
+    slots: [
+      { id: "S1", x: 160, y: 25, expected: "35" },
+      { id: "S2", x: 95, y: 100, expected: "20" },
+      { id: "S3", x: 235, y: 100, expected: "50" },
+      { id: "S4", x: 135, y: 175, expected: "25" },
+      { id: "S5", x: 195, y: 175, expected: "40" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"], ["S3","S5"] ]
+  },
+  {
+    id: "st-9",
+    title: "9. Pegadinha de Remoção: O Filho tem fb = 0!",
+    badgeText: "REMOÇÃO: FILHO COM FB = 0",
+    badgeColor: "#a6e3a1",
+    desc: "Pegadinha de Prova da UTFPR! Na remoção, o nó Q tem fb = +2, mas o filho Z tem fb = 0. Muitos acham que é rotação dupla, mas NÃO! Filho com fb = 0 exige ROTAÇÃO SIMPLES à Esquerda! O Z vira pai, o Q desce e adota o Y na sua direita!",
+    nodes: [
+      { id: "Q", val: "Q", fb: 2, x: 100, y: 35 },
+      { id: "Z", val: "Z", fb: 0, x: 200, y: 105 },
+      { id: "Y", val: "Y", fb: 0, x: 155, y: 175 },
+      { id: "W", val: "W", fb: 0, x: 245, y: 175 }
+    ],
+    linksLeft: [ ["Q","Z"], ["Z","Y"], ["Z","W"] ],
+    slots: [
+      { id: "S1", x: 185, y: 35, expected: "Z" },
+      { id: "S2", x: 105, y: 105, expected: "Q" },
+      { id: "S3", x: 245, y: 105, expected: "W" },
+      { id: "S4", x: 145, y: 175, expected: "Y" }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"] ]
   }
 ];
 
