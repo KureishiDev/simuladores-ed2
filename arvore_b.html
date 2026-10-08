@@ -111,19 +111,27 @@
   
   <div class="mirror-panel">
     <h3>🪞 Cola (Árvore B)</h3>
-    <ul>
-      <li><strong>Grau Mínimo (t):</strong> 3</li>
-      <li><strong>Máx. Chaves:</strong> 2t - 1 = <span style="color:#f38ba8;font-weight:bold;">5</span><br><span style="font-size:12px;">(Se ficar com 6, Split!)</span></li>
-      <li><strong>Mín. Chaves:</strong> t - 1 = <span style="color:#a6e3a1;font-weight:bold;">2</span><br><span style="font-size:12px;">(Se cair pra 1, Underflow!)</span></li>
-      <hr style="border-color:#45475a;">
-      <li><strong>Split:</strong> Nó estoura → Mediana SOBE pro pai.</li>
-      <li><strong>Redistr.:</strong> Olhe SEMPRE pra <b>esquerda</b> primeiro!</li>
-      <li><strong>Merge:</strong> Funde os irmãos com o separador do Pai.</li>
+        <ul>
+      <li style="margin-bottom: 12px;"><strong>Grau Mínimo (t = 3):</strong><br>É o "tamanho da fôrma" definido pela professora. Ele é a base matemática que dita o tamanho máximo e mínimo de cada nó.</li>
+      
+      <li style="margin-bottom: 12px;"><strong>Máximo de Chaves (2t - 1 = <span style="color:#f38ba8; font-weight:bold;">5</span>):</strong><br>
+      É o limite de números que cabem juntos dentro de um único "retângulo" (nó).<br>
+      👉 <i style="color:#bac2de;">Se você tentar socar o 6º número lá dentro, a caixa "estoura" e rola o <b>Split</b>!</i></li>
+      
+      <li style="margin-bottom: 12px;"><strong>Mínimo de Chaves (t - 1 = <span style="color:#a6e3a1; font-weight:bold;">2</span>):</strong><br>
+      É o mínimo de números que um nó é OBRIGADO a ter para existir (exceto a Raiz).<br>
+      👉 <i style="color:#bac2de;">Se você remover um número e o nó ficar só com 1, ele "passa fome" (<b>Underflow</b>). Ele terá que pedir emprestado (Redistribuição) ou se juntar com o irmão (Merge).</i></li>
+      
+      <hr style="border-color:#45475a; margin: 15px 0;">
+      
+      <li style="margin-bottom: 10px;"><strong>Split:</strong> A caixa estourou (chegou em 6)! O número bem do MEIO (Mediana) é chutado pra cima (pro Pai) e a caixa parte em duas.</li>
+      <li style="margin-bottom: 10px;"><strong>Redistribuição:</strong> Nó passou fome! Olhe SEMPRE pro irmão da <b>esquerda</b> primeiro. Se ele for rico (tiver 3 ou mais), roube um número dele (o roubo passa pelo Pai).</li>
+      <li><strong>Merge:</strong> O irmão também tá pobre (só tem 2)? Então dê um abraço: junte você, seu irmão e o número do Pai que separava vocês em um nó só.</li>
     </ul>
   </div>
 
   <!-- Painel de Peças Disponíveis -->
-  <div class="panel" style="width: 350px;">
+  <div class="panel" style="width: 400px;">
     <div class="panel-title">Chaves Soltas</div>
     <div class="pool" id="pool"></div>
     <p style="color: #bac2de; font-size: 13px; text-align: center; margin-top: 20px;">Arraste esses blocos para reconstruir a árvore final na direita.</p>
