@@ -2,96 +2,591 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>AVL Master - Modo Remoção</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVL Master - Ginásio de Remoção (ED2 UTFPR)</title>
 <style>
-  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-  h1 { text-align: center; color: #f38ba8; margin-bottom: 5px; }
-  .level-info { text-align: center; margin-bottom: 20px; max-width: 600px; }
-  .level-info h2 { color: #fab387; margin: 0 0 10px 0; }
-  .board { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
-  .panel { background: #313244; padding: 20px; border-radius: 12px; width: 420px; height: 380px; position: relative; border: 2px solid #45475a; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
-  .panel-title { text-align: center; font-weight: bold; margin-bottom: 10px; color: #89b4fa; font-size: 18px; }
-  .node { width: 46px; height: 46px; background: #f9e2af; color: #11111b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; position: absolute; z-index: 10; border: 3px solid #f38ba8; box-shadow: 0 4px 6px rgba(0,0,0,0.4); user-select: none; transition: transform 0.1s; cursor: grab; }
-  .node:active { cursor: grabbing; transform: scale(1.1); }
-  .slot { width: 46px; height: 46px; border: 3px dashed #6c7086; border-radius: 50%; position: absolute; display: flex; align-items: center; justify-content: center; z-index: 5; background: rgba(255,255,255,0.05); transition: 0.2s; font-size: 10px; color: #6c7086; text-align: center; }
-  .slot.drag-over { background: rgba(137, 180, 250, 0.3); border-color: #89b4fa; transform: scale(1.1); }
-  .trash { border-color: #f38ba8; background: rgba(243, 139, 168, 0.1); font-size: 24px; color: transparent; border-radius: 12px; width: 60px; height: 60px; }
-  .trash.drag-over { background: rgba(243, 139, 168, 0.4); }
-  .trash::after { content: '🗑️'; position: absolute; font-size: 24px; color: white; }
-  svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-  line { stroke: #6c7086; stroke-width: 4; stroke-linecap: round; }
-  .controls { text-align: center; margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
-  button { background: #f38ba8; color: #11111b; border: none; padding: 12px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-  button:hover { background: #fab387; transform: translateY(-2px); }
-  .feedback { margin-top: 15px; font-size: 18px; font-weight: bold; min-height: 25px; padding: 10px 20px; border-radius: 8px; transition: 0.3s; opacity: 0; }
+  :root {
+    --bg: #1e1e2e;
+    --card-bg: #181825;
+    --panel-bg: #313244;
+    --border: #45475a;
+    --text: #cdd6f4;
+    --subtext: #a6adc8;
+    --accent: #89b4fa;
+    --red: #f38ba8;
+    --peach: #fab387;
+    --yellow: #f9e2af;
+    --green: #a6e3a1;
+    --purple: #cba6f7;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px 15px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  h1 {
+    text-align: center;
+    color: var(--red);
+    margin: 10px 0 5px;
+    font-size: 26px;
+    font-weight: 800;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--subtext);
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .voltar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #45475a;
+    color: #cdd6f4;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    transition: 0.2s;
+  }
+  .voltar:hover { background: #585b70; color: #fff; }
+
+  /* Dica de interação */
+  .interaction-tip {
+    background: rgba(137, 180, 250, 0.1);
+    border: 1px solid rgba(137, 180, 250, 0.3);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 960px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Nav-bar Fixa */
+  .nav-bar {
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+    background: rgba(24, 24, 37, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 960px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+  }
+  .nav-bar::-webkit-scrollbar { height: 4px; }
+  .nav-bar::-webkit-scrollbar-thumb { background: #45475a; border-radius: 4px; }
+
+  .score-badge {
+    background: #313244;
+    color: var(--yellow);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+    border: 1px solid #45475a;
+  }
+
+  .exam-mode-btn {
+    background: #313244;
+    color: var(--yellow);
+    border: 1.5px solid #45475a;
+    padding: 5px 13px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.25s;
+    flex-shrink: 0;
+  }
+  .exam-mode-btn:hover {
+    border-color: var(--yellow);
+    background: rgba(249, 226, 175, 0.15);
+  }
+  .exam-mode-btn.active {
+    background: linear-gradient(135deg, #cba6f7, #f38ba8);
+    color: #11111b;
+    border-color: #f5c2e7;
+    box-shadow: 0 0 14px rgba(203, 166, 247, 0.5);
+  }
+
+  .nav-pill {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: 0.2s;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .nav-pill:hover {
+    background: rgba(243, 139, 168, 0.15);
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .nav-pill.active {
+    background: var(--red);
+    color: #11111b;
+    font-weight: 800;
+    border-color: var(--red);
+  }
+  .nav-pill.completed {
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+  }
+
+  /* Descrição do Nível */
+  .level-info {
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 960px;
+    width: 100%;
+  }
+  .level-info h2 {
+    color: var(--peach);
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .level-desc-box {
+    background: #181825;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border-left: 4px solid var(--red);
+    font-size: 14px;
+    color: #bac2de;
+    line-height: 1.5;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .level-why-box {
+    background: rgba(203, 166, 247, 0.08);
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(203, 166, 247, 0.25);
+    border-left: 4px solid var(--purple);
+    font-size: 13px;
+    color: #cdd6f4;
+    line-height: 1.55;
+    text-align: left;
+  }
+  .level-why-box strong {
+    color: var(--yellow);
+  }
+
+  /* Área de Jogo */
+  .game-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  /* Cola Teórica Lateral */
+  .mirror-panel {
+    background: #181825;
+    border: 2px dashed #585b70;
+    border-radius: 12px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  .mirror-panel h3 {
+    color: var(--red);
+    margin-top: 0;
+    border-bottom: 1px solid #45475a;
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 15.5px;
+  }
+  .mirror-panel ul {
+    padding-left: 18px;
+    margin: 0;
+    color: #bac2de;
+    line-height: 1.5;
+    font-size: 12.5px;
+  }
+  .mirror-panel li { margin-bottom: 10px; }
+  .mirror-panel strong { color: #fff; }
+
+  /* Painéis de Árvores */
+  .board {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .panel {
+    background: #1e1e2e;
+    padding: 15px;
+    border-radius: 12px;
+    width: 440px;
+    height: 330px;
+    position: relative;
+    border: 2px solid var(--border);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+    box-sizing: border-box;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .panel-title {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #89dceb;
+    font-size: 14px;
+  }
+  .panel svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .panel line {
+    stroke: #585b70;
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  /* Nós e Slots */
+  .node {
+    width: 46px;
+    height: 46px;
+    background: var(--yellow);
+    color: #11111b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    position: absolute;
+    z-index: 10;
+    border: 3px solid var(--peach);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    cursor: grab;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+  }
+  .node * {
+    pointer-events: none;
+  }
+  .node:hover {
+    transform: scale(1.08);
+  }
+  .node:active, .node.dragging {
+    cursor: grabbing;
+    transform: scale(1.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.7);
+    z-index: 1000 !important;
+  }
+  .node.selected {
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 15px var(--purple) !important;
+    transform: scale(1.15);
+  }
+
+  .slot {
+    width: 46px;
+    height: 46px;
+    border: 2.5px dashed #6c7086;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    background: rgba(255,255,255,0.04);
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .slot:hover, .slot.highlight {
+    border-color: var(--yellow);
+    background: rgba(249, 226, 175, 0.12);
+  }
+  .slot.drag-over {
+    background: rgba(166, 227, 161, 0.25);
+    border-color: var(--green);
+    transform: scale(1.15);
+  }
+
+  /* Lixeira */
+  .trash {
+    border-color: var(--red);
+    background: rgba(243, 139, 168, 0.12);
+    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .trash::after {
+    content: '🗑️';
+    position: absolute;
+    font-size: 26px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .trash:hover, .trash.highlight {
+    background: rgba(243, 139, 168, 0.28);
+    transform: scale(1.08);
+  }
+  .trash.drag-over {
+    background: rgba(243, 139, 168, 0.45);
+    transform: scale(1.15);
+  }
+
+  /* Controles */
+  .controls {
+    text-align: center;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-action-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  #btn-action {
+    background: var(--red);
+    color: #11111b;
+    border: none;
+    padding: 11px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  #btn-action:hover {
+    background: var(--peach);
+    transform: translateY(-2px);
+  }
+  .peek-btn {
+    background: transparent;
+    color: var(--purple);
+    border: 1px solid var(--purple);
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+    display: none;
+  }
+  .peek-btn:hover {
+    background: rgba(203, 166, 247, 0.15);
+  }
+  body.exam-mode .peek-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .feedback {
+    font-size: 15.5px;
+    font-weight: bold;
+    min-height: 25px;
+    padding: 9px 22px;
+    border-radius: 8px;
+    transition: 0.3s;
+    opacity: 0;
+  }
   .feedback.show { opacity: 1; }
-  .success { background: rgba(166, 227, 161, 0.2); color: #a6e3a1; border: 1px solid #a6e3a1; }
-  .error { background: rgba(243, 139, 168, 0.2); color: #f38ba8; border: 1px solid #f38ba8; }
+  .feedback.success { background: rgba(166, 227, 161, 0.2); color: var(--green); border: 1px solid var(--green); }
+  .feedback.error { background: rgba(243, 139, 168, 0.2); color: var(--red); border: 1px solid var(--red); }
 
-/* Ajustes para iPad e Telas Menores */
-@media (max-width: 1024px) {
-  .game-container { flex-direction: column; align-items: center; }
-  .panel { max-width: 95vw; overflow-x: auto; height: auto; padding-bottom: 20px;}
-  .board { flex-direction: column; align-items: center; max-width: 100vw; overflow-x: auto;}
-  .mirror-panel { width: 90vw; margin-bottom: 20px; }
-  svg { min-width: 500px; }
-  #nodes, #nodes-left, #slots-right { min-width: 500px; position: relative; height: 350px;}
-}
+  /* Modo Prova */
+  body.exam-mode #panel-right svg line {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  body.exam-mode .slot:not(.trash) {
+    border-color: transparent !important;
+    background: transparent !important;
+    transition: border-color 0.4s, background 0.4s;
+  }
+  body.exam-mode .slot.highlight:not(.trash) {
+    border-color: rgba(249, 226, 175, 0.15) !important;
+    background: rgba(249, 226, 175, 0.05) !important;
+  }
+  body.exam-mode .slot.drag-over:not(.trash) {
+    border: 2.5px dashed var(--accent) !important;
+    background: rgba(137, 180, 250, 0.28) !important;
+    transform: scale(1.18);
+  }
+  body.exam-mode #panel-right::after {
+    content: "🎓 Modo Prova: Folha em Branco (Preveja a nova raiz mentalmente!)";
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #6c7086;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  body.exam-mode.reveal-guide #panel-right svg line {
+    opacity: 1 !important;
+  }
+  body.exam-mode.reveal-guide .slot:not(.trash) {
+    border-color: #6c7086 !important;
+    background: rgba(255,255,255,0.04) !important;
+  }
+  body.exam-mode.reveal-guide #panel-right::after {
+    content: "👁️ Gabarito Revelado (Compare com sua dedução)";
+    color: var(--green);
+  }
 
-
-/* Apple Pencil / Scratchpad Mode */
-#scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
-#scratchpad.active { pointer-events: auto; cursor: crosshair; }
-.pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
-.pencil-btn { background: #fab387; color: #1e1e2e; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
-.pencil-btn:hover { transform: scale(1.1); }
-.pencil-btn.active { background: #f38ba8; }
-.clear-btn { background: #89b4fa; display: none; }
-#scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
-
+  /* Apple Pencil */
+  #scratchpad { position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none; }
+  #scratchpad.active { pointer-events: auto; cursor: crosshair; }
+  .pencil-tools { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 9999; }
+  .pencil-btn {
+    background: var(--peach);
+    color: #1e1e2e;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+  }
+  .pencil-btn:hover { transform: scale(1.1); }
+  .pencil-btn.active { background: var(--red); }
+  .clear-btn { background: var(--accent); display: none; }
+  #scratchpad.active ~ .pencil-tools .clear-btn { display: flex; }
 </style>
-
-<!-- Polyfill para iPad Touch Drag & Drop -->
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour-polyfill.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    MobileDragDrop.polyfill({
-        dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
-    });
-    window.addEventListener('touchmove', function() {}, {passive: false});
-  });
-</script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
-
 </head>
 <body>
-<h1>🪓 AVL Master: Remoção</h1>
+
+<a href="index.html" class="voltar">⬅ Voltar ao Hub</a>
+
+<h1>🪓 Ginásio de Remoção AVL</h1>
+<div class="subtitle">Aprenda os 3 Casos de Remoção e as Rotações Sucessivas da Prova da UTFPR!</div>
+
+<!-- Barra de Navegação Superior -->
+<div class="nav-bar">
+  <span class="score-badge" id="score-badge">🏆 0 / 7 Dominadas</span>
+  <button id="btn-exam-mode" class="exam-mode-btn" onclick="toggleExamMode()">
+    <span>👁️</span> Modo Prova: <strong id="exam-status">DESATIVADO</strong>
+  </button>
+  <div id="level-pills-container" style="display:flex; gap:6px;"></div>
+</div>
+
+<!-- Dica Interativa -->
+<div class="interaction-tip">
+  <span>💡</span>
+  <span><strong>Como jogar:</strong> Você pode <strong>arrastar e soltar</strong> os nós nos slots/lixeira OU <strong>clicar no nó</strong> e depois <strong>clicar no slot/lixeira desejado</strong>! Clicar em um nó que já está no slot ou lixeira o devolve para a árvore da esquerda.</span>
+</div>
+
+<!-- Nível Info -->
 <div class="level-info">
   <h2 id="level-name">Carregando...</h2>
-  <p id="level-desc"></p>
+  <div class="level-desc-box" id="level-desc"></div>
+  <div class="level-why-box" id="level-why"></div>
 </div>
-<div class="board">
-  <div class="panel" id="panel-left">
-    <div class="panel-title">Árvore Original</div>
-    <svg id="svg-left"></svg>
-    <div id="nodes-left"></div>
+
+<div class="game-container">
+  <!-- Cola de Remoção da Professora -->
+  <div class="mirror-panel">
+    <h3>🪞 Cola de Remoção (UTFPR)</h3>
+    <ul>
+      <li><strong>Caso 1: Nó Folha</strong><br>Basta jogar direto na lixeira! Não tem descendentes.</li>
+      <li><strong>Caso 2: Nó com 1 Filho</strong><br>O único filho sobe e assume a posição do nó removido.</li>
+      <li><strong>Caso 3: Nó com 2 Filhos (O PREDECESSOR!)</strong><br>Regra de ouro da professora: busque o <strong>maior da subárvore esquerda</strong> (vai 1 à esquerda e tudo à direita até NULL). Ele assume o topo e a chave velha vai pra lixeira!</li>
+      <li><strong>Propagação da Rotação:</strong><br>Diferente da inserção (que para na 1ª rotação), a remoção pode exigir <strong>múltiplas rotações</strong> subindo até a raiz principal!</li>
+    </ul>
   </div>
-  <div class="panel" id="panel-right">
-    <div class="panel-title">Arraste para a Configuração Final</div>
-    <svg id="svg-right"></svg>
-    <div id="slots-right"></div>
+
+  <!-- Painéis -->
+  <div class="board">
+    <div class="panel" id="panel-left">
+      <div class="panel-title">1. Árvore Original</div>
+      <svg id="svg-left"></svg>
+      <div id="nodes-left" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+    </div>
+    
+    <div class="panel" id="panel-right">
+      <div class="panel-title">2. Árvore Após a Remoção e Balanceamento</div>
+      <svg id="svg-right"></svg>
+      <div id="slots-right" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+    </div>
   </div>
 </div>
+
 <div class="controls">
-  <button id="btn-action">Verificar Árvore Final</button>
+  <div class="btn-action-group">
+    <button id="btn-action">Verificar Árvore Final</button>
+    <button class="peek-btn" id="btn-peek" onclick="togglePeek()">👁️ Ver Guia</button>
+  </div>
   <div id="feedback" class="feedback"></div>
 </div>
+
 <script>
 const levels = [
   {
-    name: "Nível 1: Remoção Simples (Da Lista 3)",
-    desc: "A lista pede pra remover 'O' e 'P'. Remova 'O'! (Basta jogar na lixeira, a árvore continua balanceada).",
+    shortName: "1. Folha Simples",
+    name: "Nível 1: Caso 1 - Remoção de Folha Sem Rotação (Lista 3)",
+    desc: "A lista de exercícios pede para remover a chave 'O'. Como 'O' é um nó folha sem filhos, basta jogá-lo na lixeira! A árvore continua balanceada com P na raiz (fb = +1) e R na direita.",
+    why: "Na remoção de folha (Caso 1), nenhum nó precisa subir para substituir. Recalculando o FB da raiz P: altura da esquerda foi a -1 e direita continua 0. fb(P) = 0 - (-1) = +1, perfeitamente equilibrado!",
     nodes: [
       { id: "NP", val: "P", x: 175, y: 50 },
       { id: "NO", val: "O", x: 100, y: 150 },
@@ -101,57 +596,164 @@ const levels = [
     slots: [
       { id: "S1", x: 175, y: 50, expected: "P", isTrash: false },
       { id: "S3", x: 250, y: 150, expected: "R", isTrash: false },
-      { id: "TRASH", x: 330, y: 300, expected: "O", isTrash: true }
+      { id: "TRASH", x: 335, y: 250, expected: "O", isTrash: true }
     ],
     linksRight: [ ["S1","S3"] ]
   },
   {
-    name: "Nível 2: O Predecessor (Da Revisão)",
-    desc: "A revisão pede pra remover 'W'. O W tem filhos (P e X). Quem assume a raiz é o maior da esquerda (predecessor). Arraste ele pra cima!",
+    shortName: "2. Com 1 Filho",
+    name: "Nível 2: Caso 2 - Remoção de Nó com 1 Filho",
+    desc: "O nó 20 possui apenas 1 filho (o 10). Remova o 20 (lixeira). Pela regra de Caso 2 da UTFPR, o único filho (10) sobe para assumir a posição do 20 como filho esquerdo do 40!",
+    why: "Quando o nó possui apenas 1 filho, ele é substituído diretamente por esse filho. A árvore resultante tem 40 na raiz com 10 na esquerda e 60 na direita, mantendo fb(40) = 0!",
     nodes: [
-      { id: "NW", val: "W", x: 175, y: 50 },
-      { id: "NP", val: "P", x: 100, y: 140 },
-      { id: "NX", val: "X", x: 250, y: 140 },
-      { id: "NR", val: "R", x: 150, y: 230 }
+      { id: "N40", val: "40", x: 175, y: 40 },
+      { id: "N20", val: "20", x: 100, y: 120 },
+      { id: "N60", val: "60", x: 250, y: 120 },
+      { id: "N10", val: "10", x: 50, y: 200 }
     ],
-    linksLeft: [ ["NW","NP"], ["NW","NX"], ["NP","NR"] ],
+    linksLeft: [ ["N40","N20"], ["N40","N60"], ["N20","N10"] ],
     slots: [
-      { id: "S1", x: 175, y: 50, expected: "R", isTrash: false },
-      { id: "S2", x: 100, y: 140, expected: "P", isTrash: false },
-      { id: "S3", x: 250, y: 140, expected: "X", isTrash: false },
-      { id: "TRASH", x: 330, y: 300, expected: "W", isTrash: true }
+      { id: "S1", x: 175, y: 40, expected: "40", isTrash: false },
+      { id: "S2", x: 100, y: 120, expected: "10", isTrash: false },
+      { id: "S3", x: 250, y: 120, expected: "60", isTrash: false },
+      { id: "TRASH", x: 335, y: 250, expected: "20", isTrash: true }
     ],
     linksRight: [ ["S1","S2"], ["S1","S3"] ]
   },
   {
-    name: "Nível 3: O Efeito Dominó do '1' (Lista 3)",
-    desc: "A lista 3 manda remover a folha '1'. Isso faz o nó '2' ficar pesando pra direita (onde está o '3' e '4'). Jogue o 1 na lixeira E JÁ FAZ A ROTAÇÃO do nó 2 pra arrumar o lado direito!",
+    shortName: "3. Predecessor (2 Filhos)",
+    name: "Nível 3: Caso 3 - Remoção de Nó com 2 Filhos usando PREDECESSOR",
+    desc: "Queremos remover a raiz W (tem 2 filhos: P e X). Regra oficial da UTFPR: busque o PREDECESSOR (maior da subárvore esquerda)! Vá 1 passo à esquerda (P) e tudo à direita até NULL (nó R). O R assume a raiz e o W vai pra lixeira!",
+    why: "Por que o R vira raiz? Porque na subárvore esquerda de W, o nó R é o maior de todos! Ele é maior que P (logo P fica à sua esquerda) e menor que X (logo X fica à sua direita). A ordem da BST é perfeitamente preservada!",
     nodes: [
-      { id: "N2", val: "2", x: 175, y: 50 },
-      { id: "N1", val: "1", x: 100, y: 140 },
-      { id: "N3", val: "3", x: 250, y: 140 },
-      { id: "N4", val: "4", x: 325, y: 230 }
+      { id: "NW", val: "W", x: 175, y: 40 },
+      { id: "NP", val: "P", x: 100, y: 120 },
+      { id: "NX", val: "X", x: 250, y: 120 },
+      { id: "NR", val: "R", x: 150, y: 200 }
+    ],
+    linksLeft: [ ["NW","NP"], ["NW","NX"], ["NP","NR"] ],
+    slots: [
+      { id: "S1", x: 175, y: 40, expected: "R", isTrash: false },
+      { id: "S2", x: 100, y: 120, expected: "P", isTrash: false },
+      { id: "S3", x: 250, y: 120, expected: "X", isTrash: false },
+      { id: "TRASH", x: 335, y: 250, expected: "W", isTrash: true }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"] ]
+  },
+  {
+    shortName: "4. Efeito Dominó do 1",
+    name: "Nível 4: Remoção que Causa Rotação Simples RR (Lista 3)",
+    desc: "Exercício clássico de prova: remover a folha '1'. Isso deixa o nó '2' pesando para a direita com fb = +2 (onde estão 3 e 4 com fb = +1). Jogue o 1 na lixeira e execute a Rotação Simples à Esquerda no nó 2!",
+    why: "Ao remover o 1, o nó 2 fica com altura da esquerda -1 e direita 1 (fb = +2). Sinais iguais positivos: Rotação Simples à Esquerda (RR)! O nó 3 vira a nova raiz, o 2 desce para a esquerda dele e o 4 continua à direita do 3!",
+    nodes: [
+      { id: "N2", val: "2", x: 175, y: 40 },
+      { id: "N1", val: "1", x: 100, y: 120 },
+      { id: "N3", val: "3", x: 250, y: 120 },
+      { id: "N4", val: "4", x: 310, y: 200 }
     ],
     linksLeft: [ ["N2","N1"], ["N2","N3"], ["N3","N4"] ],
     slots: [
-      { id: "S1", x: 175, y: 50, expected: "3", isTrash: false },
-      { id: "S2", x: 100, y: 140, expected: "2", isTrash: false },
-      { id: "S3", x: 250, y: 140, expected: "4", isTrash: false },
-      { id: "TRASH", x: 330, y: 300, expected: "1", isTrash: true }
+      { id: "S1", x: 175, y: 40, expected: "3", isTrash: false },
+      { id: "S2", x: 100, y: 120, expected: "2", isTrash: false },
+      { id: "S3", x: 250, y: 120, expected: "4", isTrash: false },
+      { id: "TRASH", x: 335, y: 250, expected: "1", isTrash: true }
     ],
     linksRight: [ ["S1","S2"], ["S1","S3"] ]
+  },
+  {
+    shortName: "5. Remoção com Giro LL",
+    name: "Nível 5: Remoção que Causa Rotação Simples LL (Direita)",
+    desc: "Temos 50 na raiz, 30 na esquerda (com filho 20) e 70 na direita. Remova o 70 (lixeira). O nó 50 perde o lado direito e quebra com fb = -2! Execute a Rotação Simples à Direita no 50!",
+    why: "Ao remover o 70, a raiz 50 fica com fb = -2 e o filho 30 tem fb = -1. Sinais iguais negativos: Rotação Simples à Direita (LL)! O filho da esquerda 30 vira a nova raiz, 20 continua na sua esquerda e o 50 desce para a sua direita!",
+    nodes: [
+      { id: "N50", val: "50", x: 175, y: 40 },
+      { id: "N30", val: "30", x: 100, y: 120 },
+      { id: "N70", val: "70", x: 250, y: 120 },
+      { id: "N20", val: "20", x: 45, y: 200 }
+    ],
+    linksLeft: [ ["N50","N30"], ["N50","N70"], ["N30","N20"] ],
+    slots: [
+      { id: "S1", x: 175, y: 40, expected: "30", isTrash: false },
+      { id: "S2", x: 100, y: 120, expected: "20", isTrash: false },
+      { id: "S3", x: 250, y: 120, expected: "50", isTrash: false },
+      { id: "TRASH", x: 335, y: 250, expected: "70", isTrash: true }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"] ]
+  },
+  {
+    shortName: "6. Remoção com Giro Duplo",
+    name: "Nível 6: Remoção que Causa Rotação Dupla LR (Joelho)",
+    desc: "Temos 60 na raiz, 30 na esquerda (com filho direito 45) e 80 na direita. Remova o 80 (lixeira). O 60 fica com fb = -2, mas seu filho 30 tem fb = +1 (joelho!). Faça a Rotação Dupla LR!",
+    why: "Sinais opostos (-2 e +1) exigem Rotação Dupla LR! Na rotação dupla, a mediana das 3 chaves (30 < 45 < 60) é o 45! O 45 sobe diretamente para ser a NOVA RAIZ, o 30 fica na sua esquerda e o 60 na sua direita!",
+    nodes: [
+      { id: "N60", val: "60", x: 175, y: 40 },
+      { id: "N30", val: "30", x: 100, y: 120 },
+      { id: "N80", val: "80", x: 250, y: 120 },
+      { id: "N45", val: "45", x: 145, y: 200 }
+    ],
+    linksLeft: [ ["N60","N30"], ["N60","N80"], ["N30","N45"] ],
+    slots: [
+      { id: "S1", x: 175, y: 40, expected: "45", isTrash: false },
+      { id: "S2", x: 100, y: 120, expected: "30", isTrash: false },
+      { id: "S3", x: 250, y: 120, expected: "60", isTrash: false },
+      { id: "TRASH", x: 335, y: 250, expected: "80", isTrash: true }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"] ]
+  },
+  {
+    shortName: "7. Pegadinha Filho fb=0",
+    name: "Nível 7: O Grande Desafio de Prova (Filho com fb = 0)",
+    desc: "Pegadinha clássica da UTFPR: a raiz 50 tem filho 20 e filho 80. O 80 tem dois filhos (70 e 90). Remova o 20 (lixeira). O 50 fica com fb = +2, mas o filho 80 tem fb = 0! NÃO é rotação dupla! É Simples à Esquerda!",
+    why: "Na remoção, se o filho tiver fb = 0, a rotação é SIMPLES! O filho da direita (80) vira a nova raiz, o 50 desce para a esquerda dele e adota o 70 na sua direita (pois 50 < 70 < 80), e o 90 continua à direita do 80!",
+    nodes: [
+      { id: "N50", val: "50", x: 135, y: 35 },
+      { id: "N20", val: "20", x: 60, y: 110 },
+      { id: "N80", val: "80", x: 220, y: 110 },
+      { id: "N70", val: "70", x: 170, y: 185 },
+      { id: "N90", val: "90", x: 270, y: 185 }
+    ],
+    linksLeft: [ ["N50","N20"], ["N50","N80"], ["N80","N70"], ["N80","N90"] ],
+    slots: [
+      { id: "S1", x: 190, y: 35, expected: "80", isTrash: false },
+      { id: "S2", x: 100, y: 110, expected: "50", isTrash: false },
+      { id: "S3", x: 270, y: 110, expected: "90", isTrash: false },
+      { id: "S4", x: 145, y: 185, expected: "70", isTrash: false },
+      { id: "TRASH", x: 20, y: 250, expected: "20", isTrash: true }
+    ],
+    linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"] ]
   }
 ];
 
 let currentLevel = 0;
+let solvedLevels = new Set();
+let selectedNode = null;
+let isExamMode = false;
+
 const ui = {
-  levelName: document.getElementById('level-name'), levelDesc: document.getElementById('level-desc'),
-  svgLeft: document.getElementById('svg-left'), nodesLeft: document.getElementById('nodes-left'),
-  svgRight: document.getElementById('svg-right'), slotsRight: document.getElementById('slots-right'),
-  btn: document.getElementById('btn-action'), fbk: document.getElementById('feedback')
+  levelName: document.getElementById('level-name'),
+  levelDesc: document.getElementById('level-desc'),
+  levelWhy: document.getElementById('level-why'),
+  svgLeft: document.getElementById('svg-left'),
+  nodesLeft: document.getElementById('nodes-left'),
+  svgRight: document.getElementById('svg-right'),
+  slotsRight: document.getElementById('slots-right'),
+  panelRight: document.getElementById('panel-right'),
+  btn: document.getElementById('btn-action'),
+  peekBtn: document.getElementById('btn-peek'),
+  fbk: document.getElementById('feedback'),
+  pillsContainer: document.getElementById('level-pills-container'),
+  scoreBadge: document.getElementById('score-badge')
 };
 
-function showMsg(msg, type) { ui.fbk.textContent = msg; ui.fbk.className = `feedback show ${type}`; }
+function showMsg(msg, type) {
+  ui.fbk.innerHTML = msg;
+  ui.fbk.className = `feedback show ${type}`;
+}
+
+function updateScore() {
+  ui.scoreBadge.textContent = `🏆 ${solvedLevels.size} / ${levels.length} Dominadas`;
+}
+
 function drawLine(svg, x1, y1, x2, y2) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("x1", x1 + 23); line.setAttribute("y1", y1 + 23);
@@ -159,162 +761,404 @@ function drawLine(svg, x1, y1, x2, y2) {
   svg.appendChild(line);
 }
 
-function loadLevel(idx) {
-  const lvl = levels[idx];
-  ui.levelName.textContent = lvl.name; ui.levelDesc.textContent = lvl.desc;
-  ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = '';
-  ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
-  ui.fbk.className = 'feedback'; ui.btn.textContent = "Verificar Árvore Final";
-  
-  lvl.linksLeft.forEach(l => {
-    const n1 = lvl.nodes.find(n => n.id === l[0]); const n2 = lvl.nodes.find(n => n.id === l[1]);
-    drawLine(ui.svgLeft, n1.x, n1.y, n2.x, n2.y);
-  });
-  lvl.linksRight.forEach(l => {
-    const s1 = lvl.slots.find(s => s.id === l[0]); const s2 = lvl.slots.find(s => s.id === l[1]);
-    drawLine(ui.svgRight, s1.x, s1.y, s2.x, s2.y);
-  });
-  
-  lvl.slots.forEach(s => {
-    const el = document.createElement('div'); el.className = s.isTrash ? 'slot trash' : 'slot';
-    el.style.left = s.x + 'px'; el.style.top = s.y + 'px'; el.dataset.expected = s.expected;
-    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
-    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-    el.addEventListener('drop', e => {
-      e.preventDefault(); el.classList.remove('drag-over');
-      const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-      const nodeEl = document.getElementById(id);
-      if(el.children.length > 0) ui.nodesLeft.appendChild(el.children[0]);
-      el.appendChild(nodeEl);
-      nodeEl.style.left = s.isTrash ? '7px' : '0px'; nodeEl.style.top = s.isTrash ? '7px' : '0px';
-    });
-    ui.slotsRight.appendChild(el);
-  });
-  
-  lvl.nodes.forEach(n => {
-    const el = document.createElement('div'); el.className = 'node';
-    el.id = n.id; el.textContent = n.val; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
-    el.draggable = true;
-    el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.id); setTimeout(() => el.style.opacity = '0.4', 0); });
-    el.addEventListener('dragend', () => el.style.opacity = '1');
-    ui.nodesLeft.appendChild(el);
+function renderPills() {
+  ui.pillsContainer.innerHTML = '';
+  levels.forEach((lvl, idx) => {
+    const pill = document.createElement('button');
+    pill.className = 'nav-pill' + (idx === currentLevel ? ' active' : '') + (solvedLevels.has(idx) ? ' completed' : '');
+    pill.textContent = lvl.shortName;
+    pill.onclick = () => loadLevel(idx);
+    ui.pillsContainer.appendChild(pill);
   });
 }
 
+function clearSelection() {
+  if (selectedNode) {
+    selectedNode.classList.remove('selected');
+    selectedNode = null;
+  }
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('highlight'));
+}
+
+function returnNodeToHome(nodeEl, lvl) {
+  const origNode = lvl.nodes.find(n => n.id === nodeEl.dataset.nodeId);
+  if (!origNode) return;
+  ui.nodesLeft.appendChild(nodeEl);
+  nodeEl.style.left = origNode.x + 'px';
+  nodeEl.style.top = origNode.y + 'px';
+  nodeEl.classList.remove('in-slot');
+}
+
+function loadLevel(idx) {
+  currentLevel = idx;
+  const lvl = levels[idx];
+  clearSelection();
+  document.body.classList.remove('reveal-guide');
+  ui.peekBtn.textContent = '👁️ Ver Guia';
+
+  renderPills();
+  ui.levelName.textContent = lvl.name;
+  ui.levelDesc.textContent = lvl.desc;
+  ui.levelWhy.innerHTML = `<strong>🧠 Lógica da Remoção:</strong> ${lvl.why}`;
+
+  ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = '';
+  ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+  ui.fbk.className = 'feedback';
+  ui.btn.textContent = "Verificar Árvore Final";
+  ui.btn.style.display = 'inline-block';
+
+  // Desenhar linhas da esquerda
+  lvl.linksLeft.forEach(l => {
+    const n1 = lvl.nodes.find(n => n.id === l[0]);
+    const n2 = lvl.nodes.find(n => n.id === l[1]);
+    if (n1 && n2) drawLine(ui.svgLeft, n1.x, n1.y, n2.x, n2.y);
+  });
+
+  // Desenhar linhas da direita
+  lvl.linksRight.forEach(l => {
+    const s1 = lvl.slots.find(s => s.id === l[0]);
+    const s2 = lvl.slots.find(s => s.id === l[1]);
+    if (s1 && s2) drawLine(ui.svgRight, s1.x, s1.y, s2.x, s2.y);
+  });
+
+  // Criar Slots (incluindo lixeira)
+  lvl.slots.forEach(s => {
+    const slotEl = document.createElement('div');
+    slotEl.className = s.isTrash ? 'slot trash' : 'slot';
+    slotEl.id = `slot-${s.id}`;
+    slotEl.style.left = s.x + 'px';
+    slotEl.style.top = s.y + 'px';
+    slotEl.dataset.expected = s.expected;
+    slotEl.dataset.isTrash = s.isTrash ? 'true' : 'false';
+
+    // Clique no slot / lixeira (Modo Click-to-Move)
+    slotEl.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!selectedNode) return;
+
+      if (slotEl.children.length > 0) {
+        returnNodeToHome(slotEl.children[0], lvl);
+      }
+      slotEl.appendChild(selectedNode);
+      selectedNode.style.left = s.isTrash ? '7px' : '0px';
+      selectedNode.style.top = s.isTrash ? '7px' : '0px';
+      selectedNode.classList.add('in-slot');
+      clearSelection();
+    });
+
+    ui.slotsRight.appendChild(slotEl);
+  });
+
+  // Criar Nós Arrastáveis com Pointer Events
+  lvl.nodes.forEach(n => {
+    const nodeEl = document.createElement('div');
+    nodeEl.className = 'node';
+    nodeEl.id = `node-${n.id}`;
+    nodeEl.dataset.val = n.val;
+    nodeEl.dataset.nodeId = n.id;
+    nodeEl.textContent = n.val;
+    nodeEl.style.left = n.x + 'px';
+    nodeEl.style.top = n.y + 'px';
+
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let nodeStartX = 0, nodeStartY = 0;
+
+    nodeEl.addEventListener('pointerdown', e => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      isPointerDown = true;
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = nodeEl.getBoundingClientRect();
+      const parentRect = (nodeEl.parentElement || document.body).getBoundingClientRect();
+      nodeStartX = rect.left - parentRect.left;
+      nodeStartY = rect.top - parentRect.top;
+
+      nodeEl.setPointerCapture(e.pointerId);
+    });
+
+    nodeEl.addEventListener('pointermove', e => {
+      if (!isPointerDown) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!isDragging && Math.hypot(dx, dy) > 5) {
+        isDragging = true;
+        nodeEl.classList.add('dragging');
+        clearSelection();
+
+        // Se estava em um slot, descola temporariamente
+        if (nodeEl.parentElement && nodeEl.parentElement.classList.contains('slot')) {
+          const currentSlot = nodeEl.parentElement;
+          const slotRect = currentSlot.getBoundingClientRect();
+          const pRight = ui.panelRight.getBoundingClientRect();
+          ui.slotsRight.appendChild(nodeEl);
+          nodeStartX = slotRect.left - pRight.left;
+          nodeStartY = slotRect.top - pRight.top;
+        }
+      }
+
+      if (isDragging) {
+        nodeEl.style.left = (nodeStartX + dx) + 'px';
+        nodeEl.style.top = (nodeStartY + dy) + 'px';
+
+        const pRightRect = ui.panelRight.getBoundingClientRect();
+        const curX = e.clientX;
+        const curY = e.clientY;
+
+        const isInsideRightPanel = (
+          curX >= (pRightRect.left - 20) && curX <= (pRightRect.right + 20) &&
+          curY >= (pRightRect.top - 20) && curY <= (pRightRect.bottom + 20)
+        );
+
+        let closestSlot = null;
+        let minDragDist = isExamMode ? 160 : 55;
+
+        document.querySelectorAll('#slots-right .slot').forEach(s => {
+          s.classList.remove('drag-over');
+          if (isInsideRightPanel) {
+            const sRect = s.getBoundingClientRect();
+            const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
+            if (dist < minDragDist) {
+              minDragDist = dist;
+              closestSlot = s;
+            }
+          }
+        });
+
+        if (closestSlot) {
+          closestSlot.classList.add('drag-over');
+        }
+      }
+    });
+
+    function finishDrag(e) {
+      if (!isPointerDown) return;
+      isPointerDown = false;
+
+      if (isDragging) {
+        isDragging = false;
+        nodeEl.classList.remove('dragging');
+
+        const pRightRect = ui.panelRight.getBoundingClientRect();
+        const curX = e.clientX;
+        const curY = e.clientY;
+
+        const isInsideRightPanel = (
+          curX >= (pRightRect.left - 25) && curX <= (pRightRect.right + 25) &&
+          curY >= (pRightRect.top - 25) && curY <= (pRightRect.bottom + 25)
+        );
+
+        let targetSlot = null;
+        let minDistance = isExamMode ? 240 : 60;
+
+        document.querySelectorAll('#slots-right .slot').forEach(s => {
+          s.classList.remove('drag-over');
+          if (isInsideRightPanel) {
+            const sRect = s.getBoundingClientRect();
+            const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
+            if (dist < minDistance) {
+              minDistance = dist;
+              targetSlot = s;
+            }
+          }
+        });
+
+        if (targetSlot) {
+          if (targetSlot.children.length > 0 && targetSlot.children[0] !== nodeEl) {
+            returnNodeToHome(targetSlot.children[0], lvl);
+          }
+          targetSlot.appendChild(nodeEl);
+          const isTrash = targetSlot.classList.contains('trash');
+          nodeEl.style.left = isTrash ? '7px' : '0px';
+          nodeEl.style.top = isTrash ? '7px' : '0px';
+          nodeEl.classList.add('in-slot');
+        } else {
+          returnNodeToHome(nodeEl, lvl);
+        }
+      } else {
+        // FOI UM CLIQUE OU TOQUE RÁPIDO
+        if (nodeEl.classList.contains('in-slot')) {
+          returnNodeToHome(nodeEl, lvl);
+          clearSelection();
+        } else {
+          if (selectedNode === nodeEl) {
+            clearSelection();
+          } else {
+            clearSelection();
+            selectedNode = nodeEl;
+            nodeEl.classList.add('selected');
+            document.querySelectorAll('#slots-right .slot').forEach(s => s.classList.add('highlight'));
+          }
+        }
+      }
+    }
+
+    nodeEl.addEventListener('pointerup', finishDrag);
+    nodeEl.addEventListener('pointercancel', finishDrag);
+
+    ui.nodesLeft.appendChild(nodeEl);
+  });
+}
+
+// Click-to-Move no painel direito
+ui.panelRight.addEventListener('click', e => {
+  if (!selectedNode) return;
+  if (e.target.closest('.slot') || e.target.closest('.node')) return;
+
+  const lvl = levels[currentLevel];
+  const clickX = e.clientX;
+  const clickY = e.clientY;
+  let closestSlot = null;
+  let minD = 99999;
+
+  document.querySelectorAll('#slots-right .slot').forEach(s => {
+    const sRect = s.getBoundingClientRect();
+    const d = Math.hypot(clickX - (sRect.left + sRect.width/2), clickY - (sRect.top + sRect.height/2));
+    if (d < minD) {
+      minD = d;
+      closestSlot = s;
+    }
+  });
+
+  if (closestSlot) {
+    if (closestSlot.children.length > 0) {
+      returnNodeToHome(closestSlot.children[0], lvl);
+    }
+    closestSlot.appendChild(selectedNode);
+    const isTrash = closestSlot.classList.contains('trash');
+    selectedNode.style.left = isTrash ? '7px' : '0px';
+    selectedNode.style.top = isTrash ? '7px' : '0px';
+    selectedNode.classList.add('in-slot');
+    clearSelection();
+  }
+});
+
+// Desselecionar ao clicar fora
+document.addEventListener('click', e => {
+  if (!e.target.closest('.node') && !e.target.closest('.slot') && !e.target.closest('#panel-right')) {
+    clearSelection();
+  }
+});
+
+// Botão Verificar
 ui.btn.addEventListener('click', () => {
   if (ui.btn.textContent === "Próximo Nível") {
     currentLevel++;
-    if (currentLevel < levels.length) loadLevel(currentLevel);
-    else {
-      ui.levelName.textContent = "Parabéns! 🎉"; ui.levelDesc.textContent = "Você gabaritou todas as quebras reais das listas da professora!";
-      ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = ''; ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
-      ui.btn.style.display = 'none'; ui.fbk.style.display = 'none';
+    if (currentLevel < levels.length) {
+      loadLevel(currentLevel);
+    } else {
+      ui.levelName.textContent = "Parabéns! 🎉";
+      ui.levelDesc.textContent = "Você dominou 100% de todos os casos de remoção da disciplina de ED2!";
+      ui.levelWhy.innerHTML = "<strong>🏆 Nota 10 garantida na prova!</strong> Você sabe remover folhas, substituir por 1 filho, encontrar o predecessor e aplicar todas as rotações AVL!";
+      ui.svgLeft.innerHTML = ''; ui.svgRight.innerHTML = '';
+      ui.nodesLeft.innerHTML = ''; ui.slotsRight.innerHTML = '';
+      ui.btn.style.display = 'none';
+      ui.peekBtn.style.display = 'none';
     }
     return;
   }
-  let allPlaced = true; let allCorrect = true; let wrongTrash = false;
-  document.querySelectorAll('.slot').forEach(slot => {
-    if (slot.children.length === 0) allPlaced = false;
-    else {
-      if (slot.children[0].textContent !== slot.dataset.expected) {
-        allCorrect = false; if(slot.classList.contains('trash')) wrongTrash = true;
+
+  const lvl = levels[currentLevel];
+  let allPlaced = true;
+  let allCorrect = true;
+  let wrongTrash = false;
+
+  document.querySelectorAll('#slots-right .slot').forEach(slot => {
+    if (slot.children.length === 0) {
+      allPlaced = false;
+    } else {
+      const childVal = slot.children[0].dataset.val;
+      if (childVal !== slot.dataset.expected) {
+        allCorrect = false;
+        if (slot.classList.contains('trash')) wrongTrash = true;
       }
     }
   });
-  
-  if (!allPlaced) showMsg("Arraste todos os nós (e o alvo pra lixeira)!", "error");
-  else if (wrongTrash) showMsg("Você jogou o nó errado na lixeira!", "error");
-  else if (!allCorrect) showMsg("Estrutura final incorreta! Reveja as regras de AVL.", "error");
-  else { showMsg("Perfeito! Resolvido igualzinho ao gabarito da professora! 🪓", "success"); ui.btn.textContent = "Próximo Nível"; }
+
+  if (isExamMode) {
+    document.body.classList.add('reveal-guide');
+    ui.peekBtn.textContent = '🙈 Ocultar Guia';
+  }
+
+  if (!allPlaced) {
+    showMsg("Coloque todos os nós nos slots (e a chave a remover na lixeira)!", "error");
+  } else if (wrongTrash) {
+    showMsg("Você jogou o nó errado na lixeira! Veja qual chave o enunciado mandou remover.", "error");
+  } else if (!allCorrect) {
+    if (isExamMode) {
+      showMsg("Ops! Estrutura final incorreta. O esqueleto foi revelado para você comparar o erro!", "error");
+    } else {
+      showMsg("Estrutura final incorreta! Verifique se aplicou o Predecessor ou a Rotação certa.", "error");
+    }
+  } else {
+    solvedLevels.add(currentLevel);
+    updateScore();
+    renderPills();
+    if (isExamMode) {
+      showMsg("🏆 ESPETACULAR! Você removeu, balanceou e acertou 100% no escuro!", "success");
+    } else {
+      showMsg("Perfeito! Resolvido exatamente conforme o gabarito oficial da UTFPR! 🪓", "success");
+    }
+    ui.btn.textContent = "Próximo Nível";
+  }
 });
-ui.nodesLeft.addEventListener('dragover', e => e.preventDefault());
-ui.nodesLeft.addEventListener('drop', e => {
-  e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if(!id) return;
-  const nodeEl = document.getElementById(id); ui.nodesLeft.appendChild(nodeEl);
-  const nData = levels[currentLevel].nodes.find(n => n.id === id);
-  nodeEl.style.left = nData.x + 'px'; nodeEl.style.top = nData.y + 'px';
-});
+
+// Modo Prova Toggle
+function toggleExamMode() {
+  isExamMode = !isExamMode;
+  document.body.classList.toggle('exam-mode', isExamMode);
+  const btn = document.getElementById('btn-exam-mode');
+  const status = document.getElementById('exam-status');
+  if (isExamMode) {
+    btn.classList.add('active');
+    status.textContent = 'ATIVADO';
+    document.body.classList.remove('reveal-guide');
+    ui.peekBtn.textContent = '👁️ Ver Guia';
+  } else {
+    btn.classList.remove('active');
+    status.textContent = 'DESATIVADO';
+  }
+}
+
+function togglePeek() {
+  const isRevealed = document.body.classList.toggle('reveal-guide');
+  ui.peekBtn.textContent = isRevealed ? '🙈 Ocultar Guia' : '👁️ Ver Guia';
+}
+
+// Iniciar no Nível 0
 loadLevel(0);
 </script>
 
 <!-- Apple Pencil Script -->
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-  if(document.getElementById('scratchpad')) return; // already injected somehow
-  
-  const canvas = document.createElement('canvas');
-  canvas.id = 'scratchpad';
-  document.body.appendChild(canvas);
-  
-  const tools = document.createElement('div');
-  tools.className = 'pencil-tools';
-  tools.innerHTML = `<button class="pencil-btn clear-btn" id="clear-btn" title="Limpar Lousa">🗑️</button><button class="pencil-btn" id="pencil-btn" title="Modo Apple Pencil">✏️</button>`;
+  if(document.getElementById('scratchpad')) return;
+  const canvas = document.createElement('canvas'); canvas.id = 'scratchpad'; document.body.appendChild(canvas);
+  const tools = document.createElement('div'); tools.className = 'pencil-tools';
+  tools.innerHTML = '<button class="pencil-btn clear-btn" id="clear-btn" title="Limpar Lousa">🗑️</button><button class="pencil-btn" id="pencil-btn" title="Modo Apple Pencil">✏️</button>';
   document.body.appendChild(tools);
-
-  const ctx = canvas.getContext('2d');
-  const pencilBtn = document.getElementById('pencil-btn');
-  const clearBtn = document.getElementById('clear-btn');
+  const ctx = canvas.getContext('2d'); const pencilBtn = document.getElementById('pencil-btn'); const clearBtn = document.getElementById('clear-btn');
   let isDrawing = false;
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = Math.max(document.body.scrollHeight, window.innerHeight); }
+  window.addEventListener('resize', resizeCanvas); window.addEventListener('scroll', resizeCanvas); resizeCanvas();
   pencilBtn.addEventListener('click', () => {
-    canvas.classList.toggle('active');
-    pencilBtn.classList.toggle('active');
-    if(canvas.classList.contains('active')) {
-      pencilBtn.textContent = '❌';
-      document.body.style.overflow = 'hidden'; // lock scrolling while drawing
-    } else {
-      pencilBtn.textContent = '✏️';
-      document.body.style.overflow = 'auto';
-    }
+    canvas.classList.toggle('active'); pencilBtn.classList.toggle('active');
+    if(canvas.classList.contains('active')) { pencilBtn.textContent = '❌'; } else { pencilBtn.textContent = '✏️'; }
   });
-
-  clearBtn.addEventListener('click', () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  });
-
-  function getPos(e) {
-    if(e.touches && e.touches.length > 0) {
-       return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }
-    return { x: e.clientX, y: e.clientY };
+  clearBtn.addEventListener('click', () => { ctx.clearRect(0, 0, canvas.width, canvas.height); });
+  function getPos(e) { 
+    if(e.touches && e.touches.length > 0) { return { x: e.touches[0].pageX, y: e.touches[0].pageY }; } 
+    return { x: e.pageX, y: e.pageY }; 
   }
-
-  function startDraw(e) {
-    if(!canvas.classList.contains('active')) return;
-    isDrawing = true;
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-    if(e.cancelable) e.preventDefault();
-  }
-
-  function draw(e) {
-    if(!isDrawing || !canvas.classList.contains('active')) return;
-    const pos = getPos(e);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = '#f38ba8';
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-    if(e.cancelable) e.preventDefault();
-  }
-
+  function startDraw(e) { if(!canvas.classList.contains('active')) return; isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); if(e.cancelable) e.preventDefault(); }
+  function draw(e) { if(!isDrawing || !canvas.classList.contains('active')) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.strokeStyle = '#f38ba8'; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.stroke(); if(e.cancelable) e.preventDefault(); }
   function stopDraw() { isDrawing = false; }
-
-  canvas.addEventListener('mousedown', startDraw);
-  canvas.addEventListener('mousemove', draw);
-  window.addEventListener('mouseup', stopDraw);
-  
-  canvas.addEventListener('touchstart', startDraw, {passive: false});
-  canvas.addEventListener('touchmove', draw, {passive: false});
-  window.addEventListener('touchend', stopDraw);
+  canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', stopDraw);
+  canvas.addEventListener('touchstart', startDraw, {passive: false}); canvas.addEventListener('touchmove', draw, {passive: false}); window.addEventListener('touchend', stopDraw);
 });
 </script>
 
