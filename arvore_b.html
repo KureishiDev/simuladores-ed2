@@ -133,7 +133,10 @@
   <!-- Painel de Peças Disponíveis -->
   <div class="panel" style="width: 400px;">
     <div class="panel-title">Chaves Soltas</div>
+    
     <div class="pool" id="pool"></div>
+    <button id="btn-sort" class="action-btn" style="margin-top: 20px; font-size: 14px; padding: 8px 15px; display: block; margin-left: auto; margin-right: auto; background: #cba6f7; color: #11111b; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s;">🔢 Ordenar Chaves</button>
+
     <p style="color: #bac2de; font-size: 13px; text-align: center; margin-top: 20px;">Arraste esses blocos para reconstruir a árvore final na direita.</p>
     <div id="trash" class="trash" data-is-trash="true"></div>
   </div>
@@ -304,6 +307,19 @@ ui.btn.addEventListener('click', () => {
   if (!allPlaced) showMsg("Arraste TODOS os blocos para os slots (se for remoção, coloque um na lixeira)!", "error");
   else if (!allCorrect) showMsg("Montagem incorreta! Lembre-se: os números dentro de um nó DEVEM ficar em ordem crescente. E a mediana é a que sobe!", "error");
   else { showMsg("Perfeito! Você aplicou a regra da Árvore B corretamente! 📦", "success"); ui.btn.textContent = "Próximo Nível"; }
+});
+
+
+document.getElementById('btn-sort').addEventListener('click', () => {
+  const pool = document.getElementById('pool');
+  const nodes = Array.from(pool.querySelectorAll('.node'));
+  nodes.sort((a, b) => parseInt(a.textContent) - parseInt(b.textContent));
+  nodes.forEach(n => {
+    // Adding a tiny animation for flair
+    n.style.transform = 'scale(1.2)';
+    pool.appendChild(n);
+    setTimeout(() => n.style.transform = '', 200);
+  });
 });
 
 loadLevel(0);
