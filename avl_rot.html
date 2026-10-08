@@ -592,8 +592,10 @@
     background: rgba(249, 226, 175, 0.05) !important;
   }
   body.exam-mode .slot.drag-over {
-    border-color: var(--green) !important;
-    background: rgba(166, 227, 161, 0.2) !important;
+    border: 2.5px dashed var(--accent) !important;
+    background: rgba(137, 180, 250, 0.28) !important;
+    transform: scale(1.18);
+    box-shadow: 0 0 16px rgba(137, 180, 250, 0.45);
   }
   body.exam-mode .panel[id^="panel-right-"]::after {
     content: "🎓 Modo Prova: Espaço Livre (Preveja a geometria mentalmente!)";
@@ -1337,18 +1339,35 @@ function initStation(stId) {
         nodeEl.style.left = (nodeStartX + dx) + 'px';
         nodeEl.style.top = (nodeStartY + dy) + 'px';
 
-        // Destacar slot mais próximo sob o ponteiro
+        // Destacar slot mais próximo sob o ponteiro com magnetismo inteligente
         const pRight = document.getElementById(`panel-right-${stId}`);
         const pRightRect = pRight.getBoundingClientRect();
         const curX = e.clientX;
         const curY = e.clientY;
 
+        const isInsideRightPanel = (
+          curX >= (pRightRect.left - 20) && curX <= (pRightRect.right + 20) &&
+          curY >= (pRightRect.top - 20) && curY <= (pRightRect.bottom + 20)
+        );
+
+        let closestSlot = null;
+        let minDragDist = isExamMode ? 160 : 55;
+
         document.querySelectorAll(`#slots-right-${stId} .slot`).forEach(s => {
-          const sRect = s.getBoundingClientRect();
-          const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
-          if (dist < 40) s.classList.add('drag-over');
-          else s.classList.remove('drag-over');
+          s.classList.remove('drag-over');
+          if (isInsideRightPanel) {
+            const sRect = s.getBoundingClientRect();
+            const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
+            if (dist < minDragDist) {
+              minDragDist = dist;
+              closestSlot = s;
+            }
+          }
         });
+
+        if (closestSlot) {
+          closestSlot.classList.add('drag-over');
+        }
       }
     });
 
@@ -1360,19 +1379,30 @@ function initStation(stId) {
         isDragging = false;
         nodeEl.classList.remove('dragging');
 
-        // Procurar slot sob o ponteiro ou o mais próximo
+        // Procurar slot com magnetismo adaptativo
+        const pRight = document.getElementById(`panel-right-${stId}`);
+        const pRightRect = pRight.getBoundingClientRect();
         const curX = e.clientX;
         const curY = e.clientY;
+
+        const isInsideRightPanel = (
+          curX >= (pRightRect.left - 25) && curX <= (pRightRect.right + 25) &&
+          curY >= (pRightRect.top - 25) && curY <= (pRightRect.bottom + 25)
+        );
+
         let targetSlot = null;
-        let minDistance = 50; // raio de captura em px
+        // No Modo Prova, se soltar dentro do painel direito, atrai para a posição mais próxima (sem exigir precisão de pixel)
+        let minDistance = isExamMode ? 260 : 60;
 
         document.querySelectorAll(`#slots-right-${stId} .slot`).forEach(s => {
           s.classList.remove('drag-over');
-          const sRect = s.getBoundingClientRect();
-          const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
-          if (dist < minDistance) {
-            minDistance = dist;
-            targetSlot = s;
+          if (isInsideRightPanel) {
+            const sRect = s.getBoundingClientRect();
+            const dist = Math.hypot(curX - (sRect.left + sRect.width/2), curY - (sRect.top + sRect.height/2));
+            if (dist < minDistance) {
+              minDistance = dist;
+              targetSlot = s;
+            }
           }
         });
 
@@ -1413,6 +1443,38 @@ function initStation(stId) {
     nodeEl.addEventListener('pointercancel', finishDrag);
 
     nodesLeft.appendChild(nodeEl);
+  });
+
+  // Click-to-Move amplo no painel direito (para Modo Prova com tela limpa)
+  const pRightEl = document.getElementById(`panel-right-${stId}`);
+  pRightEl.addEventListener('click', e => {
+    if (!selectedNode || selectedNode.dataset.station !== stId) return;
+    if (e.target.closest('.slot') || e.target.closest('.node')) return;
+
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+    let closestSlot = null;
+    let minD = 99999;
+
+    document.querySelectorAll(`#slots-right-${stId} .slot`).forEach(s => {
+      const sRect = s.getBoundingClientRect();
+      const d = Math.hypot(clickX - (sRect.left + sRect.width/2), clickY - (sRect.top + sRect.height/2));
+      if (d < minD) {
+        minD = d;
+        closestSlot = s;
+      }
+    });
+
+    if (closestSlot) {
+      if (closestSlot.children.length > 0) {
+        returnNodeToHome(closestSlot.children[0], st);
+      }
+      closestSlot.appendChild(selectedNode);
+      selectedNode.style.left = '0px';
+      selectedNode.style.top = '0px';
+      selectedNode.classList.add('in-slot');
+      clearSelection();
+    }
   });
 }
 
