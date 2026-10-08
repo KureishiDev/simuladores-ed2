@@ -541,7 +541,7 @@
 
 <!-- Barra de Navegação Rápida -->
 <div class="nav-bar">
-  <span class="score-badge" id="score-badge">🏆 0 / 14 Dominadas</span>
+  <span class="score-badge" id="score-badge">🏆 0 / 16 Dominadas</span>
   <a href="#st-1" class="nav-pill" id="pill-st-1">1. LL Simples</a>
   <a href="#st-2" class="nav-pill" id="pill-st-2">2. RR Simples</a>
   <a href="#st-3a" class="nav-pill" id="pill-st-3a">3A. LR Joelho</a>
@@ -552,8 +552,10 @@
   <a href="#st-6" class="nav-pill" id="pill-st-6">6. Adotivo Esq</a>
   <a href="#st-7" class="nav-pill" id="pill-st-7">7. Cirurgia Esq</a>
   <a href="#st-8" class="nav-pill" id="pill-st-8">8. Cirurgia Dir</a>
-  <a href="#st-9" class="nav-pill" id="pill-st-9">9. Dupla LR Mestre</a>
-  <a href="#st-10" class="nav-pill" id="pill-st-10">10. Dupla RL Mestre</a>
+  <a href="#st-9a" class="nav-pill" id="pill-st-9a" style="border-color:#fab387; color:#fab387;">9A. LR Joelho Mestre</a>
+  <a href="#st-9b" class="nav-pill" id="pill-st-9b" style="border-color:#a6e3a1; color:#a6e3a1;">9B. LR Raiz Mestre</a>
+  <a href="#st-10a" class="nav-pill" id="pill-st-10a" style="border-color:#fab387; color:#fab387;">10A. RL Joelho Mestre</a>
+  <a href="#st-10b" class="nav-pill" id="pill-st-10b" style="border-color:#a6e3a1; color:#a6e3a1;">10B. RL Raiz Mestre</a>
   <a href="#st-11" class="nav-pill" id="pill-st-11">11. Lista 3 UTFPR</a>
   <a href="#st-12" class="nav-pill" id="pill-st-12">12. Remoção fb=0 Dir</a>
   <a href="#st-13" class="nav-pill" id="pill-st-13">13. Remoção fb=0 Esq</a>
@@ -807,11 +809,11 @@ const stationsData = [
     linksRight: [ ["S_Root","S_Left"], ["S_Root","S_NewSub"], ["S_NewSub","S_SubLeft"], ["S_NewSub","S_SubRight"] ]
   },
   {
-    id: "st-9",
-    title: "9. Pegadinha Mestre: Dupla LR com 2 Subárvores no Joelho",
-    badgeText: "DUAS SUBÁRVORES ADOTIVAS",
-    badgeColor: "#f38ba8",
-    desc: "O nó 50 (fb = -2), filho 20 (fb = +1) e neto 35 (fb = 0). O neto 35 tem DOIS filhos (25 e 40)! Na rotação dupla, o 35 VIRA A NOVA RAIZ! E as duas subárvores? O 25 vai para a direita do 20, e o 40 vai para a esquerda do 50!",
+    id: "st-9a",
+    title: "9A. Pegadinha Mestre LR (Passo 1: Alinhar Joelho no Filho 20)",
+    badgeText: "PASSO 1 DE 2: FILHO GIRA",
+    badgeColor: "#fab387",
+    desc: "Nó 50 (fb = -2) e nó 20 (fb = +1) formam joelho! PASSO 1: No filho 20, o neto 35 VIRA PAI do 20 (sobe pro lugar dele). O 20 desce para a esquerda do 35. E o nó 25? Como 25 > 20, ele é adotado na DIREITA do 20! O nó 50 continua parado na raiz. A perna esticou!",
     nodes: [
       { id: "50", val: "50", fb: -2, x: 220, y: 25 },
       { id: "20", val: "20", fb: 1, x: 100, y: 90 },
@@ -820,6 +822,29 @@ const stationsData = [
       { id: "40", val: "40", fb: 0, x: 190, y: 225 }
     ],
     linksLeft: [ ["50","20"], ["20","35"], ["35","25"], ["35","40"] ],
+    slots: [
+      { id: "S_50", x: 220, y: 25, expected: "50" },
+      { id: "S_35", x: 125, y: 90, expected: "35" },
+      { id: "S_20", x: 75, y: 155, expected: "20" },
+      { id: "S_40", x: 175, y: 155, expected: "40" },
+      { id: "S_25", x: 115, y: 225, expected: "25" }
+    ],
+    linksRight: [ ["S_50","S_35"], ["S_35","S_20"], ["S_35","S_40"], ["S_20","S_25"] ]
+  },
+  {
+    id: "st-9b",
+    title: "9B. Pegadinha Mestre LR (Passo 2: Finalizar na Raiz 50)",
+    badgeText: "PASSO 2 DE 2: RAIZ GIRA",
+    badgeColor: "#a6e3a1",
+    desc: "A perna foi esticada no Passo 1! Agora 50 (fb = -2) e 35 (fb = -1) têm sinais iguais negativos. Perna esquerda pesada: o filho da esquerda (35) VIRA A NOVA RAIZ! O 50 desce para a direita dele e adota o 40 na sua esquerda (40 < 50). A subárvore 20-25 continua na esquerda!",
+    nodes: [
+      { id: "50", val: "50", fb: -2, x: 220, y: 25 },
+      { id: "35", val: "35", fb: -1, x: 125, y: 90 },
+      { id: "20", val: "20", fb: 0, x: 75, y: 155 },
+      { id: "40", val: "40", fb: 0, x: 175, y: 155 },
+      { id: "25", val: "25", fb: 0, x: 115, y: 225 }
+    ],
+    linksLeft: [ ["50","35"], ["35","20"], ["35","40"], ["20","25"] ],
     slots: [
       { id: "S1", x: 160, y: 25, expected: "35" },
       { id: "S2", x: 95, y: 100, expected: "20" },
@@ -830,11 +855,11 @@ const stationsData = [
     linksRight: [ ["S1","S2"], ["S1","S3"], ["S2","S4"], ["S3","S5"] ]
   },
   {
-    id: "st-10",
-    title: "10. Pegadinha Mestre: Dupla RL com 2 Subárvores no Joelho",
-    badgeText: "DUAS SUBÁRVORES ADOTIVAS",
-    badgeColor: "#f38ba8",
-    desc: "O nó 20 (fb = +2), filho 60 (fb = -1) e neto 40 (fb = 0). O neto 40 tem filhos 30 e 50. Na rotação dupla RL completa, o 40 sobe e VIRA A NOVA RAIZ! O 30 vira filho direito do 20, e o 50 vira filho esquerdo do 60!",
+    id: "st-10a",
+    title: "10A. Pegadinha Mestre RL (Passo 1: Alinhar Joelho no Filho 60)",
+    badgeText: "PASSO 1 DE 2: FILHO GIRA",
+    badgeColor: "#fab387",
+    desc: "Nó 20 (fb = +2) e nó 60 (fb = -1) formam joelho à direita! PASSO 1: No filho 60, o neto 40 VIRA PAI do 60 (sobe pro lugar dele). O 60 desce para a direita do 40. E o nó 50? Como 50 < 60, ele é adotado na ESQUERDA do 60! O nó 20 continua parado na raiz. A perna esticou!",
     nodes: [
       { id: "20", val: "20", fb: 2, x: 90, y: 25 },
       { id: "60", val: "60", fb: -1, x: 210, y: 90 },
@@ -843,6 +868,29 @@ const stationsData = [
       { id: "50", val: "50", fb: 0, x: 190, y: 225 }
     ],
     linksLeft: [ ["20","60"], ["60","40"], ["40","30"], ["40","50"] ],
+    slots: [
+      { id: "S_20", x: 90, y: 25, expected: "20" },
+      { id: "S_40", x: 190, y: 90, expected: "40" },
+      { id: "S_30", x: 140, y: 155, expected: "30" },
+      { id: "S_60", x: 245, y: 155, expected: "60" },
+      { id: "S_50", x: 205, y: 225, expected: "50" }
+    ],
+    linksRight: [ ["S_20","S_40"], ["S_40","S_30"], ["S_40","S_60"], ["S_60","S_50"] ]
+  },
+  {
+    id: "st-10b",
+    title: "10B. Pegadinha Mestre RL (Passo 2: Finalizar na Raiz 20)",
+    badgeText: "PASSO 2 DE 2: RAIZ GIRA",
+    badgeColor: "#a6e3a1",
+    desc: "A perna foi esticada no Passo 1! Agora 20 (fb = +2) e 40 (fb = +1) têm sinais iguais positivos. Perna direita pesada: o filho da direita (40) VIRA A NOVA RAIZ! O 20 desce para a esquerda dele e adota o 30 na sua direita (30 > 20). A subárvore 60-50 continua na direita!",
+    nodes: [
+      { id: "20", val: "20", fb: 2, x: 90, y: 25 },
+      { id: "40", val: "40", fb: 1, x: 190, y: 90 },
+      { id: "30", val: "30", fb: 0, x: 140, y: 155 },
+      { id: "60", val: "60", fb: 0, x: 245, y: 155 },
+      { id: "50", val: "50", fb: 0, x: 205, y: 225 }
+    ],
+    linksLeft: [ ["20","40"], ["40","30"], ["40","60"], ["60","50"] ],
     slots: [
       { id: "S1", x: 160, y: 25, expected: "40" },
       { id: "S2", x: 95, y: 100, expected: "20" },
